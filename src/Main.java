@@ -58,16 +58,26 @@ class MVisitor extends MxxBaseVisitor<zz>
         tmp.add("string");
         topscope.funchere.put("print",tmp);
         topscope.funchere.put("println",tmp);
-        tmp.clear();
+
+        tmp= new Vector();
         tmp.add("int");
         topscope.funchere.put("getInt",tmp);
-        tmp.clear();
+
+        tmp= new Vector();
         tmp.add("string");
         topscope.funchere.put("getString",tmp);
+
+        tmp= new Vector();
+        tmp.add("string");
         tmp.add("int");
+        topscope.funchere.put("toString",tmp);
+
+
         scopes.add(topscope);
         nscope = 0;
         cnmm = "int";
+        
+
     }
 
     void addscope()
@@ -437,7 +447,6 @@ class MVisitor extends MxxBaseVisitor<zz>
     }
 
     public zz visitExpr(MxxParser.ExprContext ctx) {
-
         if (ctx.Cnumber() != null) {
             zz aa = new zz();
             aa.tp = "int";
@@ -454,18 +463,18 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz aa = new zz();
             aa.tp = "null";
             return aa;
-        } else if (ctx.Op1() != null) {
+        } else if (ctx.Op1 != null) {
             zz aa = visit(ctx.expr(0));
             if (aa.zz != "lv") {
                 System.out.printf("++(not lval)\n");
                 System.exit(-1);
             }
             return aa;
-        } else if (ctx.Op2() != null) {
+        } else if (ctx.Op2 != null) {
             zz aa = visit(ctx.expr(0));
             aa.zz = "nop";
             String ss = aa.tp;
-            if (ctx.Op2().getText().equals("!")) {
+            if (ctx.Op2.getText().equals("!")) {
                 if (!ss.equals("int") && !ss.equals("bool")) {
                     System.out.printf("wrong type in op2\n");
                     System.exit(-1);
@@ -475,8 +484,7 @@ class MVisitor extends MxxBaseVisitor<zz>
                 System.exit(-1);
             }
             return aa;
-        } else if (ctx.Op3() != null) {
-
+        } else if (ctx.Op3 != null) {
             zz a1 = visit(ctx.expr(0));
             zz a2 = visit(ctx.expr(1));
 
@@ -487,9 +495,23 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
             a1.zz = "nop";
             return a1;
-        } else if (ctx.Op4() != null) {
+        }
+        else if (ctx.Op3_1 != null) {
             zz a1 = visit(ctx.expr(0));
             zz a2 = visit(ctx.expr(1));
+
+            if (!a1.tp.equals("int") && !a1.tp.equals("string") || !a1.tp.equals(a2.tp)) {
+                System.err.printf("debug: %s %s %s %s\n", a1.tp, a2.tp, ctx.expr(0).getText(), ctx.expr(1).getText());
+                System.out.printf("wrong type in op3_1\n");
+                System.exit(-1);
+            }
+            a1.zz = "nop";
+            return a1;
+        }
+        else if (ctx.Op4 != null) {
+            zz a1 = visit(ctx.expr(0));
+            zz a2 = visit(ctx.expr(1));
+
             if (!a1.tp.equals("int") || !a2.tp.equals("int")) {
                 System.out.printf("wrong type in op4\n");
                 System.exit(-1);
@@ -497,7 +519,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             a1.tp = "bool";
             a1.zz = "nop";
             return a1;
-        } else if (ctx.Op5() != null) {
+        } else if (ctx.Op5 != null) {
             zz a1 = visit(ctx.expr(0));
             zz a2 = visit(ctx.expr(1));
             if (!a1.tp.equals(a2.tp)) {
@@ -507,7 +529,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             a1.tp = "bool";
             a1.zz = "nop";
             return a1;
-        } else if (ctx.Op6() != null) {
+        } else if (ctx.Op6 != null) {
             zz a1 = visit(ctx.expr(0));
             zz a2 = visit(ctx.expr(1));
             if (!a1.tp.equals("bool") || !a2.tp.equals("bool")) {
@@ -537,8 +559,8 @@ class MVisitor extends MxxBaseVisitor<zz>
                 else if (ctx.STRING() != null)  aa.tp = "string";
                 else if (ctx.BOOL() != null)    aa.tp = "bool";
                 else    aa.tp = ctx.cname().ID().getText();
-                for (int k = ctx.expr().size(); k > 0;  --k)    aa.tp += "[]";
-                if (ctx.NK() != null)   for (int k = ctx.NK().size(); k > 0; --k)   aa.tp += "[]";
+                String ss = ctx.getText();
+                for (int k = ss.length()-1; k > 0; --k)    if (ss.charAt(k) == '[') aa.tp += "[]";
                 aa.zz = "new";
                 return aa;
             }
@@ -548,10 +570,7 @@ class MVisitor extends MxxBaseVisitor<zz>
                 aa.zz = "new";
                 return aa;
             }
-/*
-	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')+ (NK)*
- */
-        } else if (ctx.Pnt() != null) {
+       } else if (ctx.Pnt != null) {
             zz aa = visit(ctx.expr(0));
             MxxParser.ExprContext ex1 = ctx.expr(1);
             if (!scopes.elementAt(0).clshere.containsKey(aa.tp)) {
@@ -646,6 +665,7 @@ class MVisitor extends MxxBaseVisitor<zz>
                         for (int k = 1; k < pams.size(); ++k) {
                             zz zs = visit(ex1.exprs().expr(k - 1));
                             if (!pams.elementAt(k).equals(zs.tp)) {
+
                                 System.out.printf("wrong type, %s in class %s, param %d\n", ss, aa.tp, k - 1);
                                 System.exit(-1);
                             }
@@ -713,6 +733,7 @@ class MVisitor extends MxxBaseVisitor<zz>
                 for (int k = 1; k < pams.size(); ++k) {
                     zz zs = visit(ctx.exprs().expr(k - 1));
                     if (!pams.elementAt(k).equals(zs.tp)) {
+                        System.err.printf("debug: %d %s %s %s\n", pams.size(), ss, zs.tp, pams.elementAt(k));
                         System.out.printf("wrong type in func %s, param %d\n", ss, k - 1);
                         System.exit(-1);
                     }
@@ -740,9 +761,9 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
         } else if (ctx.expr().size() == 1) {
             zz aa = visit(ctx.expr(0));
-            aa.tp = "nop";
+            aa.zz = "nop";
             return aa;
-        } else if (ctx.Equl() != null) {
+        } else if (ctx.Equl != null) {
             zz aa = visit(ctx.expr(0));
 
             if (aa.zz != "lv") {
