@@ -1,11 +1,12 @@
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
 //import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 class clspam
@@ -158,7 +159,8 @@ class MVisitor extends MxxBaseVisitor<zz>
         for (int k = 0; k < sz; ++k)    if (ctx.defination(k).defclass() != null)   preclass(ctx.defination(k).defclass());
         for (int k = 0; k < sz; ++k)    if (ctx.defination(k).deffunc() != null)   prefunc(ctx.defination(k).deffunc());
         for (int k = 0; k < sz; ++k)    if (ctx.defination(k).deffunc() == null)    visit(ctx.defination(k));
-        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).deffunc() != null)    visit(ctx.defination(k));
+        scopes.elementAt(0).varhere.clear();;
+        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).defclass() == null)    visit(ctx.defination(k));
 
         if (!scopes.elementAt(0).funchere.containsKey("main"))
         {
@@ -877,6 +879,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         return trt;
     }
 }
+
 public class Main
 {
 
@@ -886,9 +889,9 @@ public class Main
         MxxLexer lexer = new MxxLexer(in);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MxxParser parser = new MxxParser(tokens);
-        ParseTree tree = parser.program();
-        MVisitor avisitor = new MVisitor();
-        avisitor.visit(tree);
+        //ParseTree tree = parser.program();
+        //MVisitor avisitor = new MVisitor();
+        //avisitor.visit(tree);
     }
 
     public static void main(String[] args) throws Exception

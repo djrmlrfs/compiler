@@ -1,55 +1,88 @@
-grammar Al;
+grammar Mx;
 
 //parser
 
 allin   :   (defs )* EOF ;
 
-defs : defun | defvars;
+defs : defun | defvars | defclass;
+
 varname :   ID;
+
 defvars :   defvar ';' ;
+
 defvar  :   type  varname ('='  expr)? ;
+
 typename:   ID;
+
 type    :   (basetype | typename)  ('[' ']')* ;
+
 basetype:   ('int' | 'bool' | 'void' | 'string') ;
+
+classname
+        :   ID
+        ;
+
+defclass:   'class' classname '{'
+        (    fun = ID  '(' ')' block
+            | defun
+            | defvars
+            )* '}';
+
 funname :   ID;
-defun   :   type funname '('  ')' block ;
+
+defun   :   type funname '(' params ')' block ;
+
+params  :   (param  (',' param)*)? ;
+
+param   :   defvar ;
+
 block   :   '{' stmt* '}' ;
-stmt    :   defvars
+
+stmt    :   block
+        |   op = 'if' '(' expr ')' stmt ('else' stmt)?
+        |   'for' '(' expr? ';' expr? ';' expr? ')' stmt
+        |   'while' '(' expr? ')' stmt
+        |   'return' expr? ';'
+        |   'break' ';'
+        |   'continue' ';'
+        |   defvars
         |   ';'
         |   expr ';'    ;
 
-expr:
-		NEW (INT | STRING | BOOL ) ('[' expr ']')+ (NK)*
-	|	expr ('[' expr ']')+
-	|	expr Pnt expr
-	|	Op1 expr
-	|	('-' | '!' | '~') expr
-	|	expr Op1
-	|	expr Op3 expr
-	|	expr Op4 expr
-	|   expr Op5 expr
-	|	expr Op6 expr
-	|	varname
-	|	Cnumber
-	|	Cstring
-	|	NULL
-	|	TRUE
-	|	FALSE
-	|	'(' expr ')'
-	|   <assoc=right> expr Equl expr
-	;
 
-NK  : '[]';
-Equl: '=';
-Pnt : '.' ;
-Op1 : ('++' | '--');// op1 lval, lval op1, to opl
-Op2 : ('-' | '!' | '~');//op2 int, ! bool, to int/bool
-Op3 : ('+' | '-')
-    ;
-Op4 : ('>' | '<' | '>=' | '<=');//int op4 int to bool
-Op5 : ('==' | '!=');    // int/str/bool op5 int/str/bool
-Op6 : '&&' | '||' ;     //bool op6 bool to bool
-exprs   :   expr (',' expr)* ;
+exprs   :   expr(',' expr)* ;
+
+
+
+expr    :   funname '(' exprs? ')'
+        |   'new' news
+        |   expr (opcom = '[' expr ']')+
+        |   expr op = '.' expr
+        |   op = ('++' | '--') expr
+        |   ('-' | '!' | '~') expr
+        |   expr op =('++'  | '--')
+        |   expr ('*' | '/' | '%') expr
+        |   expr op=('+' |'-' ) expr
+        |   expr ('>>' | '<<') expr
+        |   expr '&' expr
+        |   expr '^' expr
+        |   expr '|' expr
+        |   expr  op1 = ('>' | '<' | '>=' | '<=' | '==' | '!=') expr
+        |   expr  op = '&&' expr
+        |   expr  op ='||' expr
+        |   expr '?' expr ':' expr
+        |   varname
+        |   NUM
+        |   STR
+        |   ('NULL' | 'null')
+        |   ('TRUE' | 'true' | 'FALSE' | 'false')
+        |   '(' expr ')'
+        |   <assoc=right> expr '=' expr;
+
+news     :   varname '(' exprs ')'
+        |   (classname |name =  'int' |name =  'string'|name = 'bool') ('[' expr ']')+ ('[' ']')*('[' expr ']')?
+        |   (classname |name =  'int' |name =  'string'|name = 'bool') ('[' ']')*   ;
+
 //lexxer
 
 STR  : '"' ('\\"' | '\\\\'|.)*? '"' ;
@@ -65,3 +98,4 @@ WS : ( ' ' | '\t' | '\n' | '\r' ) + -> skip;
 LINE_COMMENT
     : '//' ~[\r\n]* -> skip
     ;
+
