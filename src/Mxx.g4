@@ -33,7 +33,7 @@ block	:	'{' state* '}' ;
 state
 	:	block
 	|	IF '(' expr ')' state (ELSE state)?
-	|	FOR '(' expr ';' expr? ';' expr ')' state
+	|	FOR '(' zzxp=expr? ';' pexp=expr? ';' zcxp=expr? ')' state
 	|	WHILE '(' expr ')' state
 	|	RETURN expr? ';'
 	|	BREAK ';'
@@ -46,7 +46,7 @@ state
 expr
 	:	fname '(' exprs? ')'
 	|	NEW cname '('  ')'
-	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')+ ('[]')*
+	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')* ('[]')*
 	|	expr ('[' expr ']')+
 	|	expr Pnt='.' expr
 	|	Op1=('++' | '--') expr
@@ -89,10 +89,9 @@ VOID    :   'void';
 BOOL    :   'bool';
 FALSE   :   'false';
 TRUE    :   'true';
-THIS    :   'this';
 
 Cnumber :	[0-9]+;
-Cstring :   '"' ('\\"' | ~'"')* '"';
+Cstring :   '"' ('\\"' | '\\\\'|.)*? '"' ;
 ID      :   [a-zA-Z_] [a-zA-Z_0-9]*;
 Spaces  :   ( ' ' | '\t' | '\n' | '\r' ) + -> skip;
 Comment :   '//' ~[\r\n]* -> skip;

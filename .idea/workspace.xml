@@ -18,8 +18,8 @@
       <file leaf-file-name="Mxx.g4" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+            <state relative-caret-position="95">
+              <caret line="47" selection-start-line="47" selection-end-line="47" />
             </state>
           </provider>
         </entry>
@@ -27,8 +27,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="342" column="9" selection-start-line="342" selection-start-column="9" selection-end-line="342" selection-end-column="9" />
+            <state relative-caret-position="215">
+              <caret line="433" column="23" lean-forward="true" selection-start-line="433" selection-start-column="23" selection-end-line="433" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -40,36 +40,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>id</find>
-      <find>c</find>
-      <find>cnumber</find>
-      <find>cstr</find>
-      <find>expr</find>
-      <find>[</find>
-      <find>clshere</find>
-      <find />
-      <find>zz</find>
-      <find>.zz</find>
-      <find>cname</find>
-      <find>varhere</find>
-      <find>cc</find>
-      <find>defva</find>
-      <find>lval</find>
-      <find>vname</find>
-      <find>debu</find>
-      <find>-1</find>
+      <find>return</find>
+      <find>RETURN</find>
+      <find>IF</find>
+      <find>have no</find>
+      <find>no var</find>
+      <find>void[]</find>
+      <find>pre</find>
       <find>no func</find>
-      <find>op3</find>
-      <find>param</find>
-      <find>param %s</find>
-      <find>wrong type</find>
-      <find>println</find>
-      <find>need lv</find>
+      <find>visit</find>
+      <find>new</find>
+      <find>defva</find>
       <find>deffunc</find>
-      <find>vty</find>
+      <find>have no var</find>
+      <find>prefunc</find>
+      <find>err</find>
+      <find>var_t</find>
+      <find>has been</find>
+      <find>null</find>
+      <find>for</find>
+      <find>wrong type in f</find>
+      <find>new()</find>
+      <find>wrong type in fu</find>
       <find>debug</find>
-      <find>no such c</find>
-      <find>no such t</find>
+      <find>defcl</find>
+      <find>op5</find>
+      <find>need l</find>
+      <find>Pnt</find>
+      <find>subst</find>
+      <find>cant br</find>
+      <find>happene</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -210,7 +210,7 @@
       <window_info id="Designer" order="3" />
       <window_info content_ui="combo" id="Project" order="0" weight="0.24296875" />
       <window_info anchor="bottom" id="Find" order="3" weight="0.32849365" />
-      <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.41742286" />
+      <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5662432" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
@@ -370,15 +370,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+        <state relative-caret-position="95">
+          <caret line="47" selection-start-line="47" selection-end-line="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="342" column="9" selection-start-line="342" selection-start-column="9" selection-end-line="342" selection-end-column="9" />
+        <state relative-caret-position="215">
+          <caret line="433" column="23" lean-forward="true" selection-start-line="433" selection-start-column="23" selection-end-line="433" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
