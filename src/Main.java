@@ -76,7 +76,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         scopes.add(topscope);
         nscope = 0;
         cnmm = "int";
-        
+
 
     }
 
@@ -118,7 +118,7 @@ class MVisitor extends MxxBaseVisitor<zz>
 
         if (ctx.params() != null)
            for (int k = 0; k < ctx.params().param().size(); ++k)
-                tmp.add(ctx.params().param(k).vtype());
+                tmp.add(ctx.params().param(k).vtype().getText());
         if (ss.equals("main"))
         {
             if (tmp.size() > 1)
@@ -317,6 +317,8 @@ class MVisitor extends MxxBaseVisitor<zz>
                 break;
             }
         }
+
+
         if (ctx.expr() != null)
         {
             zz aa = visit(ctx.expr());
@@ -334,7 +336,8 @@ class MVisitor extends MxxBaseVisitor<zz>
                 System.exit(-1);
             }
         }
-        if (ss.equals("int") || ss.equals("bool") || ss.equals("string") || ss.equals("void") || scopes.elementAt(nscope).clshere.containsKey(ss))
+
+        if (ss.equals("int") || ss.equals("bool") || ss.equals("string") || ss.equals("void") || scopes.elementAt(0).clshere.containsKey(ss))
             scopes.elementAt(nscope).varhere.put(vanm,tpnm);
         else
         {
@@ -469,6 +472,11 @@ class MVisitor extends MxxBaseVisitor<zz>
                 System.out.printf("++(not lval)\n");
                 System.exit(-1);
             }
+            if (aa.tp != "int")
+            {
+                System.out.printf("++(not int)\n");
+                System.exit(-1);
+            }
             return aa;
         } else if (ctx.Op2 != null) {
             zz aa = visit(ctx.expr(0));
@@ -501,7 +509,6 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz a2 = visit(ctx.expr(1));
 
             if (!a1.tp.equals("int") && !a1.tp.equals("string") || !a1.tp.equals(a2.tp)) {
-                System.err.printf("debug: %s %s %s %s\n", a1.tp, a2.tp, ctx.expr(0).getText(), ctx.expr(1).getText());
                 System.out.printf("wrong type in op3_1\n");
                 System.exit(-1);
             }
@@ -547,7 +554,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz aa = new zz();
             if (ctx.cname() != null)
             {
-                if (!scopes.elementAt(0).clshere.containsKey(aa.tp))
+                if (!scopes.elementAt(0).clshere.containsKey(ctx.cname().ID().getText()))
                 {
                     System.out.printf("no such class\n");
                     System.exit(-1);
@@ -733,7 +740,6 @@ class MVisitor extends MxxBaseVisitor<zz>
                 for (int k = 1; k < pams.size(); ++k) {
                     zz zs = visit(ctx.exprs().expr(k - 1));
                     if (!pams.elementAt(k).equals(zs.tp)) {
-                        System.err.printf("debug: %d %s %s %s\n", pams.size(), ss, zs.tp, pams.elementAt(k));
                         System.out.printf("wrong type in func %s, param %d\n", ss, k - 1);
                         System.exit(-1);
                     }
@@ -767,6 +773,9 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz aa = visit(ctx.expr(0));
 
             if (aa.zz != "lv") {
+                System.err.printf("%s %s\n", ctx.expr(0).getText(),ctx.expr(1).getText());
+
+
                 System.out.printf("need lval\n");
                 System.exit(-1);
             }
@@ -812,8 +821,8 @@ class MVisitor extends MxxBaseVisitor<zz>
                 System.exit(-1);
             }
             aa.tp = zcc;
-            for (; num >= 0; --num) aa.tp += "[]";
-            aa.zz = "nop";
+            aa.zz = "lv";
+            for (; num > 0; --num) aa.tp += "[]";
             return aa;
         }
         zz trt = new zz();
