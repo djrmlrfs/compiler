@@ -1,0 +1,10 @@
+class cla
+{
+int a;
+bool a;
+}
+int main()
+{
+cla ss = new cla();
+
+}
