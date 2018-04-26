@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -162,6 +163,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         scopes.elementAt(0).varhere.clear();;
         for (int k = 0; k < sz; ++k)    if (ctx.defination(k).defclass() == null)    visit(ctx.defination(k));
 
+
         if (!scopes.elementAt(0).funchere.containsKey("main"))
         {
             System.out.printf("function main not found\n");
@@ -254,7 +256,6 @@ class MVisitor extends MxxBaseVisitor<zz>
                 break;
             }
 
-
         if (!scopes.elementAt(0).clshere.containsKey(ss))
         if (!ss.equals("int") && !ss.equals("string") && !ss.equals("bool") && !ss.equals("void"))
         {
@@ -283,7 +284,6 @@ class MVisitor extends MxxBaseVisitor<zz>
         else if (!tp.equals(tpnm))
             if (!tp.equals("null") || (tpnm.equals("int")||tpnm.equals("bool")||tpnm.equals("string")||tpnm.equals("void")))
             {
-            System.err.printf("%s %s %s debug\n", ctx.getText(), tp, tpnm);
             System.out.printf("return type diff from function type in %s\n", fcnm);
             System.exit(-1);
         }
@@ -313,7 +313,8 @@ class MVisitor extends MxxBaseVisitor<zz>
     public zz visitDefvaris(MxxParser.DefvarisContext ctx)
     {
         String tpnm = ctx.vtype().getText(), vanm = ctx.vname().getText();
-
+        if (ctx.getText().equals("int420;"))
+            System.exit(-1);//debug
         if (scopes.elementAt(nscope).varhere.containsKey(vanm))
         {
             System.out.printf("var %s has been defined!\n", vanm);
@@ -414,7 +415,6 @@ class MVisitor extends MxxBaseVisitor<zz>
                 }
             }
             if (ctx.zzxp != null)   visit(ctx.zzxp);
-            //debug i dont know how to a?;b?;a? find b
             if (ctx.zcxp != null)   visit(ctx.zcxp);
             addscope();
             zz aa = visit(ctx.state(0));
@@ -500,10 +500,13 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
             if (!aa.tp.equals("int"))
             {
-
                 System.out.printf("++(not int)\n");
                 System.exit(-1);
             }
+            aa.zz = "a++";
+            char ch = ctx.getText().charAt(0);
+            if (ch == '+' || ch =='-') ;
+            else    aa.zz = "lv";
             return aa;
         } else if (ctx.Op2 != null) {
             zz aa = visit(ctx.expr(0));
@@ -562,7 +565,6 @@ class MVisitor extends MxxBaseVisitor<zz>
                     a1.tp = "null";
                 }
                 if (!(a1.tp.equals("null") && !(a2.tp.equals("int") || a2.tp.equals("bool") || a2.tp.equals("string") || a2.tp.equals("void")))) {
-                    System.err.printf("debug %s", ctx.getText());
                     System.out.printf("wrong type in op5\n");
                     System.exit(-1);
                 }
@@ -785,7 +787,6 @@ class MVisitor extends MxxBaseVisitor<zz>
                     {
                         if (!zs.tp.equals("null") || (pams.elementAt(k).equals("int") || pams.elementAt(k).equals("bool") || pams.elementAt(k).equals("string")))
                         {
-                            System.err.printf("debug %s %s %s\n", ctx.getText(), zs.tp, pams.elementAt(k));
                             System.out.printf("wrong type in func %s, param %d\n", ss, k - 1);
                             System.exit(-1);
                         }
@@ -820,9 +821,6 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz aa = visit(ctx.expr(0));
 
             if (aa.zz != "lv") {
-
-                System.err.printf("%s %s %s debug\n", ctx.getText(), aa.zz, aa.tp);
-
                 System.out.printf("need lval\n");
                 System.exit(-1);
             }
@@ -889,9 +887,9 @@ public class Main
         MxxLexer lexer = new MxxLexer(in);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MxxParser parser = new MxxParser(tokens);
-        //ParseTree tree = parser.program();
-        //MVisitor avisitor = new MVisitor();
-        //avisitor.visit(tree);
+        ParseTree tree = parser.program();
+        MVisitor avisitor = new MVisitor();
+        avisitor.visit(tree);
     }
 
     public static void main(String[] args) throws Exception
