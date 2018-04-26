@@ -97,17 +97,6 @@ class MVisitor extends MxxBaseVisitor<zz>
     void prevaris(MxxParser.DefvarisContext ctx)
     {
         String tpnm = ctx.vtype().getText(), vanm = ctx.vname().getText();
-        if (vanm.equals("this"))
-        {
-            System.out.printf("int this\n");
-            System.exit(-1);
-        }
-
-        if (scopes.elementAt(nscope).varhere.containsKey(vanm))
-        {
-            System.out.printf("var %s has been defined!\n", vanm);
-            System.exit(-1);
-        }
         String ss = tpnm;
         for (int i = 0; i < tpnm.length(); ++i)
             if (tpnm.charAt(i) == '[')
@@ -321,7 +310,6 @@ class MVisitor extends MxxBaseVisitor<zz>
             System.exit(-1);
         }
         addscope();
-        visit(ctx.block());
         zz fblk = visit(ctx.block());
         popscope();
         if (!fblk.tp.equals("nop") && !fblk.tp.equals("void"))
@@ -348,6 +336,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         if (ctx.expr() != null)
         {
             zz aa = visit(ctx.expr());
+
             if (aa.tp.equals("null"))
             {
                 if (tpnm.equals("int") || tpnm.equals("bool") || tpnm.equals("string"))
@@ -358,7 +347,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
             else if (!aa.tp.equals(tpnm))
             {
-                System.out.println("something like int a = string happened");
+                System.out.printf("%s a = %s happened", tpnm, aa.tp);
                 System.exit(-1);
             }
         }
@@ -367,7 +356,15 @@ class MVisitor extends MxxBaseVisitor<zz>
         {
             if (scopes.elementAt(nscope).varhere.containsKey((vanm)))
             {
+                for (String str:scopes.elementAt((nscope)).varhere.keySet())
+                    System.err.printf("debug-%s\n", str);
+                System.err.printf("debug-%d %s\n", nscope, ctx.getParent().getParent().getText());
                 System.out.printf("var %s redefined\n", vanm);
+                System.exit(-1);
+            }
+            else if (vanm.equals("this"))
+            {
+                System.out.printf("int this \n", vanm);
                 System.exit(-1);
             }
             scopes.elementAt(nscope).varhere.put(vanm, tpnm);
@@ -867,6 +864,11 @@ class MVisitor extends MxxBaseVisitor<zz>
         } else {//expr[expr]
 
             zz aa = visit(ctx.expr(0));
+            if (aa.zz.equals("new"))
+            {
+                System.out.printf("a[1][][1]\n");
+                System.exit(-1);
+            }
             String ss = aa.tp;
             int num = 0;
             for (int i = 1; i < ctx.expr().size(); ++i) {
