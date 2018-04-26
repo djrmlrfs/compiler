@@ -339,14 +339,11 @@ class MVisitor extends MxxBaseVisitor<zz>
             System.exit(-1);//debug T704 wrong
         String ss = tpnm;
         for (int i = 0; i < tpnm.length(); ++i)
-        {
             if (tpnm.charAt(i) == '[')
             {
                 ss = tpnm.substring(0,i);
                 break;
             }
-        }
-
 
         if (ctx.expr() != null)
         {
@@ -367,7 +364,14 @@ class MVisitor extends MxxBaseVisitor<zz>
         }
 
         if (ss.equals("int") || ss.equals("bool") || ss.equals("string")  || scopes.elementAt(0).clshere.containsKey(ss))
-            scopes.elementAt(nscope).varhere.put(vanm,tpnm);
+        {
+            if (scopes.elementAt(nscope).varhere.containsKey((vanm)))
+            {
+                System.out.printf("var %s redefined\n", vanm);
+                System.exit(-1);
+            }
+            scopes.elementAt(nscope).varhere.put(vanm, tpnm);
+        }
         else
         {
             System.err.printf("debug %s\n", ctx.getText());
