@@ -18,8 +18,8 @@
       <file leaf-file-name="Mxx.g4" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+            <state relative-caret-position="211">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
             </state>
           </provider>
         </entry>
@@ -27,8 +27,8 @@
       <file leaf-file-name="aliu.g4" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/aliu.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+            <state relative-caret-position="38">
+              <caret line="52" column="29" lean-forward="true" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -36,8 +36,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="320" selection-start-line="320" selection-end-line="320" />
+            <state relative-caret-position="247">
+              <caret line="906" column="64" selection-end-line="918" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,28 +49,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>prefunc</find>
-      <find>var_t</find>
-      <find>has been</find>
-      <find>null</find>
-      <find>for</find>
-      <find>wrong type in f</find>
-      <find>new()</find>
-      <find>wrong type in fu</find>
-      <find>debug</find>
-      <find>defcl</find>
-      <find>op5</find>
-      <find>need l</find>
-      <find>Pnt</find>
-      <find>subst</find>
-      <find>cant br</find>
-      <find>happene</find>
       <find>cba</find>
       <find>cbac</find>
       <find>defv</find>
       <find>vname</find>
       <find>err</find>
-      <find>name</find>
       <find>.err</find>
       <find>exitEveryRule</find>
       <find>parsetree</find>
@@ -79,6 +62,23 @@
       <find>errhandler</find>
       <find>_errhandler</find>
       <find>lv</find>
+      <find>constru</find>
+      <find>Op1</find>
+      <find>name</find>
+      <find>a+b</find>
+      <find>no func</find>
+      <find>defclass</find>
+      <find>debug</find>
+      <find>no class</find>
+      <find>no cl</find>
+      <find>deffun</find>
+      <find>no such type</find>
+      <find>defvaris</find>
+      <find>construction</find>
+      <find>construction function name</find>
+      <find>defcons</find>
+      <find>param</find>
+      <find>const</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -387,20 +387,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/MxxBaseVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="142">
@@ -443,10 +429,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="52" column="29" lean-forward="true" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="320" selection-start-line="320" selection-end-line="320" />
+        <state relative-caret-position="247">
+          <caret line="906" column="64" selection-end-line="918" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

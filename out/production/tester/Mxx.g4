@@ -15,11 +15,11 @@ defcons	:	fname '(' ')' block ;
 defvaris :	vtype vname ('=' expr)? ';' ;
 
 vtype
-	:	INT ('[]')*
-	|	BOOL ('[]')*
-	|	STRING ('[]')*
+	:	INT ('[' ']')*
+	|	BOOL ('[' ']')*
+	|	STRING ('[' ']')*
 	|	VOID
-	|	tname ('[]')*
+	|	tname ('[' ']')*
 	;
 
 tname	:	ID ;
@@ -46,9 +46,9 @@ state
 expr
 	:	fname '(' exprs? ')'
 	|	NEW cname '('  ')'
-	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')* ('[]')*
-	|	expr ('[' expr ']')+
+	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')* ('[' ']')*
 	|	expr Pnt='.' expr
+	|	expr ('[' expr ']')+
 	|	Op1=('++' | '--') expr
 	|	Op2=('-' | '!' | '~') expr
 	|	expr Op1=('++' | '--')

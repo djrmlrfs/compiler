@@ -94,21 +94,67 @@ class MVisitor extends MxxBaseVisitor<zz>
         --nscope;
     }
 
+    void prevaris(MxxParser.DefvarisContext ctx)
+    {
+        String tpnm = ctx.vtype().getText(), vanm = ctx.vname().getText();
+        if (vanm.equals("this"))
+        {
+            System.out.printf("int this\n");
+            System.exit(-1);
+        }
 
+        if (scopes.elementAt(nscope).varhere.containsKey(vanm))
+        {
+            System.out.printf("var %s has been defined!\n", vanm);
+            System.exit(-1);
+        }
+        String ss = tpnm;
+        for (int i = 0; i < tpnm.length(); ++i)
+            if (tpnm.charAt(i) == '[')
+            {
+                ss = tpnm.substring(0,i);
+                break;
+            }
+        scopes.elementAt(nscope).varhere.put(vanm,tpnm);
+    }
     void preclass(MxxParser.DefclassContext ctx)
     {
         String clsnm = ctx.cname().getText();
+        if (clsnm.equals("this"))
+        {
+            System.out.printf("class this\n");
+            System.exit(-1);
+        }
         if (scopes.elementAt(nscope).clshere.containsKey(clsnm))
         {
             System.out.printf("class %s has been defined!", clsnm);
             System.exit(-1);
         }
-        clspam cpmhr = new clspam();
-        scopes.elementAt(nscope).clshere.put(clsnm,cpmhr);
+        addscope();
+        scopes.elementAt(nscope).varhere.put("this",clsnm);
+        for (int k = 0; k < ctx.defvaris().size(); ++k)
+            prevaris(ctx.defvaris(k));
+        Vector<String> tmp = new Vector<>();
+        //function(construct included)
+        tmp.add("void");
+        scopes.elementAt(nscope).funchere.put(clsnm,tmp);
+        int cnum = 0, sz = ctx.defmeth().size();
+        for (int k = 0; k < sz; ++k)
+            if (ctx.defmeth(k).defcons() == null)  prefunc(ctx.defmeth(k).deffunc());
+        clspam phr = new clspam();
+        phr.varhere = scopes.elementAt(nscope).varhere;
+        phr.funchere = scopes.elementAt(nscope).funchere;
+        popscope();
+        scopes.elementAt(nscope).clshere.put(clsnm,phr);
     }
     void prefunc(MxxParser.DeffuncContext ctx)
     {
         String ss = ctx.fname().getText();
+        if (ss.equals("this"))
+        {
+            System.out.printf("func this\n");
+            System.exit(-1);
+        }
 
         if (scopes.elementAt(nscope).funchere.containsKey(ss))
         {
@@ -117,25 +163,10 @@ class MVisitor extends MxxBaseVisitor<zz>
         }
         Vector tmp = new Vector();
         tmp.add(ctx.vtype().getText());
-        if (ctx.vtype().tname() != null)
-            if (!scopes.elementAt(0).clshere.containsKey(ctx.vtype().tname().ID().getText()))
-            {
-                System.out.printf("no class %s!", ctx.vtype().tname().ID().getText());
-                System.exit(-1);
-            }
 
         if (ctx.params() != null)
            for (int k = 0; k < ctx.params().param().size(); ++k)
-           {
-               MxxParser.VtypeContext vtk = ctx.params().param(k).vtype();
-               if (vtk.tname() != null)
-                   if (!scopes.elementAt(0).clshere.containsKey(vtk.tname().ID().getText()))
-                   {
-                       System.out.printf("no class %s!", vtk.tname().ID().getText());
-                       System.exit(-1);
-                   }
-               tmp.add(vtk.getText());
-           }
+                tmp.add(ctx.params().param(k).vtype().getText());
         if (ss.equals("main"))
         {
             if (tmp.size() > 1)
@@ -157,12 +188,10 @@ class MVisitor extends MxxBaseVisitor<zz>
     {
         zz emptyz = new zz();
         int sz = ctx.defination().size();
-        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).defclass() != null)   preclass(ctx.defination(k).defclass());
-        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).deffunc() != null)   prefunc(ctx.defination(k).deffunc());
-        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).deffunc() == null)    visit(ctx.defination(k));
-        scopes.elementAt(0).varhere.clear();;
-        for (int k = 0; k < sz; ++k)    if (ctx.defination(k).defclass() == null)    visit(ctx.defination(k));
-
+        for (int k = 0; k < sz; ++k)
+            if (ctx.defination(k).defclass() != null)   preclass(ctx.defination(k).defclass());
+            else if (ctx.defination(k).deffunc() != null)   prefunc(ctx.defination(k).deffunc());
+        for (int k = 0; k < sz; ++k)    visit(ctx.defination(k));
 
         if (!scopes.elementAt(0).funchere.containsKey("main"))
         {
@@ -191,23 +220,17 @@ class MVisitor extends MxxBaseVisitor<zz>
          according to manual, class define all vars first, then functions and construct func
          */
         //varis
+
         addscope();
+
+       scopes.elementAt(nscope).funchere.putAll(scopes.elementAt(0).clshere.get(ss).funchere);
+
+
         scopes.elementAt(nscope).varhere.put("this",ss);
         for (int k = 0; k < ctx.defvaris().size(); ++k)
-        {
             visit(ctx.defvaris(k));
-        }
-        //function(construct included)
-        Vector tmp = new Vector();
-        tmp.add("void");
-        scopes.elementAt(nscope).funchere.put(ss,tmp);
+
         int cnum = 0, sz = ctx.defmeth().size();
-        for (int k = 0; k < sz; ++k)
-            if (ctx.defmeth(k).defcons() == null)  prefunc(ctx.defmeth(k).deffunc());
-        clspam phr = new clspam();
-        phr.varhere.putAll(scopes.elementAt(nscope).varhere);
-        phr.funchere.putAll(scopes.elementAt(nscope).funchere);
-        scopes.elementAt(0).clshere.replace(ss,phr);
         for (int k = 0; k < sz; ++k)
             if (ctx.defmeth(k).defcons() != null) {
                 visit(ctx.defmeth(k).defcons());
@@ -221,18 +244,6 @@ class MVisitor extends MxxBaseVisitor<zz>
             System.exit(-1);
         }
         popscope();
-        /*
-        * to do:
-        * check
-        * class a{
-        *   a b;
-        *  }
-        *
-        *  or
-        *
-        *  class a{b c;}
-        *  class b{a c;}
-        * */
         zz emptyz = new zz();
         return emptyz;
     }
@@ -272,7 +283,17 @@ class MVisitor extends MxxBaseVisitor<zz>
         MxxParser.ParamsContext cc = ctx.params();
         if (cc != null) for (int k = 0; k < cc.param().size(); ++k)
         {
-            scopes.elementAt(nscope).varhere.put(cc.param(k).vname().getText(),cc.param(k).vtype().getText());
+            String sss = cc.param(k).vtype().getText();
+            for (int s = 0; s < sss.length(); ++s)
+                if (sss.charAt(s) == '[')   sss = sss.substring(0,s);
+            if (!scopes.elementAt(0).clshere.containsKey(sss))
+                if (!sss.equals("int") && !sss.equals("string") && !sss.equals("bool") && !sss.equals("void"))
+                {
+                    System.err.printf("debug %s %s", sss, ctx.getText());
+                    System.out.printf("function %s, param %d type not defiened\n", fcnm, k);
+                    System.exit(-1);
+                }
+             scopes.elementAt(nscope).varhere.put(cc.param(k).vname().getText(),cc.param(k).vtype().getText());
         }
         zz fblk = visit(ctx.block());
         popscope();
@@ -295,6 +316,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         String ss = ctx.fname().getText();
         if (!scopes.elementAt(nscope).funchere.containsKey(ss))
         {
+            System.err.printf("debug %d %s %s\n",nscope, ss, ctx.getText());
             System.out.printf("construction function name %s different from class name\n", ss);
             System.exit(-1);
         }
@@ -302,7 +324,7 @@ class MVisitor extends MxxBaseVisitor<zz>
         visit(ctx.block());
         zz fblk = visit(ctx.block());
         popscope();
-        if (!fblk.tp.equals("nop"))
+        if (!fblk.tp.equals("nop") && !fblk.tp.equals("void"))
         {
             System.out.printf("cant return in construction function\n");
             System.exit(-1);
@@ -314,12 +336,7 @@ class MVisitor extends MxxBaseVisitor<zz>
     {
         String tpnm = ctx.vtype().getText(), vanm = ctx.vname().getText();
         if (ctx.getText().equals("int420;"))
-            System.exit(-1);//debug
-        if (scopes.elementAt(nscope).varhere.containsKey(vanm))
-        {
-            System.out.printf("var %s has been defined!\n", vanm);
-            System.exit(-1);
-        }
+            System.exit(-1);//debug T704 wrong
         String ss = tpnm;
         for (int i = 0; i < tpnm.length(); ++i)
         {
@@ -336,7 +353,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz aa = visit(ctx.expr());
             if (aa.tp.equals("null"))
             {
-                if (ss.equals("int") || ss.equals("bool") || ss.equals("string"))
+                if (tpnm.equals("int") || tpnm.equals("bool") || tpnm.equals("string"))
                 {
                     System.out.printf("%s %s = null happened\n", ss, vanm);
                     System.exit(-1);
@@ -353,6 +370,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             scopes.elementAt(nscope).varhere.put(vanm,tpnm);
         else
         {
+            System.err.printf("debug %s\n", ctx.getText());
             System.out.printf("no such type :%s!\n", tpnm);
             System.exit(-1);
         }
@@ -505,8 +523,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
             aa.zz = "a++";
             char ch = ctx.getText().charAt(0);
-            if (ch == '+' || ch =='-') ;
-            else    aa.zz = "lv";
+            if (ch == '+' || ch =='-')  aa.zz = "lv";
             return aa;
         } else if (ctx.Op2 != null) {
             zz aa = visit(ctx.expr(0));
@@ -549,7 +566,9 @@ class MVisitor extends MxxBaseVisitor<zz>
             zz a1 = visit(ctx.expr(0));
             zz a2 = visit(ctx.expr(1));
 
-            if (!a1.tp.equals("int") || !a2.tp.equals("int")) {
+            if (!a1.tp.equals(a2.tp) || (!a2.tp.equals("int") && !a2.tp.equals("string"))) {
+                System.err.printf("debug %s %s %s\n",a2.tp, a1.tp, ctx.getText());
+
                 System.out.printf("wrong type in op4\n");
                 System.exit(-1);
             }
@@ -615,9 +634,9 @@ class MVisitor extends MxxBaseVisitor<zz>
             }
        } else if (ctx.Pnt != null) {
             zz aa = visit(ctx.expr(0));
-
             MxxParser.ExprContext ex1 = ctx.expr(1);
-            if (!scopes.elementAt(0).clshere.containsKey(aa.tp)) {
+            if (!scopes.elementAt(0).clshere.containsKey(aa.tp))
+            {
                 String ss = ex1.fname().ID().getText();
                 if (aa.tp.equals("string")) {
                     if (ex1.fname() == null) {
@@ -675,12 +694,16 @@ class MVisitor extends MxxBaseVisitor<zz>
                         aa.zz = "nop";
                         return aa;
                     }
-                } else {
+                }
+                else
+                    {
+                    System.err.printf("debug_%s-%s-\n", ctx.getText(), ctx.Pnt);
                     System.out.printf("no class %s\n", aa.tp);
                     System.exit(-1);
                 }
             }
             else {
+                //debug T644 wrong
                 clspam cc = scopes.elementAt(0).clshere.get(aa.tp);
                 if (ex1.vname() != null) {
                     String ss = ex1.vname().ID().getText();
@@ -694,6 +717,12 @@ class MVisitor extends MxxBaseVisitor<zz>
                 } else if (ex1.fname() != null) {
                     String ss = ex1.fname().ID().getText();
                     if (!cc.funchere.containsKey(ss)) {
+
+                        for (String str:cc.funchere.keySet())
+                        {
+                            System.err.printf("debug %s\n", str);
+                        }
+                        System.err.printf("debug %s\n", ctx.getText());
                         System.out.printf("class %s have no func %s\n", aa.tp, ss);
                         System.exit(-1);
                     }
@@ -722,11 +751,8 @@ class MVisitor extends MxxBaseVisitor<zz>
                 }
                 else if (ex1.getText().contains("[") && ex1.NEW() == null)
                 {
-                    if (ex1.expr(0).vname() == null) {
-                        System.out.printf("class.a+b[c]\n");
-                        System.exit(-1);
-                    }
-                    String ss = ex1.expr(0).vname().ID().getText();
+                    zz ab = visit(ex1.expr(0));
+                    String ss = ab.tp;
                     if (!cc.varhere.containsKey(ss)) {
                         System.out.printf("class %s no array %s\n", aa.tp, ss);
                         System.exit(-1);
@@ -768,6 +794,7 @@ class MVisitor extends MxxBaseVisitor<zz>
             for (; kz >= 0; --kz)     if (scopes.elementAt(kz).funchere.containsKey(ss))    break;
             if (kz < 0)
             {
+                System.err.printf("debug %s\n", ctx.getParent().getParent().getText());
                 System.out.printf("no func %s\n", ss);
                 System.exit(-1);
             }
@@ -835,20 +862,9 @@ class MVisitor extends MxxBaseVisitor<zz>
             return aa;
         } else {//expr[expr]
 
-            if (ctx.expr(0).vname() == null) {
-                System.out.printf("a+b[c]\n");
-                System.exit(-1);
-            }
-            String ss = ctx.expr(0).vname().ID().getText();
-            int k = nscope;
-            for (; k >= 0; --k) if (scopes.elementAt(k).varhere.containsKey(ss)) break;
-            if (k < 0) {
-                System.out.printf("array %s not found\n", ss);
-                System.exit(-1);
-            }
-            ss = scopes.elementAt(k).varhere.get(ss);
+            zz aa = visit(ctx.expr(0));
+            String ss = aa.tp;
             int num = 0;
-            zz aa = new zz();
             for (int i = 1; i < ctx.expr().size(); ++i) {
                 --num;
                 aa = visit(ctx.expr(i));
@@ -889,12 +905,11 @@ public class Main
         MxxParser parser = new MxxParser(tokens);
         ParseTree tree = parser.program();
         MVisitor avisitor = new MVisitor();
-        avisitor.visit(tree);
+        avisitor.visit(tree);//debug T595 still antlr error todo
     }
 
     public static void main(String[] args) throws Exception
     {
-         //File f = new File("E:/program.txt");
         File f = new File("program.txt");
         InputStream input = null;
         input = new FileInputStream(f);
