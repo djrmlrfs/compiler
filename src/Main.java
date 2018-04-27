@@ -1,6 +1,10 @@
+import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -323,8 +327,6 @@ class MVisitor extends MxxBaseVisitor<zz>
     public zz visitDefvaris(MxxParser.DefvarisContext ctx)
     {
         String tpnm = ctx.vtype().getText(), vanm = ctx.vname().getText();
-        if (ctx.getText().equals("int420;"))
-            System.exit(-1);//debug T704 wrong
         String ss = tpnm;
         for (int i = 0; i < tpnm.length(); ++i)
             if (tpnm.charAt(i) == '[')
@@ -900,6 +902,16 @@ class MVisitor extends MxxBaseVisitor<zz>
     }
 }
 
+class MxxErrorListener extends BaseErrorListener
+{
+    public static final MxxErrorListener INSTANCE = new MxxErrorListener();
+    @Override
+    public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
+            throws ParseCancellationException
+    {
+        throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg);
+    }
+}
 public class Main
 {
 
@@ -907,11 +919,14 @@ public class Main
     {
         ANTLRInputStream in = new ANTLRInputStream(input);
         MxxLexer lexer = new MxxLexer(in);
+        lexer.addErrorListener(MxxErrorListener.INSTANCE);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MxxParser parser = new MxxParser(tokens);
+        parser.addErrorListener(MxxErrorListener.INSTANCE);
         ParseTree tree = parser.program();
+
         MVisitor avisitor = new MVisitor();
-        avisitor.visit(tree);//debug T595 still antlr error todo
+        avisitor.visit(tree);
     }
 
     public static void main(String[] args) throws Exception
