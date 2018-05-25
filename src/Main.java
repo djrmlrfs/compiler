@@ -149,10 +149,12 @@ class IR{
         while (head != null && adya(head))  head = head.next;
         for (sys now = head; now != null; now = now.next)
             while (now.next!=null && adya(now.next))    now.next = now.next.next;
-        /* 无用临时变量
-        相同表达式
-        循环外提
-        */
+        /*
+         del useless template variable
+         use same variable to represent same expr
+         loop (a = b) -> a = b; loop
+         why doesn't it support chinese comment?
+         */
     }
 }
 
