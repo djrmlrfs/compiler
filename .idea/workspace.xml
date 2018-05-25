@@ -18,8 +18,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="2154" column="14" lean-forward="true" selection-start-line="2154" selection-start-column="14" selection-end-line="2154" selection-end-column="14" />
+            <state relative-caret-position="197">
+              <caret line="311" column="2" selection-start-line="311" selection-start-column="2" selection-end-line="311" selection-end-column="2" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#advar#0;class#Backend#0" />
@@ -43,7 +43,7 @@
       <file leaf-file-name="IRTranslator.java" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
+            <state relative-caret-position="14193">
               <caret line="757" column="26" selection-start-line="757" selection-start-column="20" selection-end-line="757" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -56,7 +56,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>imul</find>
       <find>fileName</find>
       <find>variableIndex</find>
       <find>variableLastIndex</find>
@@ -86,6 +85,7 @@
       <find>readReg</find>
       <find>writereg</find>
       <find>getreg</find>
+      <find>work</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -114,6 +114,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -132,7 +133,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -235,7 +235,6 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="11" />
       <window_info anchor="bottom" id="Tool Output" order="0" weight="0.054446463" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32616487" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
@@ -246,10 +245,9 @@
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49462366" visible="true" weight="0.2708165" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49283153" visible="true" weight="0.27485853" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5662432" />
-      <window_info id="Structure" order="6" sideWeight="0.50537634" side_tool="true" visible="true" weight="0.2708165" />
+      <window_info id="Structure" order="6" sideWeight="0.5071685" side_tool="true" visible="true" weight="0.27485853" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -260,6 +258,8 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32616487" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -270,10 +270,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="14117">
           <caret line="743" column="13" lean-forward="true" selection-start-line="743" selection-start-column="13" selection-end-line="743" selection-end-column="13" />
-          <folding>
-            <element signature="method#match#0;class#VariableType#0" />
-            <element signature="method#equals#0;class#Variable#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -304,10 +300,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50160">
           <caret line="2640" lean-forward="true" selection-start-line="2640" selection-end-line="2640" />
-          <folding>
-            <element signature="method#match#0;class#VariableType#0" />
-            <element signature="method#equals#0;class#Variable#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -475,13 +467,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="988">
-          <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aliu.g4" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5396">
@@ -512,13 +498,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="988">
-          <caret line="52" column="29" lean-forward="true" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aliu.g4" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5738">
@@ -549,13 +529,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aliu.g4" />
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="16929">
@@ -824,13 +798,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/aliu.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="988">
-          <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/aliu.g4" />
     <entry file="file://$PROJECT_DIR$/src/MxxBaseVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -856,12 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="237" column="14" lean-forward="true" selection-start-line="237" selection-start-column="14" selection-end-line="237" selection-end-column="14" />
-          <folding>
-            <element signature="method#match#0;class#VariableType#0" />
-            <element signature="method#equals#0;class#Variable#0" />
-            <element signature="e#7393#7394#0" expanded="true" />
-            <element signature="e#7463#7464#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -881,7 +843,7 @@
     </entry>
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
+        <state relative-caret-position="14193">
           <caret line="757" column="26" selection-start-line="757" selection-start-column="20" selection-end-line="757" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -891,8 +853,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="2154" column="14" lean-forward="true" selection-start-line="2154" selection-start-column="14" selection-end-line="2154" selection-end-column="14" />
+        <state relative-caret-position="197">
+          <caret line="311" column="2" selection-start-line="311" selection-start-column="2" selection-end-line="311" selection-end-column="2" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#advar#0;class#Backend#0" />

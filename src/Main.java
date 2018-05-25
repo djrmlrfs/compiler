@@ -307,8 +307,9 @@ class Backend{
         emit(head,"\n");    emit(head,text);
         emit(head,"\n");    emit(head,bss);
         emit(head,"\n");    emit(head,data);
-        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
-        output.println(head.toString());    output.close();
+        System.out.println(head.toString());
+//        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
+//        output.println(head.toString());    output.close();
     }
 
     private StringBuffer getname(vara var)
