@@ -2,20 +2,459 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
+class Backend{
+    private IR ir;
+    private zcc unmh;
+    private int lnum = 0;
+    private HashMap<vara,String> cstr;
+    private static vara[] zcc = new vara[16];
+    private static boolean[] wb = new boolean[16];
+    private static boolean[] ban = new boolean[16];
+    private static boolean[] free = new boolean[16];
+    private HashMap<vara,Integer> vid = new HashMap<>();
+    private HashMap<vara,Integer> vld = new HashMap<>();
+    private static StringBuffer text = new StringBuffer();
+    Backend(){}
+    void init(IR iir, HashMap<vara,String> csp,zcc smp, String of)throws Exception
+    {
+        ir = iir; cstr = csp;
+        unmh = smp; work(of);
+    }
+    private void addconstantfunc()
+    {
+        /*todo
+            toString    mallocArray concat
+            address     multiArrat  MultiAddress
+            getInt      getString   parseInt
+            substring   ord         strcmp
+        */
+    }
+    private void emit(StringBuffer str, String st){str.append(st);}
+    private void emit(StringBuffer str, StringBuffer st){str.append(st);}
+    private void advar(vara var)
+    {
+        if (var==null || var.equals(vara.empty))    return;
+        vld.put(var,lnum);
+        if (!var.type.name.contains("const") && !vid.containsKey(var))  vid.put(var,vid.size()+1);
+    }
+    private void work(String ofile)throws Exception
+    {
+        System.err.println("djrmlrfs");
+        for (int i = 0; i < 16; ++i)
+        {
+            free[i] = true;
+            ban[i] = false;
+            wb[i] = false;
+        }
+        StringBuffer head = new StringBuffer(), bss = new StringBuffer(), data = new StringBuffer();
+        text = new StringBuffer();
+        emit(head,"\t global    main\n");   emit(head,"\t extern    puts\n");   emit(head,"\t extern    printf\n");
+        emit(head,"\t extern    scanf\n");  emit(head,"\t extern    malloc\n"); emit(head,"\t extern    strlen\n");
+        emit(head,"\t extern    strcmp\n"); emit(head,"\t extern    memset\n");
+        emit(text,"\t section   .text\n");  emit(bss,"\t section   .bss\n");    emit(data,"\t section   .data\n");
+        for (sys now = ir.head; now != null; now = now.next)
+            {++lnum;     advar(now.var1);    advar(now.var2);  advar(now.dest);}
+        emit(bss,"gbl:         resb   ");   emit(bss,Integer.toString(vid.size()*8+2048)+"\n");
+        emit(bss,"buff.1788:\n        resb    256\n");  emit(bss,"arg:\n        resb    1024\n");   emit(bss,"\ntrsp:         resb   1024");
+        emit(data,"\nformatln:\n\t");   emit(data,"db  \"%s\", 10, 0\n\t");     emit(data,"\nformat:\n\t");
+        emit(data,"db  \"%s\",  0\n\t");emit(data,"\nGS_31:\n\t");  emit(data,"db 25H, 6CH, 64H, 00H\n\t");
+        emit(data,"\nGS_32:\n\t");  emit(data,"db 25H, 73H, 00H\n\t");
+        for (Map.Entry<vara,String> entry : cstr.entrySet())
+        {
+            String str = entry.getValue();
+            emit(data,"\n"+entry.getKey()); emit(data,":\n\t db ");
+            emit(data,Integer.toString(shl(str)));    emit(data,",");
+            emit(data,shc(str));     emit(data," ,0\n");
+        }
+        addconstantfunc();
+        int skipCounter = 0;    lnum = 0;
+        for (sys now = ir.head; now != null; now = now.next)
+        {
+            ++lnum;     String name = now.name;
+            vara var1 = now.var1, var2 = now.var2, dest = now.dest;
+            if (now.oper.equals(Oper.saveContext))  ++skipCounter;
+            if (now.oper.equals(Oper.resumeContext))++skipCounter;
+            if (now.oper.equals(Oper.endContext))   --skipCounter;
+            if (skipCounter > 0)    continue;
+            for (int i = 8; i < 16; ++i)    ban[i] = false;
+            switch (now.oper) {
+                case not:
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");
+                    emit(text,"sete "); emit(text,writereg(dest));  emit(text,"B\n\t");    break;
+                case inv:
+                    readreg(var1);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");         emit(text,readreg(var1));
+                    emit(text,"\n\t");  emit(text,"not ");      emit(text,writereg(dest));  emit(text,"\n\t");  break;
+                case neg:
+                    readreg(var1);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");         emit(text,readreg(var1));
+                    emit(text,"\n\t");  emit(text,"neg ");      emit(text,writereg(dest));  emit(text,"\n\t");  break;
+                case add:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case sub:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"sub ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case mul:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"imul ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case and:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"and ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case or:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"or ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case xor:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"xor ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    break;
+                case div:
+                    emit(text,"xor rdx, rdx\n\t");
+                    emit(text,"mov rax, "); emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rbx, "); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"cdq\n\t");   emit(text,"idiv rbx\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", rax\n\t");
+                    break;
+                case mod:
+                    emit(text,"xor rdx, rdx\n\t");
+                    emit(text,"mov rax, "); emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rbx, "); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"cdq\n\t");   emit(text,"idiv rbx\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", rdx\n\t");
+                    break;
+                case shl:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rcx");   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"shl ");  emit(text,writereg(dest));  emit(text,",cl\n\t");   break;
+                case shr:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rcx");   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"shr ");  emit(text,writereg(dest));  emit(text,",cl\n\t");   break;
+                case move:
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");
+                    emit(text,readreg(var1));   emit(text,"\n\t");  break;
+                case call:
+                    clr();  emit(text,"call "); emit(text,name);    emit(text,"\n\t");  free();
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text," , rax\n\t");    break;
+                case ret:
+                    emit(text,"mov rax,");  emit(text,readreg(var1));   emit(text,"\n\t");    clr();
+                    if (name.equals("main"))    emit(text,"        mov     rsp, qword [trsp]\n\t");
+                    emit(text,"leave\n\t"); emit(text,"ret\n\t");  break;
+                case label:
+                    clr();  emit(text,"\n");    emit(text,name);
+                    emit(text,":\n\t");     break;
+                case less:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setl "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case leq:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setle "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case equal:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"sete "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case neq:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setne "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case geq:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setge "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case gre:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setg "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                case sless:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    strls\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sleq:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    strle\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sequal:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    streq\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sneq:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    strne\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sgeq:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    strge\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sgre:
+                    clr();
+                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"call    strgt\n\t"); emit(text,"mov qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case jmp:
+                    clr();  emit(text,"jmp ");  emit(text,name);    emit(text,"\n\t");  break;
+                case jz:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"je ");   emit(text,name);    emit(text,"\n\t");  break;
+                case jnz:
+                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"jne ");   emit(text,name);    emit(text,"\n\t");  break;
+                case malloc:
+                    clr();  emit(text,"mov     rdi, "); emit(text,readreg(var1));
+                    emit(text,"\n\tcall    malloc\n\tmov     qword ");
+                    emit(text,writereg(dest));  emit(text,", rax\n\t");  free(); break;
+                case mallocArray:
+                    clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));
+                    emit(text,"\n\tcall    mallocArray\n\tmov     qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t");   free(); break;
+                case concat:
+                    clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\tmov     rdi, ");
+                    emit(text,getname(var1));   emit(text,"\n\tcall    concat\n\t");    emit(text,"mov ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t");     free();     break;
+                case load:
+                    getreg(var1);   emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", [");
+                    emit(text,readreg(var1));   emit(text,"]\n\t");     break;
+                case store:
+                    emit(text,"mov ["); emit(text,readreg(dest));   emit(text,"],");
+                    emit(text,readreg(var1));   emit(text,"\n\t");  break;
+                case address:
+                    readreg(var1);  readreg(var2);
+                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,",1\n\t");
+                    emit(text,"shl ");  emit(text,writereg(dest));  emit(text,",4\n\t");
+                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
+                    break;
+                case print:
+                    clr();  emit(text,print(var1));   free(); break;
+                case println:
+                    clr();  emit(text,println(var1)); free(); break;
+                case getString:
+                    clr();  emit(text,"call    getString\n\tmov     ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
+                case getInt:
+                    clr();  emit(text,"call    getInt\n\tmov     ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
+                case toString:
+                    clr();  emit(text,"mov     rdi, ");     emit(text,getname(var1));
+                    emit(text,"\n\tcall    toString\n\tmov     qword");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
+                case exitFunction:
+                    clr();  break;
+                case enterFunction:
+                    emit(text,"push   rbp\n\tmov    rbp, rsp\n\tsub    rsp, ");
+                    emit(text,Integer.toString(vid.size()*8+64)); emit(text,"\n\t");
+                    if (name.equals("main"))
+                    {
+                        emit(text,"mov     rax, 536870912\n        cdqe\n        mov     rdi, rax\n");
+                        emit(text,"        call    malloc\n        mov     edx, dword 536870912\n        movsxd  rdx, edx\n");
+                        emit(text,"        sub     rdx, "); emit(text,Integer.toString(vid.size()*8+2048));
+                        emit(text,"\n        add     rax, rdx\n        mov     qword [trsp], rsp\n");
+                        emit(text,"        mov     rsp, rax\n        mov     eax, 0\n\t");
+                    }
+                    break;
+                case multiArray:
+                    clr();
+                    emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call    multiArray\n\t");
+                    emit(text,"mov     qword ");    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
+                case multiAddress:
+                    clr();
+                    emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\t");  emit(text,"mov     rdi, ");
+                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call    multiAddress\n\tmov ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
+                case substring:
+                    clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"call    substring\n\tmov "); emit(text,getname(dest));
+                    emit(text,", rax\n\t");     free();     break;
+                case parseInt:
+                    clr();  emit(text,"call    parseInt\n\tmov     qword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
+                case ord:
+                    clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"call    ord\n\tmov     qword "); emit(text,getname(dest));
+                    emit(text,", rax\n\t");     free();     break;
+                default:    break;
+            }
+        }
+        emit(head,"\n");    emit(head,text);
+        emit(head,"\n");    emit(head,bss);
+        emit(head,"\n");    emit(head,data);
+        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
+        output.println(head.toString());    output.close();
+    }
 
+    private StringBuffer getname(vara var)
+    {
+        String str = var.type.name;
+        if (str.equals("const_string"))   return new StringBuffer(var.name);
+        if (str.equals("const_int") || str.equals("const_bool"))    return new StringBuffer(Integer.toString(var.vcnum));
+        if (str.equals("null"))     return new StringBuffer("0");
+        if (unmh.argvmap.containsKey(var.name))
+        {
+            if (var.vcnum == 0)
+                return new StringBuffer("rdi");
+            if (var.vcnum == 1)
+                return new StringBuffer("rsi");
+            return new StringBuffer("[arg+8*"+Integer.toString(var.vcnum)+"]");
+        }
+        if (unmh.glovmap.containsKey(var.name))
+            return new StringBuffer("[gbl+8*"+Integer.toString(vid.get(var))+"]");
+        if (vid.containsKey(var))
+            return new StringBuffer("[rsp+8*"+Integer.toString(vid.get(var))+"]");
+        return new StringBuffer(Integer.toString(var.vcnum));
+    }
+
+    private boolean iscst(vara var)
+    {
+        String str = var.type.name;
+        if (str.equals("const_string") || str.equals("const_int") || str.equals("const_bool"))      return true;
+        return  (!unmh.argvmap.containsKey(var.name) && !unmh.glovmap.containsKey(var.name) && !vid.containsKey(var));
+    }
+
+    private StringBuffer println(vara var)
+    {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private StringBuffer print(vara var)
+    {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private String shc(String s)
+    {
+        String ret = "\"";
+        for (int i = 1; i+1 < s.length(); ++i)
+            if (s.charAt(i) == '\\')
+            {
+                ret += "\",";
+                if (s.charAt(i+1) == 'n')   ret += Integer.toString(10);
+                else    ret += Integer.toString(s.charAt(i+1));
+                ret += ",\"";   ++i;
+            }
+            else    ret += String.valueOf(s.charAt(i));
+        return ret+"\"";
+    }
+
+    private int shl(String s)
+    {
+        int ans = 0;
+        for (int i = 1; i+1 < s.length(); ++i)
+            if (s.charAt(i) == '\\')    {++ans; ++i;}
+            else    ++ans;
+        return ans;
+    }
+
+    private void clr()
+    {
+        for (int i = 0; i < 16; ++i)
+            if (!free[i])   cr(i);
+    }
+    private void cr(int x)
+    {
+        if (wb[x] && !iscst(zcc[x]))
+        {
+            emit(text,"mov qword ");    emit(text,getname(zcc[x]));
+            emit(text,",r");    emit(text,Integer.toString(x)); emit(text,"\n\t");
+        }
+        wb[x] = false;    free[x] = true;   zcc[x] = null;
+    }
+    private void free()
+    {
+        for (int i = 0; i < 16; ++i)
+            free[i] = true;
+    }
+
+    private void put(int i, vara var, boolean read)
+    {
+        if (read)   if (iscst(var))
+        {
+            emit(text,"mov r");     emit(text,Integer.toString(i));
+            emit(text,",  ");     emit(text,getname(var));    emit(text,"\n\t");
+        }
+        else
+        {
+            emit(text,"mov r");     emit(text,Integer.toString(i));
+            emit(text,",  ");   emit(text,getname(var));    emit(text,"\n\t");
+        }
+        else    wb[i] = true;
+        free[i] = false;    zcc[i] = var;   ban[i] = true;
+    }
+
+    private int getreg(vara var, boolean read)
+    {
+        for (int i = 8; i < 16; ++i)
+            if (!free[i] && zcc[i].equals(var))
+            {
+                ban[i] = true;
+                if (!read)  wb[i] = true;
+                return i;
+            }
+        for (int i = 8; i < 16; ++i)    if (free[i])
+            {put(i,var,read);    return i;}
+        int pos = -1, mx = -1;
+        for (int i = 8; i < 16; ++i)    if (!ban[i])
+        {
+            if (vld.get(zcc[i]) < lnum)
+            {
+                if (zcc[i].isTemp)  wb[i] = false;
+                pos = i;    break;
+            }
+            if (vld.get(zcc[i]) > mx)
+            {
+                mx = vld.get(zcc[i]);
+                pos = i;
+            }
+        }
+        cr(pos);
+        put(pos,var,read);
+        return pos;
+    }
+
+    private String getreg(vara var)
+    {
+        getreg(var,true);
+        getreg(var,false);
+        return "r"+getreg(var,true);
+    }
+
+    private String readreg(vara var){return "r"+getreg(var,true); }
+    private String writereg(vara var){return "r"+getreg(var,false);}
+}
 
 class vara{
-    vtype type;
-    String name;
-    int constValue;
-    boolean isTemp;
+    vtype type; String name;
+    int vcnum;  boolean isTemp;
     vara(String name, vtype type)
     {
         isTemp = false;
@@ -24,8 +463,8 @@ class vara{
     }
     @Override public String toString()
     {
-        if (type.name.equals("c_int"))  return Integer.toString(constValue);
-        if (type.name.equals("c_bool")) return Integer.toString(constValue);
+        if (type.name.equals("const_int"))  return Integer.toString(vcnum);
+        if (type.name.equals("const_bool")) return Integer.toString(vcnum);
         if (this.name.equals("emptyVariable")) return "";  return name;
     }
     static boolean ig = false;
@@ -112,6 +551,7 @@ class func{
         return name.equals(other.name);
     }
 }
+
 class sys{
     sys next;  String name;
     Oper oper;  vara var1, var2, dest;
@@ -123,8 +563,7 @@ class sys{
 }
 
 class IR{
-    sys last;
-    private sys head;
+    sys last, head;
     IR(){   head = null;    last = null;}
     void push(sys quad)
     {
@@ -138,7 +577,7 @@ class IR{
         if (head == null)   {this.head = oth.head;this.last = oth.last;}
         else if (oth.head != null) {last.next = oth.head;   last = oth.last;}
     }
-    void print()
+    void show()
     {
         for (sys now = head; now != null; now = now.next)
             System.err.println(now.oper+" "+now.var1+" "+now.var2+" "+now.dest+" "+(now.name==null?"":now.name));
@@ -181,8 +620,8 @@ class zcc {
             {this.name = name;  this.oldName = oldName; this.vtp = vtp; this.depth = depth;}
     }
     private Stack<Operation>operations = new Stack<>();
-    public void nextScope(){ssta.push(operations.size());}
-    public void prevScope()
+    void nextScope(){ssta.push(operations.size());}
+    void prevScope()
     {
         while (operations.size() != ssta.peek())
         {
@@ -245,13 +684,13 @@ class zcc {
                 System.exit(-1);
             }
             case "~":{
-                if(type.is("int") || type.is("c_int"))
+                if(type.is("int") || type.is("const_int"))
                     return (new vtype("int",0));
                 System.err.println("~bool");
                 System.exit(-1);
             }
             case "-":{
-                if(type.is("int") || type.is("c_int"))
+                if(type.is("int") || type.is("const_int"))
                     return (new vtype("int",0));
                 System.err.println("-bool");
                 System.exit(-1);
@@ -270,7 +709,7 @@ class zcc {
             System.err.println("null wop null");
             System.exit(-1);
         }
-        if ((type1.is("int") || type1.is("c_int"))  && (type2.is("int") || type2.is("c_int")))
+        if ((type1.is("int") || type1.is("const_int"))  && (type2.is("int") || type2.is("const_int")))
         {
             if (operator.equals("+")||operator.equals("-")||operator.equals("*")||operator.equals("/")||operator.equals("%")
                     ||operator.equals("<<")||operator.equals(">>")||operator.equals("&")||operator.equals("|")||operator.equals("^"))
@@ -296,7 +735,7 @@ class zcc {
             System.err.println("bool wop biil");    System.exit(-1);
         }
         if (operator.equals("=")){
-            if ((!type1.is("c_int")&&!type1.is("c_int")&&!type1.is("c_string"))
+            if ((!type1.is("const_int")&&!type1.is("const_int")&&!type1.is("const_string"))
                     && (type2.is("null") || type2.name.equals(type1.name)))    return type1;
             System.err.println("int = bool");
             System.exit(-1);
@@ -364,10 +803,10 @@ class MVisitor extends MxxBaseVisitor<IR>
         variable.isTemp = false;    unmhere.add(variable.name,variable.type);
         return variable;
     }
-    private vara ncns(int constValue,vtype type)
+    private vara ncns(int vcnum, vtype type)
     {
         vara variable =  new vara("const"+Integer.toString(ct++),type);
-        variable.isTemp = false;    variable.constValue = constValue;   return variable;
+        variable.isTemp = false;    variable.vcnum = vcnum;   return variable;
     }
 
     @Override public IR visitProgram(MxxParser.ProgramContext ctx)
@@ -377,7 +816,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         for (int i = 0; i < 64; ++i)
         {
             vara variable = nvar((new vtype("int",0)));
-            variable.constValue = i;    argList.add(variable);
+            variable.vcnum = i;    argList.add(variable);
             unmhere.argvmap.put(variable.name,variable.type);
         }
         unmhere.global = false; vara.ig = false;
@@ -612,7 +1051,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         }
         else
         {
-            sys tmp = new sys(Oper.ret, ncns(0, (new vtype("c_int",0))), vara.empty, vara.empty);
+            sys tmp = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
             tmp.name = function.name;  nir.push(tmp);
         }
         nir.push(new sys(Oper.exitFunction,name));
@@ -653,7 +1092,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 case "length":
                     nir.push(new sys(Oper.move,argList.get(63),vara.empty,tmp));
                     nir.push(new sys(Oper.load,tmp,vara.empty,tmp));
-                    nir.push(new sys(Oper.and,tmp,ncns(255,(new vtype("c_int",0))),tmp));
+                    nir.push(new sys(Oper.and,tmp,ncns(255,(new vtype("const_int",0))),tmp));
                     break;
                 default:
                     System.err.println("string.func()");
@@ -681,7 +1120,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             ++size;
         }
         --size; int tnt = 0;
-        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("c_int",0))),vara.empty,arr));
+        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
         for (int i = 0; i < ctx.variable().size(); ++i)
         {
@@ -689,8 +1128,8 @@ class MVisitor extends MxxBaseVisitor<IR>
             {
                 String name = ctx.variable(i).vname().getText();
                 vara variable = cmeb.get(cur.type.name).get(name);
-                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("c_int",0)));
-                tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("c_int",0))),head));
+                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("const_int",0)));
+                tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                 ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
                 cur.type = variable.type.cpy();
             }
@@ -698,7 +1137,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 for (int j = 0; j < ctx.variable(i).index().size(); ++j)
                 {
                     IR tmp = visit(ctx.variable(i).index(j));  nir.concat(tmp);
-                    tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("c_int",0))),head));
+                    tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                     ++tnt;  tt.push(new sys(Oper.store,tmp.last.dest,vara.empty,head));
                     --cur.type.dims;
                 }
@@ -747,7 +1186,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                         case "length":
                             nir.push(new sys(Oper.move,argList.get(63),vara.empty,tmp));
                             nir.push(new sys(Oper.load,tmp,vara.empty,tmp));
-                            nir.push(new sys(Oper.and,tmp,ncns(255,(new vtype("c_int",0))),retInt));
+                            nir.push(new sys(Oper.and,tmp,ncns(255,(new vtype("const_int",0))),retInt));
                             nir.push(new sys(Oper.move,retInt,vara.empty,start));
                             start.type=retInt.type.cpy();   break;
                         default:
@@ -774,11 +1213,11 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara temp = nvar(vtype.tovtype(ctx.vbtp()));
         temp.isTemp = true;
         if (vtp.name.equals("int") || vtp.name.contains("bool"))
-            nir.push(new sys(Oper.malloc,ncns(8,(new vtype("c_int",0))),vara.empty,temp));
+            nir.push(new sys(Oper.malloc,ncns(8,(new vtype("const_int",0))),vara.empty,temp));
         else
         {
             int size = cmeb.get(vtp.name).size();
-            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("c_int",0))), vara.empty, temp));
+            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
         }
         return nir;
     }
@@ -790,11 +1229,11 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara temp = nvar(vtype.tovtype(ctx.vbtp()));
         temp.isTemp = true;
         if (vtp.name.equals("int") || vtp.name.contains("bool"))
-            nir.push(new sys(Oper.malloc,ncns(8,(new vtype("c_int",0))),vara.empty,temp));
+            nir.push(new sys(Oper.malloc,ncns(8,(new vtype("const_int",0))),vara.empty,temp));
         else
         {
             int size = cmeb.get(vtp.name).size();
-            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("c_int",0))), vara.empty, temp));
+            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
         }
         return nir;
     }
@@ -820,7 +1259,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             String name = ctx.variable(i).vname().getText();
             vara variable = cmeb.get(start.type.name).get(name);
-            vara idx = ncns(cmid.get(start.type.name).get(variable),(new vtype("c_int",0)));
+            vara idx = ncns(cmid.get(start.type.name).get(variable),(new vtype("const_int",0)));
             nir.push(new sys(Oper.address,start,idx,adr));
             nir.push(new sys(Oper.load,adr,vara.empty,start));
             start.type = variable.type.cpy();   pams.clear();
@@ -846,7 +1285,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         if (stype == null) {stype = cmeb.get(ncls).get(str).type;   ok = true;}
         vara start = nvar(stype.cpy());
         start.name = str;   vara cur = nvar(stype.cpy());
-        if (ok) nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(start),(new vtype("c_int",0))),start));
+        if (ok) nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(start),(new vtype("const_int",0))),start));
         vara arr = nvar((new vtype("int",0)));
         vara head = nvar((new vtype("int",0)));
         IR tt = new IR();   int size = 0;
@@ -857,7 +1296,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             ++size;
         }
         --size; int tnt = 0;
-        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("c_int",0))),vara.empty,arr));
+        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
         for (int i = 0; i < ctx.variable().size(); ++i)
         {
@@ -865,8 +1304,8 @@ class MVisitor extends MxxBaseVisitor<IR>
             {
                 String name = ctx.variable(i).vname().getText();
                 vara variable = cmeb.get(cur.type.name).get(name);
-                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("c_int",0)));
-                tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("c_int",0))),head));
+                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("const_int",0)));
+                tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                 ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
                 cur.type = variable.type.cpy();
             }
@@ -874,7 +1313,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 for (int j = 0; j < ctx.variable(i).index().size(); ++j)
                 {
                     IR tmp = visit(ctx.variable(i).index(j));  nir.concat(tmp);
-                    tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("c_int",0))),head));
+                    tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                     ++tnt;  tt.push(new sys(Oper.store,tmp.last.dest,vara.empty,head));
                     --cur.type.dims;
                 }
@@ -901,7 +1340,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             for (IR tmpIR : pams)
             {
                 vara dest = tmpIR.last.dest;
-                if (!dest.type.is("int") && !dest.type.is("c_int"))
+                if (!dest.type.is("int") && !dest.type.is("const_int"))
                 {
                     System.err.println("a[\"b\"]");
                     System.exit(-1);
@@ -948,7 +1387,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             for(IR tmp : pams)
             {
                 vara dest = tmp.last.dest;
-                if (!dest.type.is("int") && !dest.type.is("c_int"))
+                if (!dest.type.is("int") && !dest.type.is("const_int"))
                 {
                     System.err.println("a[\"b\"]");
                     System.exit(-1);
@@ -1045,7 +1484,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 nir.push(new sys(Oper.move, argList.get(i), vara.empty, new vara(newName, pams.get(i))));
             }
         nir.concat(stmt);
-        sys quad = new sys(Oper.ret, ncns(0, (new vtype("c_int",0))), vara.empty, vara.empty);
+        sys quad = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
         quad.name = function.name;  nir.push(quad); nir.push(new sys(Oper.exitFunction,name));
         unmhere.prevScope();    unmhere.nfunc = ""; return nir;
     }
@@ -1164,7 +1603,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         if (ctx.expr() == null)
         {
-            sys aa = new sys(Oper.ret,ncns(0,(new vtype("c_int",0))),vara.empty,vara.empty);
+            sys aa = new sys(Oper.ret,ncns(0,(new vtype("const_int",0))),vara.empty,vara.empty);
             aa.name = unmhere.nfunc;    nir.push(aa);
         }
         else
@@ -1218,7 +1657,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         temp.isTemp = true; nir.concat(ir0);
         sys aa = new sys(Oper.jz,ir0.last.dest,vara.empty,vara.empty);
         aa.name = lab1; nir.push(aa);
-        nir.push(new sys(Oper.move,ncns(1,(new vtype("c_bool",0))),vara.empty,temp));
+        nir.push(new sys(Oper.move,ncns(1,(new vtype("const_bool",0))),vara.empty,temp));
         nir.push(new sys(Oper.jmp,lab2));
         nir.push(new sys(Oper.label,lab1));
         nir.concat(ir1);
@@ -1236,7 +1675,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         temp.isTemp = true; nir.concat(ir0);
         sys aa = new sys(Oper.jnz,ir0.last.dest,vara.empty,vara.empty);
         aa.name = lab1; nir.push(aa);
-        nir.push(new sys(Oper.move,ncns(0,(new vtype("c_bool",0))),vara.empty,temp));
+        nir.push(new sys(Oper.move,ncns(0,(new vtype("const_bool",0))),vara.empty,temp));
         nir.push(new sys(Oper.jmp,lab2));
         nir.push(new sys(Oper.label,lab1));
         nir.concat(ir1);
@@ -1338,13 +1777,13 @@ class MVisitor extends MxxBaseVisitor<IR>
             {pams.add(visitIndex(ctx.index(i))); nir.concat(pams.get(i));}
         if (pams.size() > 1)
         {
-            nir.push(new sys(Oper.mallocArray, ncns(pams.size(), (new vtype("c_int",0))), vara.empty, adr));
+            nir.push(new sys(Oper.mallocArray, ncns(pams.size(), (new vtype("const_int",0))), vara.empty, adr));
             vara pos = nvar((new vtype("int",0)));
             for (int i = 0; i < pams.size(); ++i)
             {
-                nir.push(new sys(Oper.address, adr, ncns(i, (new vtype("c_int",0))), pos));
-                if (pams.size()==2&&i==0&&pams.get(i).last.dest.constValue>500000)
-                    pams.get(i).last.dest.constValue = 160000;
+                nir.push(new sys(Oper.address, adr, ncns(i, (new vtype("const_int",0))), pos));
+                if (pams.size()==2&&i==0&&pams.get(i).last.dest.vcnum>500000)
+                    pams.get(i).last.dest.vcnum = 160000;
                 nir.push(new sys(Oper.store, pams.get(i).last.dest, vara.empty, pos));
             }
             nir.push(new sys(Oper.multiArray, adr, vara.empty, adr));
@@ -1386,12 +1825,12 @@ class MVisitor extends MxxBaseVisitor<IR>
             for (int i = 0; i < ctx.lval().variable(0).index().size(); ++i)
                 pams.add(visit(ctx.lval().variable(0).index().get(i)));
             IR adr = getAddress(vnm,pams); nir.concat(adr);
-            if (pams.size() == 0)   nir.push(new sys(oper,adr.last.dest,ncns(1,(new vtype("c_int",0))),adr.last.dest));
+            if (pams.size() == 0)   nir.push(new sys(oper,adr.last.dest,ncns(1,(new vtype("const_int",0))),adr.last.dest));
             else
             {
                 vara tmp = nvar((new vtype("int",0))); tmp.isTemp = true;
                 nir.push(new sys(Oper.load,adr.last.dest,vara.empty,tmp));
-                nir.push(new sys(oper,tmp,ncns(1,(new vtype("c_int",0))),tmp));
+                nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
                 nir.push(new sys(Oper.store,tmp,vara.empty,adr.last.dest));
                 nir.push(new sys(Oper.move,tmp,vara.empty,tmp));
             }
@@ -1401,7 +1840,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             IR left = visit(ctx.lval());   nir.concat(left);
             vara tmp =nvar((new vtype("int",0)));  tmp.isTemp = true;
             nir.push(new sys(Oper.load,left.last.dest,vara.empty,tmp));
-            nir.push(new sys(oper,tmp,ncns(1,(new vtype("c_int",0))),tmp));
+            nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
             nir.push(new sys(Oper.store,tmp,vara.empty,left.last.dest));
             nir.push(new sys(Oper.move,tmp,vara.empty,tmp));
         }
@@ -1428,7 +1867,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (pams.size() == 0)
             {
                 nir.push(new sys(Oper.move,adr.last.dest,vara.empty,value));
-                nir.push(new sys(oper,adr.last.dest,ncns(1,(new vtype("c_int",0))),adr.last.dest));
+                nir.push(new sys(oper,adr.last.dest,ncns(1,(new vtype("const_int",0))),adr.last.dest));
                 nir.push(new sys(Oper.move,value,vara.empty,value));
             }
             else
@@ -1436,7 +1875,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 vara tmp =nvar((new vtype("int",0)));
                 nir.push(new sys(Oper.load,adr.last.dest,vara.empty,tmp));
                 nir.push(new sys(Oper.move,tmp,vara.empty,value));
-                nir.push(new sys(oper,tmp,ncns(1,(new vtype("c_int",0))),tmp));
+                nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
                 nir.push(new sys(Oper.store,tmp,vara.empty,adr.last.dest));
                 nir.push(new sys(Oper.move,value,vara.empty,value));
             }
@@ -1447,7 +1886,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             nir.concat(left);   vara tmp = nvar((new vtype("int",0)));
             nir.push(new sys(Oper.load,left.last.dest,vara.empty,tmp));
             nir.push(new sys(Oper.move,tmp,vara.empty,value));
-            nir.push(new sys(oper,tmp,ncns(1,(new vtype("c_int",0))),tmp));
+            nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
             nir.push(new sys(Oper.store,tmp,vara.empty,left.last.dest));
             nir.push(new sys(Oper.move,value,vara.empty,value));
         }
@@ -1509,7 +1948,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             for (IR tmpIR : pams)
             {
                 vara dest = tmpIR.last.dest;
-                if (!dest.type.is("int") && !dest.type.is("c_int"))
+                if (!dest.type.is("int") && !dest.type.is("const_int"))
                 {
                     System.err.println("a[bool]");
                     System.exit(-1);
@@ -1534,7 +1973,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitCstr(MxxParser.CstrContext ctx)
     {
         IR nir = new IR();
-        vara temp = nvar((new vtype("c_string",0)));
+        vara temp = nvar((new vtype("const_string",0)));
         cstr.put(temp,ctx.getText());
         nir.push(new sys(Oper.move,temp,vara.empty,temp));
         return nir;
@@ -1543,8 +1982,8 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitCnum(MxxParser.CnumContext ctx)
     {
         IR nir = new IR();
-        vara temp = nvar((new vtype("c_int",0)));
-        temp.constValue=Integer.parseInt(ctx.getText());
+        vara temp = nvar((new vtype("const_int",0)));
+        temp.vcnum=Integer.parseInt(ctx.getText());
         nir.push(new sys(Oper.move,temp,vara.empty,temp));
         return nir;
     }
@@ -1552,7 +1991,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitTrue(MxxParser.TrueContext ctx)
     {
         IR nir = new IR();
-        vara temp = nvar((new vtype("c_bool",0))); temp.constValue = 1;
+        vara temp = nvar((new vtype("const_bool",0))); temp.vcnum = 1;
         nir.push(new sys(Oper.move,temp,vara.empty,temp));   return nir;
     }
 
@@ -1580,7 +2019,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             nir.concat(visit(ctx.exprs()));
             parameter = nowpam.peek();    nowpam.pop();
         }
-        vara tret = ncns(0,(new vtype("c_int",0)));
+        vara tret = ncns(0,(new vtype("const_int",0)));
         if (function != null)
         {
             tret = nvar(function.type);
@@ -1645,7 +2084,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitFalse(MxxParser.FalseContext ctx)
     {
         IR nir = new IR();
-        vara temp = nvar((new vtype("c_bool",0))); temp.constValue = 0;
+        vara temp = nvar((new vtype("const_bool",0))); temp.vcnum = 0;
         nir.push(new sys(Oper.move,temp,vara.empty,temp));   return nir;
     }
 
@@ -1719,21 +2158,7 @@ class MVisitor extends MxxBaseVisitor<IR>
 
     @Override public IR visitXkh(MxxParser.XkhContext ctx) {return visit(ctx.expr());}
 }
-class Backend{
-    IR ir;
-    zcc unmh;
-    HashMap<vara,String> cstr;
-    Backend(){}
-    void init(IR iir, HashMap<vara,String> csp,zcc smp, String of)
-    {
-        ir = iir; cstr = csp;
-        unmh = smp; run(of);
-    }
-    void run(String ofile)
-    {
-        System.err.println("djrmlrfs");
-    }
-}
+
 class MxxErrorListener extends BaseErrorListener
 {
     static final MxxErrorListener INSTANCE = new MxxErrorListener();
@@ -1761,8 +2186,7 @@ public class Main{
     public static void main(String [] args) throws Exception
     {
         File f = new File("test.mxx");
-        InputStream input = null;
-        input = new FileInputStream(f);
+        InputStream input = new FileInputStream(f);
         run(input);
         System.err.println("finished!");
         System.exit(0);

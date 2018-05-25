@@ -1,6 +1,5 @@
 int main()
 {
-string a = "aa";
-string b = "bb";
-	a = a+b;
+	int a = 3;	int b = 2;
+	a = a%b;
 }
