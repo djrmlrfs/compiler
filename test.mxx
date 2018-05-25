@@ -1,0 +1,6 @@
+int main()
+{
+string a = "aa";
+string b = "bb";
+	a = a+b;
+}

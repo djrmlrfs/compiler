@@ -1,8 +1,0 @@
-bool zcc()
-{
-int u;
-}
-int main()
-{
-zcc(;
-}

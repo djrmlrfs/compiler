@@ -1,77 +1,83 @@
 grammar Mxx;
 
-program	:	defination+ EOF	;
-
-defination
-	:	deffunc
-	|	defclass
-	|	defvaris
-	;
-
-defclass :	CLASS cname '{' (defmeth | defvaris)* '}' ;
-cname	:	ID ;
-defmeth	:	deffunc	| defcons ;
-defcons	:	fname '(' ')' block ;
-defvaris :	vtype vname ('=' expr)? ';' ;
-
-vtype
-	:	INT ('[' ']')*
-	|	BOOL ('[' ']')*
-	|	STRING ('[' ']')*
-	|	VOID
-	|	tname ('[' ']')*
-	;
-
-tname	:	ID ;
-deffunc	:	vtype fname '(' params? ')' block ;
-fname	:	ID ;
-params	:	param (',' param)* ;
-param	:	vtype vname ;
-vname	:	ID;
-block	:	'{' state* '}' ;
-
-state
-	:	block
-	|	IF '(' expr ')' state (ELSE state)?
-	|	FOR '(' zzxp=expr? ';' pexp=expr? ';' zcxp=expr? ')' state
-	|	WHILE '(' expr ')' state
-	|	RETURN expr? ';'
-	|	BREAK ';'
-	|	CONTINUE ';'
-	|	defvaris
-	|	expr ';'
-	|	';'
-	;
-
+program  : (defclass | deffunc | gvar)+;
+defclass : CLASS cname cbody;
+cbody    : '{' (memdef | mthdef)* '}';
+cname    : ID;
+mthdef   : vtype? fname '(' params? ')' block;
+memdef   : vtype vname  ';';
+kh       : '[' ']' | '[]' ;
+defvar
+    :   vtype vname  ';'                  # defvarno
+    |   vtype vname '=' expr ';'          # defvarhave
+    ;
+vtype    :   vbtp ( kh )* ;
+vbtp     :   INT | BOOL | STRING | VOID | ID ;
+deffunc  :   vtype fname '(' params? ')' fbody ;
+fbody    : '{' stat* '}' ;
+fname    :   ID ;
+params   :   param (',' param)* ;
+param    :   vtype vname ;
+vname    :   ID | THIS ;
+gvar     :   defvar  ;
+block    : '{' stat* '}' ;
+stat
+    :   block                       #blockStmt
+    |   ifstat                      #ifStmt
+    |   whilestat                   #whileStmt
+    |   forstat                     #forStmt
+    |   RETURN expr? ';'            #returnStmt
+    |   BREAK ';'                   #breakStmt
+    |   CONTINUE ';'                #continueStmt
+    |   defvar                      #defvarStmt
+    |   expr ';'                    #exprStmt
+    |   ';'                         #emptyStmt
+    ;
+sob    :   stat | block ;
+ifstat :   IF '(' expr ')' sob elseBlock?  ;
+elseBlock   :   ELSE sob ;
+whilestat   :   WHILE '(' expr ')' sob ;
+forstat     :   FOR '(' A=expr? ';' B=expr? ';' C=expr? ')' sob ;
+dotAtom     :   fname '(' exprs? ')' |   variable ;
 expr
-	:	fname '(' exprs? ')'
-	|	NEW cname '('  ')'
-	|	NEW (INT | STRING | BOOL | cname) ('[' expr ']')* ('[' ']')*
-	|	expr Pnt='.' expr
-	|	expr ('[' expr ']')+
-	|	Op1=('++' | '--') expr
-	|	Op2=('-' | '!' | '~') expr
-	|	expr Op1=('++' | '--')
-	|   expr Op3=('*' | '/' | '%' ) expr
-	|   expr Op3_1=('+' | '-') expr
-	|	expr Op3=('<<' | '>>') expr
-	|   expr Op3=('&' | '^' | '|') expr
-	|	expr Op4=('>' | '<' | '>=' | '<=') expr
-	|   expr Op5=('==' | '!=') expr
-	|	expr Op6=('&&' | '||') expr
-	|	vname
-	|	Cnumber
-	|	Cstring
-	|	NULL
-	|	TRUE
-	|	FALSE
-	|	'(' expr ')'
-	|   <assoc=right> expr Equl='=' expr
-	;
+    :   fname '(' exprs? ')'                                                        # funcCall
+    |   cval '.' fname '(' exprs? ')'                                               # cfunCall
+    |   NEW vbtp '(' exprs? ')'                                                     # nvar
+    |   NEW vbtp                                                                    # nvar2
+    |   NEW type=vbtp (index)+ (kh)*                                                # narr
+    |   variable ('.' variable)+                                                    # pnt
+    |   expr ('.' dotAtom)+                                                         # pnt2
+    |   vname ('[' expr ']')*                                                       # inarr
+    |   op=('!' |'~'|'-') expr                                                      # op1
+    |   op=('--'|'++' ) lval                                                        # op2
+    |   lval op=('++' | '--')                                                       # op3
+    |   expr op=('*' | '/' | '%') expr                                              # op4
+    |   expr op=('+' | '-') expr                                                    # op5
+    |   expr op=('>>' | '<<') expr                                                  # shift
+    |   expr op=('>' | '>=' |'<'| '<=') expr                                        # moreless
+    |   expr op=('!=' | '==') expr                                                  # equal
+    |   expr '&' expr                                                               # and
+    |   expr '^' expr                                                               # xor
+    |   expr '|' expr                                                               # or
+    |   expr '&&' expr                                                              # land
+    |   expr '||' expr                                                              # lor
+    |   Cnum                                                                        # cnum
+    |   Cstr                                                                        # cstr
+    |   NULL                                                                        # null
+    |   TRUE                                                                        # true
+    |   FALSE                                                                       # false
+    |   '(' expr ')'                                                                # xkh
+    |   lval '=' expr                                                               # assign
+    ;
 
+index    :   '[' expr ']' ;
+variable
+    :   vname index*
+    |   '(' NEW type=vbtp (index)+ ')'
+    ;
+cval    :   variable ('.' variable)*  ;
+lval    :   variable ('.' variable)* ;
 exprs   :   expr (',' expr)* ;
-
-//keywords
 
 CLASS   :   'class';
 INT     :   'int';
@@ -89,10 +95,14 @@ VOID    :   'void';
 BOOL    :   'bool';
 FALSE   :   'false';
 TRUE    :   'true';
+THIS    :   'this';
+BRACKET :   '[]';
 
-Cnumber :	[0-9]+;
-Cstring :   '"' ('\\"' | '\\\\'|.)*? '"' ;
-ID      :   [a-zA-Z_] [a-zA-Z_0-9]*;
-Spaces  :   ( ' ' | '\t' | '\n' | '\r' ) + -> skip;
-Comment :   '//' ~[\r\n]* -> skip;
-Comm2   :	'/*' .*? '*/' -> skip;
+Cnum    :   [0-9]+;
+Cstr    :   '"' ('\\"' | ~('"'|'\n') )* '"'  ;
+ID	:	[a-zA-Z_] [a-zA-Z_0-9]*;
+
+Ws: [ \t]+ -> skip;
+Newl: ( '\r' '\n'? | '\n' ) -> skip;
+Bcom: '/*' .*? '*/' -> skip;
+Lcom: '//' ~[\r\n]* -> skip;
