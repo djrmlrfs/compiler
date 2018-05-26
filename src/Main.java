@@ -22,14 +22,118 @@ class Backend{
         ir = iir; cstr = csp;
         unmh = smp; work(of);
     }
+    private StringBuffer funccaladd() {
+        StringBuffer ret = new StringBuffer("caladd:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-30H]\n\tmov\trax, qword [rax]\n");
+        emit(ret,"\tmov\tqword [rbp-18H], rax\n\tcmp\tqword [rbp-18H], 0\n\tjnz\tmAd_005\n");
+        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tjmp\tmAd_008\n\nmAd_005:\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\tqword [rbp-8H], 1\n\tjmp\tmAd_007\n\n");
+        emit(ret,"mAd_006:\tmov\trax, qword [rbp-8H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
+        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-10H], rax\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"mAd_007:\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-18H]\n\tjl\tmAd_006\n");
+        emit(ret,"\tmov\trax, qword [rbp-18H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmovrax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\tleave\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcaddress() {
+        StringBuffer ret = new StringBuffer("address:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-8H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rsi\n\tmov\trax, qword [rbp-10H]\n");
+        emit(ret,"\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tadd\trax, rdx\n\tpop\trbp\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcmorarr() {
+        StringBuffer ret = new StringBuffer("_multiArray:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tpush\trbx\n\tsub\trsp, 56\n");
+        emit(ret,"\tmov\tdword [rbp-34H], edi\n\tmov\tqword [rbp-40H], rsi\n");
+        emit(ret,"\tmov\teax, dword [rbp-34H]\n\tadd\teax, 1\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trax, qword [rax]\n\tcmp\trdx, rax\n");
+        emit(ret,"\tjnz\tCL_005\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n");
+        emit(ret,"\tcall\taddress\n\tmov\trax, qword [rax]\n\tmov\trdi, rax\n\tcall\tnewarr\n");
+        emit(ret,"\tjmp\tCL_008\n\nCL_005:\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
+        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-20H], rax\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\trdi, rax\n\tcall\tnewarr\n\tmov\tqword [rbp-28H], rax\n\tmov\tdword [rbp-14H], 0\n");
+        emit(ret,"\tjmp\tCL_007\n\nCL_006:\tmov\teax, dword [rbp-14H]\n\tmovsxd\trdx, eax\n\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trbx, rax\n\tmov\teax, dword [rbp-34H]\n");
+        emit(ret,"\tlea\tedx, [rax+1H]\n\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rax\n\tmov\tedi, edx\n");
+        emit(ret,"\tcall\t_multiArray\n\tmov\tqword [rbx], rax\n\tadd\tdword [rbp-14H], 1\nCL_007:\tmov\teax, dword [rbp-14H]\n");
+        emit(ret,"\tcdqe\n\tcmp\trax, qword [rbp-20H]\n\tjl\tCL_006\n\tmov\trax, qword [rbp-28H]\nCL_008:\tadd\trsp, 56\n");
+        emit(ret,"\tpop\trbx\n\tpop\trbp\n\tret\n\n\nmorarr:\n\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n");
+        emit(ret,"\tmov\tqword [rbp-8H], rdi\n\tmov\trax, qword [rbp-8H]\n\tmov\trsi, rax\n\tmov\tedi, 0\n\tcall\t_multiArray\n\tleave\n\tret\n");
+        return ret;
+    }
+    private StringBuffer functoString() {
+        StringBuffer ret = new StringBuffer("toString:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 64\n\tmov\tqword [rbp-38H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 1\n\tcmp\tqword [rbp-38H], 0\n");
+        emit(ret,"\tjnz\tL_001\n\tmov\tqword [rbp-8H], 1\n\tcmp\tqword [rbp-38H], 0\n\tjns\tL_002\n");
+        emit(ret,"\tneg\tqword [rbp-38H]\n\tmov\tqword [rbp-10H], -1\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"L_002:\tmov\trax, qword [rbp-38H]\n\tmov\tqword [rbp-18H], rax\n\tjmp\tL_004\n\n");
+        emit(ret,"L_003:\tadd\tqword [rbp-8H], 1\n\tmov\trcx, qword [rbp-18H]\n\tmov\trdx, qword 6666666666666667H\n");
+        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n");
+        emit(ret,"\tsub\trdx, rax\n\tmov\trax, rdx\n\tmov\tqword [rbp-18H], rax\nL_004:\tcmp\tqword [rbp-18H], 0\n");
+        emit(ret,"\tjg\tL_003\n\tmov\trax, qword [rbp-8H]\n\tadd\trax, 2\n\tmov\trdi, rax\n\tcall\tmalloc\n");
+        emit(ret,"\tmov\tqword [rbp-28H], rax\n\tmov\trax, qword [rbp-28H]\n\tmov\tqword [rbp-20H], rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-8H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n\tmov\tbyte [rax], dl\n");
+        emit(ret,"\tadd\tqword [rbp-20H], 1\n\tcmp\tqword [rbp-10H], -1\n\tjnz\tL_005\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], 45\nL_005:\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-28H]\n\tadd\trax, rdx\n");
+        emit(ret,"\tmov\tqword [rbp-20H], rax\n\tcmp\tqword [rbp-38H], 0\n\tjnz\tL_006\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], 48\n\tjmp\tL_008\n\nL_006:\tjmp\tL_008\n\nL_007:\tmov\trcx, qword [rbp-38H]\n");
+        emit(ret,"\tmov\trdx, qword 6666666666666667H\n\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n");
+        emit(ret,"\tsar\trax, 63\n\tsub\trdx, rax\n\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
+        emit(ret,"\tsub\trcx, rax\n\tmov\trdx, rcx\n\tmov\teax, edx\n\tadd\teax, 48\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], dl\n\tsub\tqword [rbp-20H], 1\n\tmov\trcx, qword [rbp-38H]\n\tmov\trdx, qword 6666666666666667H\n");
+        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n\tsub\trdx, rax\n");
+        emit(ret,"\tmov\trax, rdx\n\tmov\tqword [rbp-38H], rax\nL_008:\tcmp\tqword [rbp-38H], 0\n");
+        emit(ret,"\tjg\tL_007\n\tmov\trax, qword [rbp-28H]\n\tleave\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcnewarr() {
+        StringBuffer ret = new StringBuffer("newarr:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 32\n\tmov\tqword [rbp-18H], rdi\n");
+        emit(ret,"\tmov\trax, qword [rbp-18H]\n\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdi, rax\n");
+        emit(ret,"\tcall\tmalloc\n\tmov\tqword [rbp-8H], rax\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tmov\tesi, 0\n\tmov\trdi, rax\n\tcall\tmemset\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tmov\trdx, qword [rbp-18H]\n\tmov\tqword [rax], rdx\n\tmov\trax, qword [rbp-8H]\n\tleave\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcstradd() {
+        StringBuffer ret = new StringBuffer("stradd:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n");
+        emit(ret,"\tmovzx\tedx, al\n\tmov\trax, qword [rbp-30H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n");
+        emit(ret,"\tadd\teax, edx\n\tadd\teax, 2\n\tcdqe\n\tmov\trdi, rax\n\tcall\tmalloc\n\tmov\tqword [rbp-18H], rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tmovzx\tedx, byte [rax]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmovzx\teax, byte [rax]\n\tadd\tedx, eax\n\tmov\trax, qword [rbp-18H]\n\tmov\tbyte [rax], dl\n");
+        emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 0\n\tmov\tqword [rbp-8H], 0\n\tjmp\tcc_002\n\n");
+        emit(ret,"cc_001:\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"\tadd\trdx, rax\n\tmov\trax, qword [rbp-8H]\n\tlea\trcx, [rax+1H]\n\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tadd\trax, rcx\n\tmovzx\teax, byte [rax]\n\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"cc_002:\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tcmp\trax, qword [rbp-8H]\n");
+        emit(ret,"\tjg\tcc_001\n\tmov\tqword [rbp-8H], 0\n\tjmp\tcc_004\n\ncc_003:\tadd\tqword [rbp-10H], 1\n");
+        emit(ret,"\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tlea\trcx, [rax+1H]\n\tmov\trax, qword [rbp-30H]\n\tadd\trax, rcx\n\tmovzx\teax, byte [rax]\n");
+        emit(ret,"\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\ncc_004:\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tcmp\trax, qword [rbp-8H]\n\tjg\tcc_003\n");
+        emit(ret,"\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"\tadd\trax, rdx\n\tmov\tbyte [rax], 0\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n\n");
+        return ret;
+    }
     private void addconstantfunc()
     {
-        /*todo
-            toString    mallocArray concat
-            address     multiArrat  MultiAddress
-            getInt      getString   parseInt
-            substring   ord         strcmp
-        */
+        emit(text,functoString());  emit(text,funcnewarr());    emit(text,funcstradd());
+        emit(text,funcaddress());     emit(text,funcmorarr());      emit(text,funccaladd());
+        //emit(text,funcgetInt());      emit(text,funcgetString());   emit(text,funcparseInt());
+        //emit(text,funcsubstring());   emit(text,funcord());         emit(text,funcstrcmp());
     }
     private void emit(StringBuffer str, String st){str.append(st);}
     private void emit(StringBuffer str, StringBuffer st){str.append(st);}
@@ -41,6 +145,7 @@ class Backend{
     }
     private void work(String ofile)throws Exception
     {
+//        StringBuffer debuguse = new StringBuffer();
         System.err.println("djrmlrfs");
         for (int i = 0; i < 16; ++i)
         {
@@ -50,23 +155,23 @@ class Backend{
         }
         StringBuffer head = new StringBuffer(), bss = new StringBuffer(), data = new StringBuffer();
         text = new StringBuffer();
-        emit(head,"\t global    main\n");   emit(head,"\t extern    puts\n");   emit(head,"\t extern    printf\n");
-        emit(head,"\t extern    scanf\n");  emit(head,"\t extern    malloc\n"); emit(head,"\t extern    strlen\n");
-        emit(head,"\t extern    strcmp\n"); emit(head,"\t extern    memset\n");
-        emit(text,"\t section   .text\n");  emit(bss,"\t section   .bss\n");    emit(data,"\t section   .data\n");
+        emit(head,"\tglobal\tmain\n\textern\tputs\n\textern\tprintf\n");
+        emit(head,"\textern\tscanf\n\textern\tmalloc\n\textern\tstrlen\n");
+        emit(head,"\textern\tstrcmp\n\textern\tmemset\n");
+        emit(text,"\tsection\t.text\n\tsection\t.bss\n\tsection\t.data\n");
         for (sys now = ir.head; now != null; now = now.next)
             {++lnum;     advar(now.var1);    advar(now.var2);  advar(now.dest);}
-        emit(bss,"gbl:         resb   ");   emit(bss,Integer.toString(vid.size()*8+2048)+"\n");
-        emit(bss,"buff.1788:\n        resb    256\n");  emit(bss,"arg:\n        resb    1024\n");   emit(bss,"\ntrsp:         resb   1024");
-        emit(data,"\nformatln:\n\t");   emit(data,"db  \"%s\", 10, 0\n\t");     emit(data,"\nformat:\n\t");
-        emit(data,"db  \"%s\",  0\n\t");emit(data,"\nGS_31:\n\t");  emit(data,"db 25H, 6CH, 64H, 00H\n\t");
-        emit(data,"\nGS_32:\n\t");  emit(data,"db 25H, 73H, 00H\n\t");
+        emit(bss,"gbl:\n\tresb\t");   emit(bss,Integer.toString(vid.size()*8+2048)+"\n");
+        emit(bss,"buff.1788:\n\tresb\t256\narg:\n\tresb\t1024\ntrsp:\n\tresb\t1024");
+        emit(data,"\nformatln:\n\tdb\t\"%s\", 10, 0\n\t\nformat:\n\t");
+        emit(data,"db\t\"%s\",  0\n\t\nGS_31:\n\tdb 25H, 6CH, 64H, 00H\n\t");
+        emit(data,"\nGS_32:\n\tdb 25H, 73H, 00H\n\t");
         for (Map.Entry<vara,String> entry : cstr.entrySet())
         {
             String str = entry.getValue();
             emit(data,"\n"+entry.getKey()); emit(data,":\n\t db ");
             emit(data,Integer.toString(shl(str)));    emit(data,",");
-            emit(data,shc(str));     emit(data," ,0\n");
+            emit(data,shc(str));     emit(data,",0\n");
         }
         addconstantfunc();
         int skipCounter = 0;    lnum = 0;
@@ -81,190 +186,187 @@ class Backend{
             for (int i = 8; i < 16; ++i)    ban[i] = false;
             switch (now.oper) {
                 case not:
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");
-                    emit(text,"sete "); emit(text,writereg(dest));  emit(text,"B\n\t");    break;
+                    emit(text,"mov "+writereg(dest)+", 0\n\t");
+                    emit(text,"cmp "+readreg(var1)+", 0\n\t");
+                    emit(text,"sete "+writereg(dest)+"B\n\t");    break;
                 case inv:
                     readreg(var1);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");         emit(text,readreg(var1));
-                    emit(text,"\n\t");  emit(text,"not ");      emit(text,writereg(dest));  emit(text,"\n\t");  break;
+                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");
+                    emit(text,"not "+writereg(dest));  emit(text,"\n\t");  break;
                 case neg:
                     readreg(var1);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");         emit(text,readreg(var1));
-                    emit(text,"\n\t");  emit(text,"neg ");      emit(text,writereg(dest));  emit(text,"\n\t");  break;
+                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");
+                    emit(text,"neg "+writereg(dest));  emit(text,"\n\t");  break;
                 case add:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"add "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case sub:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"sub ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"sub "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case mul:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"imul ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"imul "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case and:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"and ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"and "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case or:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"or ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"or "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case xor:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"xor ");  emit(text,writereg(dest));  emit(text,",");     emit(text,readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
+                    emit(text,"xor "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
                     break;
                 case div:
                     emit(text,"xor rdx, rdx\n\t");
-                    emit(text,"mov rax, "); emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rbx, "); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"cdq\n\t");   emit(text,"idiv rbx\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", rax\n\t");
-                    break;
+                    emit(text,"mov rax, "+readreg(var1)+"\n\t");
+                    emit(text,"mov rbx, "+readreg(var2)+"\n\t");
+                    emit(text,"cdq\n\tidiv rbx\n\t");
+                    emit(text,"mov "+writereg(dest)+", rax\n\t");   break;
                 case mod:
                     emit(text,"xor rdx, rdx\n\t");
-                    emit(text,"mov rax, "); emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rbx, "); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"cdq\n\t");   emit(text,"idiv rbx\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", rdx\n\t");
-                    break;
+                    emit(text,"mov rax, "+readreg(var1)+"\n\t");
+                    emit(text,"mov rbx, "+readreg(var2)+"\n\t");
+                    emit(text,"cdq\n\tidiv rbx\n\t");
+                    emit(text,"mov "+writereg(dest)+", rdx\n\t");   break;
                 case shl:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rcx");   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"shl ");  emit(text,writereg(dest));  emit(text,",cl\n\t");   break;
+                    emit(text,"mov "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rcx, "+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"shl "+writereg(dest));  emit(text,", cl\n\t");   break;
                 case shr:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rcx");   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"shr ");  emit(text,writereg(dest));  emit(text,",cl\n\t");   break;
+                    emit(text,"mov "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov rcx, "+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"shr "+writereg(dest));  emit(text,", cl\n\t");   break;
                 case move:
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,",");
-                    emit(text,readreg(var1));   emit(text,"\n\t");  break;
+                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");  break;
                 case call:
-                    clr();  emit(text,"call "); emit(text,name);    emit(text,"\n\t");  free();
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text," , rax\n\t");    break;
+                    clr();  emit(text,"call "); emit(text,name);    emit(text,"\n\t");
+                    free(); emit(text,"mov "+writereg(dest));  emit(text,", rax\n\t");    break;
                 case ret:
-                    emit(text,"mov rax,");  emit(text,readreg(var1));   emit(text,"\n\t");    clr();
-                    if (name.equals("main"))    emit(text,"        mov     rsp, qword [trsp]\n\t");
+                    emit(text,"mov rax, "+readreg(var1));   emit(text,"\n\t");    clr();
+                    if (name.equals("main"))    emit(text,"mov rsp, qword [trsp]\n\t");
                     emit(text,"leave\n\t"); emit(text,"ret\n\t");  break;
                 case label:
                     clr();  emit(text,"\n");    emit(text,name);
                     emit(text,":\n\t");     break;
                 case less:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setl "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setl "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case leq:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setle "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setle "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case equal:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"sete "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"sete "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case neq:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setne "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setne "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case geq:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setge "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setge "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case gre:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setg "); emit(text,writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setg "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
                 case sless:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    strls\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstrles\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sleq:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    strle\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstrleq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sequal:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    streq\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstreql\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sneq:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    strne\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstrneq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgeq:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    strge\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstrgeq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgre:
                     clr();
-                    emit(text,"mov rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"call    strgt\n\t"); emit(text,"mov qword ");
+                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\tstrgre\n\t"); emit(text,"mov qword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case jmp:
                     clr();  emit(text,"jmp ");  emit(text,name);    emit(text,"\n\t");  break;
                 case jz:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"cmp "+readreg(var1));   emit(text,", 0\n\t");  clr();
                     emit(text,"je ");   emit(text,name);    emit(text,"\n\t");  break;
                 case jnz:
-                    emit(text,"cmp ");  emit(text,readreg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"cmp "+readreg(var1));   emit(text,", 0\n\t");  clr();
                     emit(text,"jne ");   emit(text,name);    emit(text,"\n\t");  break;
                 case malloc:
-                    clr();  emit(text,"mov     rdi, "); emit(text,readreg(var1));
-                    emit(text,"\n\tcall    malloc\n\tmov     qword ");
-                    emit(text,writereg(dest));  emit(text,", rax\n\t");  free(); break;
-                case mallocArray:
+                    clr();  emit(text,"mov     rdi, "+readreg(var1));
+                    emit(text,"\n\tcall\tmalloc\n\tmov\tqword "+writereg(dest));
+                    emit(text,", rax\n\t");  free();    break;
+                case newarr:
                     clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));
-                    emit(text,"\n\tcall    mallocArray\n\tmov     qword ");
+                    emit(text,"\n\tcall\tnewarr\n\tmov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t");   free(); break;
                 case concat:
                     clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\tmov     rdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\tcall    concat\n\t");    emit(text,"mov ");
+                    emit(text,getname(var1));   emit(text,"\n\tcall\tstradd\n\t");    emit(text,"mov ");
                     emit(text,getname(dest));   emit(text,", rax\n\t");     free();     break;
                 case load:
-                    getreg(var1);   emit(text,"mov ");  emit(text,writereg(dest));  emit(text,", [");
-                    emit(text,readreg(var1));   emit(text,"]\n\t");     break;
+                    getreg(var1);   emit(text,"mov "+writereg(dest)+", ["+readreg(var1));
+                    emit(text,"]\n\t");     break;
                 case store:
-                    emit(text,"mov ["); emit(text,readreg(dest));   emit(text,"],");
-                    emit(text,readreg(var1));   emit(text,"\n\t");  break;
+                    emit(text,"mov ["+readreg(dest)+"],"+readreg(var1));
+                    emit(text,"\n\t");  break;
                 case address:
                     readreg(var1);  readreg(var2);
-                    emit(text,"mov ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var2));   emit(text,"\n\t");
-                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,",1\n\t");
-                    emit(text,"shl ");  emit(text,writereg(dest));  emit(text,",4\n\t");
-                    emit(text,"add ");  emit(text,writereg(dest));  emit(text,","); emit(text,readreg(var1));   emit(text,"\n\t");
+                    emit(text,"mov "+writereg(dest)+","+readreg(var2));   emit(text,"\n\t");
+                    emit(text,"add "+writereg(dest));  emit(text,",1\n\t");
+                    emit(text,"shl "+writereg(dest));  emit(text,",4\n\t");
+                    emit(text,"add "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
                     break;
                 case print:
                     clr();  emit(text,print(var1));   free(); break;
                 case println:
                     clr();  emit(text,println(var1)); free(); break;
                 case getString:
-                    clr();  emit(text,"call    getString\n\tmov     ");
+                    clr();  emit(text,"call\tgetString\n\tmov     ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case getInt:
-                    clr();  emit(text,"call    getInt\n\tmov     ");
+                    clr();  emit(text,"call\tgetInt\n\tmov     ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case toString:
                     clr();  emit(text,"mov     rdi, ");     emit(text,getname(var1));
-                    emit(text,"\n\tcall    toString\n\tmov     qword");
+                    emit(text,"\n\tcall\ttoString\n\tmov     qword");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
                 case exitFunction:
                     clr();  break;
@@ -273,43 +375,48 @@ class Backend{
                     emit(text,Integer.toString(vid.size()*8+64)); emit(text,"\n\t");
                     if (name.equals("main"))
                     {
-                        emit(text,"mov     rax, 536870912\n        cdqe\n        mov     rdi, rax\n");
-                        emit(text,"        call    malloc\n        mov     edx, dword 536870912\n        movsxd  rdx, edx\n");
-                        emit(text,"        sub     rdx, "); emit(text,Integer.toString(vid.size()*8+2048));
-                        emit(text,"\n        add     rax, rdx\n        mov     qword [trsp], rsp\n");
-                        emit(text,"        mov     rsp, rax\n        mov     eax, 0\n\t");
+                        emit(text,"mov\trax, 536870912\n\tcdqe\n\tmov\trdi, rax\n\t");
+                        emit(text,"call\tmalloc\n\tmov\tedx, dword 536870912\n\tmovsxd\trdx, edx\n\t");
+                        emit(text,"sub\trdx, "); emit(text,Integer.toString(vid.size()*8+2048));
+                        emit(text,"\n\tadd\trax, rdx\n\tmov\tqword [trsp], rsp\n\t");
+                        emit(text,"mov\trsp, rax\n\tmov\teax, 0\n\t");
                     }
                     break;
                 case multiArray:
                     clr();
-                    emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call    multiArray\n\t");
-                    emit(text,"mov     qword ");    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
+                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\tmorarr\n\t");
+                    emit(text,"mov\tqword ");    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
                 case multiAddress:
                     clr();
-                    emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\t");  emit(text,"mov     rdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call    multiAddress\n\tmov ");
+                    emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");  emit(text,"mov\trdi, ");
+                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\tcaladd\n\tmov ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case substring:
-                    clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\t");
-                    emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"call    substring\n\tmov "); emit(text,getname(dest));
+                    clr();  emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");
+                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"call\tsubstring\n\tmov "); emit(text,getname(dest));
                     emit(text,", rax\n\t");     free();     break;
                 case parseInt:
-                    clr();  emit(text,"call    parseInt\n\tmov     qword ");
+                    clr();  emit(text,"call\tparseInt\n\tmov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
                 case ord:
-                    clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"call    ord\n\tmov     qword "); emit(text,getname(dest));
+                    clr();  emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"call\tord\n\tmov\tqword "); emit(text,getname(dest));
                     emit(text,", rax\n\t");     free();     break;
                 default:    break;
             }
+//            debuguse.append("\n\n--"+now.oper+"--:\n");
+//            debuguse.append(text.toString());
         }
         emit(head,"\n");    emit(head,text);
         emit(head,"\n");    emit(head,bss);
         emit(head,"\n");    emit(head,data);
-        System.out.println(head.toString());
-//        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
-//        output.println(head.toString());    output.close();
+//        System.out.println(head.toString());
+        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
+        output.println(head.toString());    output.close();
+//        PrintWriter debug = new PrintWriter(new FileOutputStream(new File("bug.out")));
+//        debug.println(debuguse.toString());    debug.close();
+
     }
 
     private StringBuffer getname(vara var)
@@ -354,17 +461,19 @@ class Backend{
     }
     private String shc(String s)
     {
-        String ret = "\"";
+        StringBuffer ret = new StringBuffer();
+        emit(ret,"\"");
         for (int i = 1; i+1 < s.length(); ++i)
             if (s.charAt(i) == '\\')
             {
-                ret += "\",";
-                if (s.charAt(i+1) == 'n')   ret += Integer.toString(10);
-                else    ret += Integer.toString(s.charAt(i+1));
-                ret += ",\"";   ++i;
+                emit(ret,"\",");
+                if (s.charAt(i+1) == 'n')   emit(ret,"10");
+                else    emit(ret,Integer.toString(s.charAt(i+1)));
+                emit(ret,",\"");   ++i;
             }
-            else    ret += String.valueOf(s.charAt(i));
-        return ret+"\"";
+            else    emit(ret,String.valueOf(s.charAt(i)));
+        emit(ret,"\"");
+        return ret.toString();
     }
 
     private int shl(String s)
@@ -528,7 +637,7 @@ enum Oper{
     less,leq,equal,neq,geq,gre,
     sless,sleq,sequal,sneq,sgeq,sgre,
     jmp,jz,jnz,
-    malloc,mallocArray,multiArray,concat,
+    malloc,newarr,multiArray,concat,
     load,store,address,multiAddress,
     print,println,getString,getInt,toString,
     parseInt,substring,ord,
@@ -1121,7 +1230,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             ++size;
         }
         --size; int tnt = 0;
-        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
+        nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
         for (int i = 0; i < ctx.variable().size(); ++i)
         {
@@ -1218,7 +1327,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         else
         {
             int size = cmeb.get(vtp.name).size();
-            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
+            nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
         }
         return nir;
     }
@@ -1234,7 +1343,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         else
         {
             int size = cmeb.get(vtp.name).size();
-            nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
+            nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
         }
         return nir;
     }
@@ -1297,7 +1406,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             ++size;
         }
         --size; int tnt = 0;
-        nir.push(new sys(Oper.mallocArray,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
+        nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
         for (int i = 0; i < ctx.variable().size(); ++i)
         {
@@ -1778,7 +1887,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             {pams.add(visitIndex(ctx.index(i))); nir.concat(pams.get(i));}
         if (pams.size() > 1)
         {
-            nir.push(new sys(Oper.mallocArray, ncns(pams.size(), (new vtype("const_int",0))), vara.empty, adr));
+            nir.push(new sys(Oper.newarr, ncns(pams.size(), (new vtype("const_int",0))), vara.empty, adr));
             vara pos = nvar((new vtype("int",0)));
             for (int i = 0; i < pams.size(); ++i)
             {
@@ -1789,7 +1898,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             }
             nir.push(new sys(Oper.multiArray, adr, vara.empty, adr));
         }
-        else    nir.push(new sys(Oper.mallocArray, pams.get(0).last.dest, vara.empty, adr));
+        else    nir.push(new sys(Oper.newarr, pams.get(0).last.dest, vara.empty, adr));
         String name = ctx.type.getText();
         adr.type = new vtype(name,dims);
         nir.push(new sys(Oper.move,adr,vara.empty,adr));
