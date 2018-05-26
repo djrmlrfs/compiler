@@ -18,74 +18,62 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="135" column="10" selection-start-line="135" selection-start-column="10" selection-end-line="135" selection-end-column="10" />
+            <state relative-caret-position="101">
+              <caret line="410" selection-start-line="410" selection-end-line="410" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#funccaladd#0;class#Backend#0" />
-                <element signature="method#funcaddress#0;class#Backend#0" />
-                <element signature="method#funcmorarr#0;class#Backend#0" />
-                <element signature="method#functoString#0;class#Backend#0" />
-                <element signature="method#funcnewarr#0;class#Backend#0" />
-                <element signature="method#advar#0;class#Backend#0" />
-                <element signature="method#clr#0;class#Backend#0" />
-                <element signature="method#cr#0;class#Backend#0" />
-                <element signature="method#free#0;class#Backend#0" />
-                <element signature="method#put#0;class#Backend#0" />
-                <element signature="class#vtype#0" />
-                <element signature="class#Oper#0" />
-                <element signature="class#func#0" />
-                <element signature="class#sys#0" />
                 <element signature="class#RVistor#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConstantPool.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/ConstantPool.java">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="ConstantPool.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
-          <provider selected="true" editor-type-id="text-editor" />
+      <file leaf-file-name="IRTranslator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="366" column="37" selection-start-line="366" selection-start-column="34" selection-end-line="366" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mov</find>
-      <find>ret</find>
-      <find>writereg</find>
-      <find>put</find>
-      <find>move</find>
-      <find>,</find>
-      <find>getreg</find>
-      <find>readreg</find>
-      <find>getname</find>
-      <find>debug</find>
-      <find>main</find>
-      <find>format</find>
-      <find>shl</find>
-      <find>shc</find>
-      <find>todo</find>
-      <find>multiArrat</find>
-      <find>multiArray</find>
-      <find>mallocArray</find>
-      <find>address</find>
-      <find>caladd</find>
-      <find>newvar</find>
-      <find>array</find>
-      <find>newarr</find>
-      <find>mem</find>
-      <find>mallocarray</find>
-      <find>multia</find>
-      <find>malloc</find>
       <find>multi</find>
       <find>fun</find>
       <find>call</find>
+      <find>work</find>
+      <find>emit</find>
+      <find>put</find>
+      <find>label</find>
+      <find>global_init</find>
+      <find>newlabel</find>
+      <find>ir</find>
+      <find>sys</find>
+      <find>:</find>
+      <find>:\n\t</find>
+      <find>:\t</find>
+      <find>tostring</find>
+      <find>address</find>
+      <find>morarr</find>
+      <find>caladd</find>
+      <find>stradd</find>
+      <find>newarr</find>
+      <find>mad_007</find>
+      <find>movrax</find>
+      <find>jnz</find>
+      <find>tostr</find>
+      <find>jnz\tL</find>
+      <find>gbl:</find>
+      <find>bss</find>
+      <find>err.p</find>
+      <find>out.p</find>
+      <find>//</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -101,12 +89,13 @@
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
         <option value="$PROJECT_DIR$/test.mxx" />
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
+        <option value="$PROJECT_DIR$/src/Irtox86.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
+    <option name="x" value="450" />
     <option name="y" value="-12" />
     <option name="width" value="1944" />
     <option name="height" value="1044" />
@@ -116,8 +105,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -125,10 +112,17 @@
               <item name="tester" type="b2602c69:ProjectViewProjectNode" />
               <item name="tester" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="tester" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tester" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -163,7 +157,7 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="tester" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -243,10 +237,9 @@
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49096385" visible="true" weight="0.27970898" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7620482" visible="true" weight="0.28455943" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5662432" />
-      <window_info id="Structure" order="6" sideWeight="0.5090361" side_tool="true" visible="true" weight="0.27970898" />
+      <window_info id="Structure" order="6" sideWeight="0.2379518" side_tool="true" visible="true" weight="0.28455943" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -257,6 +250,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -264,37 +258,16 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50160">
-          <caret line="2640" lean-forward="true" selection-start-line="2640" selection-end-line="2640" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2090">
           <caret line="110" selection-start-line="110" selection-end-line="110" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -313,20 +286,6 @@
           <caret line="731" lean-forward="true" selection-start-line="731" selection-end-line="731" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -345,20 +304,6 @@
           <caret line="385" column="12" selection-start-line="385" selection-start-column="12" selection-end-line="385" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -391,20 +336,6 @@
           <caret line="330" column="26" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -423,20 +354,6 @@
           <caret line="863" column="39" lean-forward="true" selection-start-line="863" selection-start-column="39" selection-end-line="863" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -456,20 +373,6 @@
           <caret line="284" column="44" selection-start-line="284" selection-start-column="39" selection-end-line="284" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -489,20 +392,6 @@
           <caret line="311" column="18" lean-forward="true" selection-start-line="311" selection-start-column="18" selection-end-line="311" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -522,20 +411,6 @@
           <caret line="891" column="18" lean-forward="true" selection-start-line="891" selection-start-column="18" selection-end-line="891" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -561,20 +436,6 @@
           <caret line="95" column="5" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -593,20 +454,6 @@
           <caret line="95" column="5" lean-forward="true" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -625,20 +472,6 @@
           <caret line="534" lean-forward="true" selection-start-line="534" selection-end-line="534" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -657,20 +490,6 @@
           <caret line="311" column="49" selection-start-line="311" selection-start-column="49" selection-end-line="311" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -689,20 +508,6 @@
           <caret line="430" lean-forward="true" selection-start-line="430" selection-end-line="430" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -721,20 +526,6 @@
           <caret line="242" selection-start-line="242" selection-end-line="242" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -753,20 +544,6 @@
           <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>
@@ -843,42 +620,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Irtox86.java" />
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/ConstantPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="253" column="31" lean-forward="true" selection-start-line="253" selection-start-column="31" selection-end-line="253" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="562" column="58" selection-start-line="562" selection-start-column="58" selection-end-line="562" selection-end-column="58" />
+        <state relative-caret-position="84">
+          <caret line="366" column="37" selection-start-line="366" selection-start-column="34" selection-end-line="366" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/ConstantPool.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="135" column="10" selection-start-line="135" selection-start-column="10" selection-end-line="135" selection-end-column="10" />
+        <state relative-caret-position="101">
+          <caret line="410" selection-start-line="410" selection-end-line="410" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#funccaladd#0;class#Backend#0" />
-            <element signature="method#funcaddress#0;class#Backend#0" />
-            <element signature="method#funcmorarr#0;class#Backend#0" />
-            <element signature="method#functoString#0;class#Backend#0" />
-            <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
-            <element signature="method#clr#0;class#Backend#0" />
-            <element signature="method#cr#0;class#Backend#0" />
-            <element signature="method#free#0;class#Backend#0" />
-            <element signature="method#put#0;class#Backend#0" />
-            <element signature="class#vtype#0" />
-            <element signature="class#Oper#0" />
-            <element signature="class#func#0" />
-            <element signature="class#sys#0" />
             <element signature="class#RVistor#0" />
           </folding>
         </state>

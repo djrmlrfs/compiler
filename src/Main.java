@@ -23,25 +23,25 @@ class Backend{
         unmh = smp; work(of);
     }
     private StringBuffer funccaladd() {
-        StringBuffer ret = new StringBuffer("caladd:\n");
+        StringBuffer ret = new StringBuffer("_caladd:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-30H]\n\tmov\trax, qword [rax]\n");
         emit(ret,"\tmov\tqword [rbp-18H], rax\n\tcmp\tqword [rbp-18H], 0\n\tjnz\tmAd_005\n");
-        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tjmp\tmAd_008\n\nmAd_005:\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tjmp\tmAd_008\n\nmAd_005:\n\tmov\trax, qword [rbp-28H]\n");
         emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\tqword [rbp-8H], 1\n\tjmp\tmAd_007\n\n");
-        emit(ret,"mAd_006:\tmov\trax, qword [rbp-8H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trdx, qword [rax]\n");
-        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
+        emit(ret,"mAd_006:\n\tmov\trax, qword [rbp-8H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
         emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-10H], rax\n\tadd\tqword [rbp-8H], 1\n");
-        emit(ret,"mAd_007:\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-18H]\n\tjl\tmAd_006\n");
+        emit(ret,"mAd_007:\n\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-18H]\n\tjl\tmAd_006\n");
         emit(ret,"\tmov\trax, qword [rbp-18H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trdx, qword [rax]\n");
-        emit(ret,"\tmovrax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
-        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\tleave\n\tret\n\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\n\tleave\n\tret\n\n");
         return ret;
     }
     private StringBuffer funcaddress() {
-        StringBuffer ret = new StringBuffer("address:\n");
+        StringBuffer ret = new StringBuffer("_address:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-8H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-10H], rsi\n\tmov\trax, qword [rbp-10H]\n");
         emit(ret,"\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
@@ -56,48 +56,48 @@ class Backend{
         emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trax, qword [rax]\n\tcmp\trdx, rax\n");
         emit(ret,"\tjnz\tCL_005\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
         emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n");
-        emit(ret,"\tcall\taddress\n\tmov\trax, qword [rax]\n\tmov\trdi, rax\n\tcall\tnewarr\n");
-        emit(ret,"\tjmp\tCL_008\n\nCL_005:\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
-        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n");
+        emit(ret,"\tcall\t_address\n\tmov\trax, qword [rax]\n\tmov\trdi, rax\n\tcall\t_newarr\n");
+        emit(ret,"\tjmp\tCL_008\n\nCL_005:\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
         emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-20H], rax\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\trdi, rax\n\tcall\tnewarr\n\tmov\tqword [rbp-28H], rax\n\tmov\tdword [rbp-14H], 0\n");
-        emit(ret,"\tjmp\tCL_007\n\nCL_006:\tmov\teax, dword [rbp-14H]\n\tmovsxd\trdx, eax\n\tmov\trax, qword [rbp-28H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\taddress\n\tmov\trbx, rax\n\tmov\teax, dword [rbp-34H]\n");
+        emit(ret,"\tmov\trdi, rax\n\tcall\t_newarr\n\tmov\tqword [rbp-28H], rax\n\tmov\tdword [rbp-14H], 0\n");
+        emit(ret,"\tjmp\tCL_007\n\nCL_006:\n\tmov\teax, dword [rbp-14H]\n\tmovsxd\trdx, eax\n\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trbx, rax\n\tmov\teax, dword [rbp-34H]\n");
         emit(ret,"\tlea\tedx, [rax+1H]\n\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rax\n\tmov\tedi, edx\n");
-        emit(ret,"\tcall\t_multiArray\n\tmov\tqword [rbx], rax\n\tadd\tdword [rbp-14H], 1\nCL_007:\tmov\teax, dword [rbp-14H]\n");
-        emit(ret,"\tcdqe\n\tcmp\trax, qword [rbp-20H]\n\tjl\tCL_006\n\tmov\trax, qword [rbp-28H]\nCL_008:\tadd\trsp, 56\n");
-        emit(ret,"\tpop\trbx\n\tpop\trbp\n\tret\n\n\nmorarr:\n\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n");
+        emit(ret,"\tcall\t_multiArray\n\tmov\tqword [rbx], rax\n\tadd\tdword [rbp-14H], 1\nCL_007:\n\tmov\teax, dword [rbp-14H]\n");
+        emit(ret,"\tcdqe\n\tcmp\trax, qword [rbp-20H]\n\tjl\tCL_006\n\tmov\trax, qword [rbp-28H]\nCL_008:\n\tadd\trsp, 56\n");
+        emit(ret,"\tpop\trbx\n\tpop\trbp\n\tret\n\n\n_morarr:\n\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n");
         emit(ret,"\tmov\tqword [rbp-8H], rdi\n\tmov\trax, qword [rbp-8H]\n\tmov\trsi, rax\n\tmov\tedi, 0\n\tcall\t_multiArray\n\tleave\n\tret\n");
         return ret;
     }
     private StringBuffer functoString() {
-        StringBuffer ret = new StringBuffer("toString:\n");
+        StringBuffer ret = new StringBuffer("_toString:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 64\n\tmov\tqword [rbp-38H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 1\n\tcmp\tqword [rbp-38H], 0\n");
-        emit(ret,"\tjnz\tL_001\n\tmov\tqword [rbp-8H], 1\n\tcmp\tqword [rbp-38H], 0\n\tjns\tL_002\n");
+        emit(ret,"\tjnz\tL_001\n\tmov\tqword [rbp-8H], 1\nL_001:\n\tcmp\tqword [rbp-38H], 0\n\tjns\tL_002\n");
         emit(ret,"\tneg\tqword [rbp-38H]\n\tmov\tqword [rbp-10H], -1\n\tadd\tqword [rbp-8H], 1\n");
-        emit(ret,"L_002:\tmov\trax, qword [rbp-38H]\n\tmov\tqword [rbp-18H], rax\n\tjmp\tL_004\n\n");
-        emit(ret,"L_003:\tadd\tqword [rbp-8H], 1\n\tmov\trcx, qword [rbp-18H]\n\tmov\trdx, qword 6666666666666667H\n");
+        emit(ret,"L_002:\n\tmov\trax, qword [rbp-38H]\n\tmov\tqword [rbp-18H], rax\n\tjmp\tL_004\n\n");
+        emit(ret,"L_003:\n\tadd\tqword [rbp-8H], 1\n\tmov\trcx, qword [rbp-18H]\n\tmov\trdx, qword 6666666666666667H\n");
         emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n");
-        emit(ret,"\tsub\trdx, rax\n\tmov\trax, rdx\n\tmov\tqword [rbp-18H], rax\nL_004:\tcmp\tqword [rbp-18H], 0\n");
+        emit(ret,"\tsub\trdx, rax\n\tmov\trax, rdx\n\tmov\tqword [rbp-18H], rax\nL_004:\n\tcmp\tqword [rbp-18H], 0\n");
         emit(ret,"\tjg\tL_003\n\tmov\trax, qword [rbp-8H]\n\tadd\trax, 2\n\tmov\trdi, rax\n\tcall\tmalloc\n");
         emit(ret,"\tmov\tqword [rbp-28H], rax\n\tmov\trax, qword [rbp-28H]\n\tmov\tqword [rbp-20H], rax\n");
         emit(ret,"\tmov\trax, qword [rbp-8H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n\tmov\tbyte [rax], dl\n");
         emit(ret,"\tadd\tqword [rbp-20H], 1\n\tcmp\tqword [rbp-10H], -1\n\tjnz\tL_005\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\tbyte [rax], 45\nL_005:\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-28H]\n\tadd\trax, rdx\n");
+        emit(ret,"\tmov\tbyte [rax], 45\nL_005:\n\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-28H]\n\tadd\trax, rdx\n");
         emit(ret,"\tmov\tqword [rbp-20H], rax\n\tcmp\tqword [rbp-38H], 0\n\tjnz\tL_006\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\tbyte [rax], 48\n\tjmp\tL_008\n\nL_006:\tjmp\tL_008\n\nL_007:\tmov\trcx, qword [rbp-38H]\n");
+        emit(ret,"\tmov\tbyte [rax], 48\n\tjmp\tL_008\n\nL_006:\n\tjmp\tL_008\n\nL_007:\n\tmov\trcx, qword [rbp-38H]\n");
         emit(ret,"\tmov\trdx, qword 6666666666666667H\n\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n");
         emit(ret,"\tsar\trax, 63\n\tsub\trdx, rax\n\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
         emit(ret,"\tsub\trcx, rax\n\tmov\trdx, rcx\n\tmov\teax, edx\n\tadd\teax, 48\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n");
         emit(ret,"\tmov\tbyte [rax], dl\n\tsub\tqword [rbp-20H], 1\n\tmov\trcx, qword [rbp-38H]\n\tmov\trdx, qword 6666666666666667H\n");
         emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n\tsub\trdx, rax\n");
-        emit(ret,"\tmov\trax, rdx\n\tmov\tqword [rbp-38H], rax\nL_008:\tcmp\tqword [rbp-38H], 0\n");
+        emit(ret,"\tmov\trax, rdx\n\tmov\tqword [rbp-38H], rax\nL_008:\n\tcmp\tqword [rbp-38H], 0\n");
         emit(ret,"\tjg\tL_007\n\tmov\trax, qword [rbp-28H]\n\tleave\n\tret\n\n");
         return ret;
     }
     private StringBuffer funcnewarr() {
-        StringBuffer ret = new StringBuffer("newarr:\n");
+        StringBuffer ret = new StringBuffer("_newarr:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 32\n\tmov\tqword [rbp-18H], rdi\n");
         emit(ret,"\tmov\trax, qword [rbp-18H]\n\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdi, rax\n");
         emit(ret,"\tcall\tmalloc\n\tmov\tqword [rbp-8H], rax\n\tmov\trax, qword [rbp-18H]\n");
@@ -107,7 +107,7 @@ class Backend{
         return ret;
     }
     private StringBuffer funcstradd() {
-        StringBuffer ret = new StringBuffer("stradd:\n");
+        StringBuffer ret = new StringBuffer("_stradd:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n");
         emit(ret,"\tmovzx\tedx, al\n\tmov\trax, qword [rbp-30H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n");
@@ -115,14 +115,14 @@ class Backend{
         emit(ret,"\tmov\trax, qword [rbp-28H]\n\tmovzx\tedx, byte [rax]\n\tmov\trax, qword [rbp-30H]\n");
         emit(ret,"\tmovzx\teax, byte [rax]\n\tadd\tedx, eax\n\tmov\trax, qword [rbp-18H]\n\tmov\tbyte [rax], dl\n");
         emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 0\n\tmov\tqword [rbp-8H], 0\n\tjmp\tcc_002\n\n");
-        emit(ret,"cc_001:\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"cc_001:\n\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n");
         emit(ret,"\tadd\trdx, rax\n\tmov\trax, qword [rbp-8H]\n\tlea\trcx, [rax+1H]\n\tmov\trax, qword [rbp-28H]\n");
         emit(ret,"\tadd\trax, rcx\n\tmovzx\teax, byte [rax]\n\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\n");
-        emit(ret,"cc_002:\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tcmp\trax, qword [rbp-8H]\n");
-        emit(ret,"\tjg\tcc_001\n\tmov\tqword [rbp-8H], 0\n\tjmp\tcc_004\n\ncc_003:\tadd\tqword [rbp-10H], 1\n");
+        emit(ret,"cc_002:\n\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tcmp\trax, qword [rbp-8H]\n");
+        emit(ret,"\tjg\tcc_001\n\tmov\tqword [rbp-8H], 0\n\tjmp\tcc_004\n\ncc_003:\n\tadd\tqword [rbp-10H], 1\n");
         emit(ret,"\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
         emit(ret,"\tlea\trcx, [rax+1H]\n\tmov\trax, qword [rbp-30H]\n\tadd\trax, rcx\n\tmovzx\teax, byte [rax]\n");
-        emit(ret,"\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\ncc_004:\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\ncc_004:\n\tmov\trax, qword [rbp-30H]\n");
         emit(ret,"\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tcmp\trax, qword [rbp-8H]\n\tjg\tcc_003\n");
         emit(ret,"\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-18H]\n");
         emit(ret,"\tadd\trax, rdx\n\tmov\tbyte [rax], 0\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n\n");
@@ -132,8 +132,8 @@ class Backend{
     {
         emit(text,functoString());  emit(text,funcnewarr());    emit(text,funcstradd());
         emit(text,funcaddress());     emit(text,funcmorarr());      emit(text,funccaladd());
-        //emit(text,funcgetInt());      emit(text,funcgetString());   emit(text,funcparseInt());
-        //emit(text,funcsubstring());   emit(text,funcord());         emit(text,funcstrcmp());
+//        emit(text,funcgetInt());      emit(text,funcgetString());   emit(text,funcparseInt());
+//        emit(text,funcsubstring());   emit(text,funcord());         emit(text,funcstrcmp());
     }
     private void emit(StringBuffer str, String st){str.append(st);}
     private void emit(StringBuffer str, StringBuffer st){str.append(st);}
@@ -145,7 +145,6 @@ class Backend{
     }
     private void work(String ofile)throws Exception
     {
-//        StringBuffer debuguse = new StringBuffer();
         System.err.println("djrmlrfs");
         for (int i = 0; i < 16; ++i)
         {
@@ -158,7 +157,7 @@ class Backend{
         emit(head,"\tglobal\tmain\n\textern\tputs\n\textern\tprintf\n");
         emit(head,"\textern\tscanf\n\textern\tmalloc\n\textern\tstrlen\n");
         emit(head,"\textern\tstrcmp\n\textern\tmemset\n");
-        emit(text,"\tsection\t.text\n\tsection\t.bss\n\tsection\t.data\n");
+        emit(text,"\tsection\t.text\n");    emit(bss,"\tsection\t.bss\n");  emit(data,"\tsection\t.data\n");
         for (sys now = ir.head; now != null; now = now.next)
             {++lnum;     advar(now.var1);    advar(now.var2);  advar(now.dest);}
         emit(bss,"gbl:\n\tresb\t");   emit(bss,Integer.toString(vid.size()*8+2048)+"\n");
@@ -335,11 +334,11 @@ class Backend{
                     emit(text,", rax\n\t");  free();    break;
                 case newarr:
                     clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));
-                    emit(text,"\n\tcall\tnewarr\n\tmov\tqword ");
+                    emit(text,"\n\tcall\t_newarr\n\tmov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t");   free(); break;
                 case concat:
                     clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\tmov     rdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\tcall\tstradd\n\t");    emit(text,"mov ");
+                    emit(text,getname(var1));   emit(text,"\n\tcall\t_stradd\n\t");    emit(text,"mov ");
                     emit(text,getname(dest));   emit(text,", rax\n\t");     free();     break;
                 case load:
                     getreg(var1);   emit(text,"mov "+writereg(dest)+", ["+readreg(var1));
@@ -366,7 +365,7 @@ class Backend{
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case toString:
                     clr();  emit(text,"mov     rdi, ");     emit(text,getname(var1));
-                    emit(text,"\n\tcall\ttoString\n\tmov     qword");
+                    emit(text,"\n\tcall\t_toString\n\tmov     qword");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
                 case exitFunction:
                     clr();  break;
@@ -384,12 +383,12 @@ class Backend{
                     break;
                 case multiArray:
                     clr();
-                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\tmorarr\n\t");
+                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\t_morarr\n\t");
                     emit(text,"mov\tqword ");    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
                 case multiAddress:
                     clr();
                     emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");  emit(text,"mov\trdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\tcaladd\n\tmov ");
+                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\t_caladd\n\tmov ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case substring:
                     clr();  emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");
@@ -405,17 +404,13 @@ class Backend{
                     emit(text,", rax\n\t");     free();     break;
                 default:    break;
             }
-//            debuguse.append("\n\n--"+now.oper+"--:\n");
-//            debuguse.append(text.toString());
         }
         emit(head,"\n");    emit(head,text);
         emit(head,"\n");    emit(head,bss);
         emit(head,"\n");    emit(head,data);
-//        System.out.println(head.toString());
-        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
-        output.println(head.toString());    output.close();
-//        PrintWriter debug = new PrintWriter(new FileOutputStream(new File("bug.out")));
-//        debug.println(debuguse.toString());    debug.close();
+        System.out.println(head.toString());
+//        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
+//        output.println(head.toString());    output.close();
 
     }
 
@@ -952,8 +947,8 @@ class MVisitor extends MxxBaseVisitor<IR>
                 String name = childContext.fname().getText();   unmhere.udnm.add(name);
             }
         IR ir5 = new IR();
-        ir5.push(new sys(Oper.label,"global_init"));
-        ir5.push(new sys(Oper.enterFunction,"global_init"));
+        ir5.push(new sys(Oper.label,"_global_init"));
+        ir5.push(new sys(Oper.enterFunction,"_global_init"));
         for (ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.DeffuncContext.class))
             {
@@ -1579,7 +1574,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         nir.push(new sys(Oper.enterFunction,name));
         if (name.equals("main"))
         {
-            nir.push(new sys(Oper.call, "global_init", nvar((new vtype("int",0)))));
+            nir.push(new sys(Oper.call, "_global_init", nvar((new vtype("int",0)))));
             if (!type.name.equals("int"))
             {
                 System.err.println("bool main");
@@ -2287,10 +2282,10 @@ public class Main{
         ParseTree tree = parser.program();
         MVisitor visitor = new MVisitor();
         IR iir = visitor.visit(tree);
-//        iir.print();
+//        iir.show();
         iir.simplify();
         Backend back = new Backend();
-        back.init(iir,visitor.cstr,visitor.unmhere,"test.nasm");
+        back.init(iir,visitor.cstr,visitor.unmhere,"test.asm");
     }
 
     public static void main(String [] args) throws Exception
