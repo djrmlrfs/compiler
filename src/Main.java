@@ -17,83 +17,14 @@ class Backend{
     private HashMap<vara,Integer> vld = new HashMap<>();
     private static StringBuffer text = new StringBuffer();
     Backend(){}
-    void init(IR iir, HashMap<vara,String> csp,zcc smp, String of)throws Exception
+    void init(IR iir, HashMap<vara,String> csp,zcc smp)throws Exception
     {
         ir = iir; cstr = csp;
-        unmh = smp; work(of);
+        unmh = smp; work();
     }
-    private StringBuffer funccaladd() {
-        StringBuffer ret = new StringBuffer("_caladd:\n");
-        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
-        emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-30H]\n\tmov\trax, qword [rax]\n");
-        emit(ret,"\tmov\tqword [rbp-18H], rax\n\tcmp\tqword [rbp-18H], 0\n\tjnz\tmAd_005\n");
-        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tjmp\tmAd_008\n\nmAd_005:\n\tmov\trax, qword [rbp-28H]\n");
-        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\tqword [rbp-8H], 1\n\tjmp\tmAd_007\n\n");
-        emit(ret,"mAd_006:\n\tmov\trax, qword [rbp-8H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
-        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
-        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-10H], rax\n\tadd\tqword [rbp-8H], 1\n");
-        emit(ret,"mAd_007:\n\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-18H]\n\tjl\tmAd_006\n");
-        emit(ret,"\tmov\trax, qword [rbp-18H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
-        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
-        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\n\tleave\n\tret\n\n");
-        return ret;
-    }
-    private StringBuffer funcaddress() {
-        StringBuffer ret = new StringBuffer("_address:\n");
-        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-8H], rdi\n");
-        emit(ret,"\tmov\tqword [rbp-10H], rsi\n\tmov\trax, qword [rbp-10H]\n");
-        emit(ret,"\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
-        emit(ret,"\tadd\trax, rdx\n\tpop\trbp\n\tret\n\n");
-        return ret;
-    }
-    private StringBuffer funcmorarr() {
-        StringBuffer ret = new StringBuffer("_multiArray:\n");
-        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tpush\trbx\n\tsub\trsp, 56\n");
-        emit(ret,"\tmov\tdword [rbp-34H], edi\n\tmov\tqword [rbp-40H], rsi\n");
-        emit(ret,"\tmov\teax, dword [rbp-34H]\n\tadd\teax, 1\n\tmovsxd\trdx, eax\n");
-        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trax, qword [rax]\n\tcmp\trdx, rax\n");
-        emit(ret,"\tjnz\tCL_005\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
-        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n");
-        emit(ret,"\tcall\t_address\n\tmov\trax, qword [rax]\n\tmov\trdi, rax\n\tcall\t_newarr\n");
-        emit(ret,"\tjmp\tCL_008\n\nCL_005:\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
-        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
-        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-20H], rax\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\trdi, rax\n\tcall\t_newarr\n\tmov\tqword [rbp-28H], rax\n\tmov\tdword [rbp-14H], 0\n");
-        emit(ret,"\tjmp\tCL_007\n\nCL_006:\n\tmov\teax, dword [rbp-14H]\n\tmovsxd\trdx, eax\n\tmov\trax, qword [rbp-28H]\n");
-        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trbx, rax\n\tmov\teax, dword [rbp-34H]\n");
-        emit(ret,"\tlea\tedx, [rax+1H]\n\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rax\n\tmov\tedi, edx\n");
-        emit(ret,"\tcall\t_multiArray\n\tmov\tqword [rbx], rax\n\tadd\tdword [rbp-14H], 1\nCL_007:\n\tmov\teax, dword [rbp-14H]\n");
-        emit(ret,"\tcdqe\n\tcmp\trax, qword [rbp-20H]\n\tjl\tCL_006\n\tmov\trax, qword [rbp-28H]\nCL_008:\n\tadd\trsp, 56\n");
-        emit(ret,"\tpop\trbx\n\tpop\trbp\n\tret\n\n\n_morarr:\n\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n");
-        emit(ret,"\tmov\tqword [rbp-8H], rdi\n\tmov\trax, qword [rbp-8H]\n\tmov\trsi, rax\n\tmov\tedi, 0\n\tcall\t_multiArray\n\tleave\n\tret\n");
-        return ret;
-    }
-    private StringBuffer functoString() {
-        StringBuffer ret = new StringBuffer("_toString:\n");
-        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 64\n\tmov\tqword [rbp-38H], rdi\n");
-        emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 1\n\tcmp\tqword [rbp-38H], 0\n");
-        emit(ret,"\tjnz\tL_001\n\tmov\tqword [rbp-8H], 1\nL_001:\n\tcmp\tqword [rbp-38H], 0\n\tjns\tL_002\n");
-        emit(ret,"\tneg\tqword [rbp-38H]\n\tmov\tqword [rbp-10H], -1\n\tadd\tqword [rbp-8H], 1\n");
-        emit(ret,"L_002:\n\tmov\trax, qword [rbp-38H]\n\tmov\tqword [rbp-18H], rax\n\tjmp\tL_004\n\n");
-        emit(ret,"L_003:\n\tadd\tqword [rbp-8H], 1\n\tmov\trcx, qword [rbp-18H]\n\tmov\trdx, qword 6666666666666667H\n");
-        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n");
-        emit(ret,"\tsub\trdx, rax\n\tmov\trax, rdx\n\tmov\tqword [rbp-18H], rax\nL_004:\n\tcmp\tqword [rbp-18H], 0\n");
-        emit(ret,"\tjg\tL_003\n\tmov\trax, qword [rbp-8H]\n\tadd\trax, 2\n\tmov\trdi, rax\n\tcall\tmalloc\n");
-        emit(ret,"\tmov\tqword [rbp-28H], rax\n\tmov\trax, qword [rbp-28H]\n\tmov\tqword [rbp-20H], rax\n");
-        emit(ret,"\tmov\trax, qword [rbp-8H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n\tmov\tbyte [rax], dl\n");
-        emit(ret,"\tadd\tqword [rbp-20H], 1\n\tcmp\tqword [rbp-10H], -1\n\tjnz\tL_005\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\tbyte [rax], 45\nL_005:\n\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-28H]\n\tadd\trax, rdx\n");
-        emit(ret,"\tmov\tqword [rbp-20H], rax\n\tcmp\tqword [rbp-38H], 0\n\tjnz\tL_006\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\tbyte [rax], 48\n\tjmp\tL_008\n\nL_006:\n\tjmp\tL_008\n\nL_007:\n\tmov\trcx, qword [rbp-38H]\n");
-        emit(ret,"\tmov\trdx, qword 6666666666666667H\n\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n");
-        emit(ret,"\tsar\trax, 63\n\tsub\trdx, rax\n\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
-        emit(ret,"\tsub\trcx, rax\n\tmov\trdx, rcx\n\tmov\teax, edx\n\tadd\teax, 48\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n");
-        emit(ret,"\tmov\tbyte [rax], dl\n\tsub\tqword [rbp-20H], 1\n\tmov\trcx, qword [rbp-38H]\n\tmov\trdx, qword 6666666666666667H\n");
-        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n\tsub\trdx, rax\n");
-        emit(ret,"\tmov\trax, rdx\n\tmov\tqword [rbp-38H], rax\nL_008:\n\tcmp\tqword [rbp-38H], 0\n");
-        emit(ret,"\tjg\tL_007\n\tmov\trax, qword [rbp-28H]\n\tleave\n\tret\n\n");
+    private StringBuffer funcord() {
+        StringBuffer ret = new StringBuffer();
+        //todo
         return ret;
     }
     private StringBuffer funcnewarr() {
@@ -128,12 +59,121 @@ class Backend{
         emit(ret,"\tadd\trax, rdx\n\tmov\tbyte [rax], 0\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n\n");
         return ret;
     }
+    private StringBuffer funcmorarr() {
+        StringBuffer ret = new StringBuffer("_mor:\n");  funcused.add("newarr");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tpush\trbx\n\tsub\trsp, 56\n");
+        emit(ret,"\tmov\tdword [rbp-34H], edi\n\tmov\tqword [rbp-40H], rsi\n");
+        emit(ret,"\tmov\teax, dword [rbp-34H]\n\tadd\teax, 1\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trax, qword [rax]\n\tcmp\trdx, rax\n");
+        emit(ret,"\tjnz\tCL_005\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n");
+        emit(ret,"\tcall\t_address\n\tmov\trax, qword [rax]\n\tmov\trdi, rax\n\tcall\t_newarr\n");
+        emit(ret,"\tjmp\tCL_008\n\nCL_005:\n\tmov\teax, dword [rbp-34H]\n\tmovsxd\trdx, eax\n");
+        emit(ret,"\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
+        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-20H], rax\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\trdi, rax\n\tcall\t_newarr\n\tmov\tqword [rbp-28H], rax\n\tmov\tdword [rbp-14H], 0\n");
+        emit(ret,"\tjmp\tCL_007\n\nCL_006:\n\tmov\teax, dword [rbp-14H]\n\tmovsxd\trdx, eax\n\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trbx, rax\n\tmov\teax, dword [rbp-34H]\n");
+        emit(ret,"\tlea\tedx, [rax+1H]\n\tmov\trax, qword [rbp-40H]\n\tmov\trsi, rax\n\tmov\tedi, edx\n");
+        emit(ret,"\tcall\t_mor\n\tmov\tqword [rbx], rax\n\tadd\tdword [rbp-14H], 1\nCL_007:\n\tmov\teax, dword [rbp-14H]\n");
+        emit(ret,"\tcdqe\n\tcmp\trax, qword [rbp-20H]\n\tjl\tCL_006\n\tmov\trax, qword [rbp-28H]\nCL_008:\n\tadd\trsp, 56\n");
+        emit(ret,"\tpop\trbx\n\tpop\trbp\n\tret\n\n\n_morarr:\n\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n");
+        emit(ret,"\tmov\tqword [rbp-8H], rdi\n\tmov\trax, qword [rbp-8H]\n\tmov\trsi, rax\n\tmov\tedi, 0\n\tcall\t_mor\n\tleave\n\tret\n");
+        return ret;
+    }
+    private StringBuffer funccaladd() {
+        StringBuffer ret = new StringBuffer("_caladd:\n");  funcused.add("address");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-30H]\n\tmov\trax, qword [rax]\n");
+        emit(ret,"\tmov\tqword [rbp-18H], rax\n\tcmp\tqword [rbp-18H], 0\n\tjnz\tmAd_005\n");
+        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tjmp\tmAd_008\n\nmAd_005:\n\tmov\trax, qword [rbp-28H]\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\tqword [rbp-8H], 1\n\tjmp\tmAd_007\n\n");
+        emit(ret,"mAd_006:\n\tmov\trax, qword [rbp-8H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
+        emit(ret,"\tmov\trax, qword [rax]\n\tmov\tqword [rbp-10H], rax\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"mAd_007:\n\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-18H]\n\tjl\tmAd_006\n");
+        emit(ret,"\tmov\trax, qword [rbp-18H]\n\tlea\trdx, [rax-1H]\n\tmov\trax, qword [rbp-30H]\n");
+        emit(ret,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n\tmov\trdx, qword [rax]\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\t_address\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\n\tleave\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcstrcmp() {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private StringBuffer funcgetInt() {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private StringBuffer funcaddress() {
+        StringBuffer ret = new StringBuffer("_address:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-8H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rsi\n\tmov\trax, qword [rbp-10H]\n");
+        emit(ret,"\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdx, rax\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tadd\trax, rdx\n\tpop\trbp\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcparseInt() {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private StringBuffer functoString() {
+        StringBuffer ret = new StringBuffer("_toString:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 64\n\tmov\tqword [rbp-38H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 1\n\tcmp\tqword [rbp-38H], 0\n");
+        emit(ret,"\tjnz\tL_001\n\tmov\tqword [rbp-8H], 1\nL_001:\n\tcmp\tqword [rbp-38H], 0\n\tjns\tL_002\n");
+        emit(ret,"\tneg\tqword [rbp-38H]\n\tmov\tqword [rbp-10H], -1\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"L_002:\n\tmov\trax, qword [rbp-38H]\n\tmov\tqword [rbp-18H], rax\n\tjmp\tL_004\n\n");
+        emit(ret,"L_003:\n\tadd\tqword [rbp-8H], 1\n\tmov\trcx, qword [rbp-18H]\n\tmov\trdx, qword 6666666666666667H\n");
+        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n");
+        emit(ret,"\tsub\trdx, rax\n\tmov\trax, rdx\n\tmov\tqword [rbp-18H], rax\nL_004:\n\tcmp\tqword [rbp-18H], 0\n");
+        emit(ret,"\tjg\tL_003\n\tmov\trax, qword [rbp-8H]\n\tadd\trax, 2\n\tmov\trdi, rax\n\tcall\tmalloc\n");
+        emit(ret,"\tmov\tqword [rbp-28H], rax\n\tmov\trax, qword [rbp-28H]\n\tmov\tqword [rbp-20H], rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-8H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n\tmov\tbyte [rax], dl\n");
+        emit(ret,"\tadd\tqword [rbp-20H], 1\n\tcmp\tqword [rbp-10H], -1\n\tjnz\tL_005\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], 45\nL_005:\n\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-28H]\n\tadd\trax, rdx\n");
+        emit(ret,"\tmov\tqword [rbp-20H], rax\n\tcmp\tqword [rbp-38H], 0\n\tjnz\tL_006\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], 48\n\tjmp\tL_008\n\nL_006:\n\tjmp\tL_008\n\nL_007:\n\tmov\trcx, qword [rbp-38H]\n");
+        emit(ret,"\tmov\trdx, qword 6666666666666667H\n\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n");
+        emit(ret,"\tsar\trax, 63\n\tsub\trdx, rax\n\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
+        emit(ret,"\tsub\trcx, rax\n\tmov\trdx, rcx\n\tmov\teax, edx\n\tadd\teax, 48\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tmov\tbyte [rax], dl\n\tsub\tqword [rbp-20H], 1\n\tmov\trcx, qword [rbp-38H]\n\tmov\trdx, qword 6666666666666667H\n");
+        emit(ret,"\tmov\trax, rcx\n\timul\trdx\n\tsar\trdx, 2\n\tmov\trax, rcx\n\tsar\trax, 63\n\tsub\trdx, rax\n");
+        emit(ret,"\tmov\trax, rdx\n\tmov\tqword [rbp-38H], rax\nL_008:\n\tcmp\tqword [rbp-38H], 0\n");
+        emit(ret,"\tjg\tL_007\n\tmov\trax, qword [rbp-28H]\n\tleave\n\tret\n\n");
+        return ret;
+    }
+    private StringBuffer funcgetString() {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+    private StringBuffer funcsubstring() {
+        StringBuffer ret = new StringBuffer();
+        //todo
+        return ret;
+    }
+
+    private Set<String> funcused = new HashSet<>();
     private void addconstantfunc()
     {
-        emit(text,functoString());  emit(text,funcnewarr());    emit(text,funcstradd());
-        emit(text,funcaddress());     emit(text,funcmorarr());      emit(text,funccaladd());
-//        emit(text,funcgetInt());      emit(text,funcgetString());   emit(text,funcparseInt());
-//        emit(text,funcsubstring());   emit(text,funcord());         emit(text,funcstrcmp());
+        if (funcused.contains("ord"))  emit(text,funcord());
+        if (funcused.contains("newarr"))  emit(text,funcnewarr());
+        if (funcused.contains("stradd"))  emit(text,funcstradd());
+        if (funcused.contains("morarr"))  emit(text,funcmorarr());
+        if (funcused.contains("caladd"))  emit(text,funccaladd());
+        if (funcused.contains("strcmp"))  emit(text,funcstrcmp());
+        if (funcused.contains("getInt"))  emit(text,funcgetInt());
+        if (funcused.contains("address"))  emit(text,funcaddress());
+        if (funcused.contains("parseInt"))  emit(text,funcparseInt());
+        if (funcused.contains("toString"))  emit(text,functoString());
+        if (funcused.contains("getString"))  emit(text,funcgetString());
+        if (funcused.contains("substring"))  emit(text,funcsubstring());
     }
     private void emit(StringBuffer str, String st){str.append(st);}
     private void emit(StringBuffer str, StringBuffer st){str.append(st);}
@@ -141,9 +181,10 @@ class Backend{
     {
         if (var==null || var.equals(vara.empty))    return;
         vld.put(var,lnum);
-        if (!var.type.name.contains("const") && !vid.containsKey(var))  vid.put(var,vid.size()+1);
+        if (!var.type.name.contains("const") && !vid.containsKey(var))
+            vid.put(var,vid.size()+1);
     }
-    private void work(String ofile)throws Exception
+    private void work()throws Exception
     {
         System.err.println("djrmlrfs");
         for (int i = 0; i < 16; ++i)
@@ -157,9 +198,12 @@ class Backend{
         emit(head,"\tglobal\tmain\n\textern\tputs\n\textern\tprintf\n");
         emit(head,"\textern\tscanf\n\textern\tmalloc\n\textern\tstrlen\n");
         emit(head,"\textern\tstrcmp\n\textern\tmemset\n");
-        emit(text,"\tsection\t.text\n");    emit(bss,"\tsection\t.bss\n");  emit(data,"\tsection\t.data\n");
+        emit(text,"\tsection\t.text\n");    emit(bss,"\n\tsection\t.bss\n");  emit(data,"\n\tsection\t.data\n");
         for (sys now = ir.head; now != null; now = now.next)
-            {++lnum;     advar(now.var1);    advar(now.var2);  advar(now.dest);}
+        {
+            ++lnum;     advar(now.var1);
+            advar(now.var2);  advar(now.dest);
+        }
         emit(bss,"gbl:\n\tresb\t");   emit(bss,Integer.toString(vid.size()*8+2048)+"\n");
         emit(bss,"buff.1788:\n\tresb\t256\narg:\n\tresb\t1024\ntrsp:\n\tresb\t1024");
         emit(data,"\nformatln:\n\tdb\t\"%s\", 10, 0\n\t\nformat:\n\t");
@@ -172,205 +216,202 @@ class Backend{
             emit(data,Integer.toString(shl(str)));    emit(data,",");
             emit(data,shc(str));     emit(data,",0\n");
         }
-        addconstantfunc();
-        int skipCounter = 0;    lnum = 0;
+        addconstantfunc();  lnum = 0;
         for (sys now = ir.head; now != null; now = now.next)
         {
             ++lnum;     String name = now.name;
             vara var1 = now.var1, var2 = now.var2, dest = now.dest;
-            if (now.oper.equals(Oper.saveContext))  ++skipCounter;
-            if (now.oper.equals(Oper.resumeContext))++skipCounter;
-            if (now.oper.equals(Oper.endContext))   --skipCounter;
-            if (skipCounter > 0)    continue;
             for (int i = 8; i < 16; ++i)    ban[i] = false;
             switch (now.oper) {
                 case not:
-                    emit(text,"mov "+writereg(dest)+", 0\n\t");
-                    emit(text,"cmp "+readreg(var1)+", 0\n\t");
-                    emit(text,"sete "+writereg(dest)+"B\n\t");    break;
+                    emit(text,"mov\t"+wrg(dest)+", 0\n\t");
+                    emit(text,"cmp\t"+rrg(var1)+", 0\n\t");
+                    emit(text,"sete\t"+wrg(dest)+"B\n\t");    break;
                 case inv:
-                    readreg(var1);
-                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");
-                    emit(text,"not "+writereg(dest));  emit(text,"\n\t");  break;
+                    rrg(var1);
+                    emit(text,"mov\t"+wrg(dest)+","+rrg(var1)+"\n\t");
+                    emit(text,"not\t"+wrg(dest));  emit(text,"\n\t");  break;
                 case neg:
-                    readreg(var1);
-                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");
-                    emit(text,"neg "+writereg(dest));  emit(text,"\n\t");  break;
+                    rrg(var1);
+                    emit(text,"mov\t"+wrg(dest)+","+rrg(var1)+"\n\t");
+                    emit(text,"neg\t"+wrg(dest));  emit(text,"\n\t");  break;
                 case add:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"add "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"add\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case sub:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"sub "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"sub\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case mul:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"imul "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"imul\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case and:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"and "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"and\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case or:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"or "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"or\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case xor:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+", "+readreg(var1)+"\n\t");
-                    emit(text,"xor "+writereg(dest)+", "+readreg(var2));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    emit(text,"xor\t"+wrg(dest)+", "+rrg(var2));   emit(text,"\n\t");
                     break;
                 case div:
-                    emit(text,"xor rdx, rdx\n\t");
-                    emit(text,"mov rax, "+readreg(var1)+"\n\t");
-                    emit(text,"mov rbx, "+readreg(var2)+"\n\t");
+                    emit(text,"xor\trdx, rdx\n\t");
+                    emit(text,"mov\trax, "+rrg(var1)+"\n\t");
+                    emit(text,"mov\trbx, "+rrg(var2)+"\n\t");
                     emit(text,"cdq\n\tidiv rbx\n\t");
-                    emit(text,"mov "+writereg(dest)+", rax\n\t");   break;
+                    emit(text,"mov\t"+wrg(dest)+", rax\n\t");   break;
                 case mod:
-                    emit(text,"xor rdx, rdx\n\t");
-                    emit(text,"mov rax, "+readreg(var1)+"\n\t");
-                    emit(text,"mov rbx, "+readreg(var2)+"\n\t");
+                    emit(text,"xor\trdx, rdx\n\t");
+                    emit(text,"mov\trax, "+rrg(var1)+"\n\t");
+                    emit(text,"mov\trbx, "+rrg(var2)+"\n\t");
                     emit(text,"cdq\n\tidiv rbx\n\t");
-                    emit(text,"mov "+writereg(dest)+", rdx\n\t");   break;
+                    emit(text,"mov\t"+wrg(dest)+", rdx\n\t");   break;
                 case shl:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rcx, "+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"shl "+writereg(dest));  emit(text,", cl\n\t");   break;
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+","+rrg(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trcx, "+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"shl\t"+wrg(dest));  emit(text,", cl\n\t");   break;
                 case shr:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
-                    emit(text,"mov rcx, "+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"shr "+writereg(dest));  emit(text,", cl\n\t");   break;
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+","+rrg(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trcx, "+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"shr\t"+wrg(dest));  emit(text,", cl\n\t");   break;
                 case move:
-                    emit(text,"mov "+writereg(dest)+","+readreg(var1)+"\n\t");  break;
+                    emit(text,"mov\t"+wrg(dest)+", "+rrg(var1)+"\n\t");
+                    break;
                 case call:
-                    clr();  emit(text,"call "); emit(text,name);    emit(text,"\n\t");
-                    free(); emit(text,"mov "+writereg(dest));  emit(text,", rax\n\t");    break;
+                    clr();  emit(text,"call\t"); emit(text,name);    emit(text,"\n\t");
+                    free(); emit(text,"mov\t"+wrg(dest));  emit(text,", rax\n\t");    break;
                 case ret:
-                    emit(text,"mov rax, "+readreg(var1));   emit(text,"\n\t");    clr();
-                    if (name.equals("main"))    emit(text,"mov rsp, qword [trsp]\n\t");
+                    emit(text,"mov\trax, "+rrg(var1));   emit(text,"\n\t");    clr();
+                    if (name.equals("main"))    emit(text,"mov\trsp, qword [trsp]\n\t");
                     emit(text,"leave\n\t"); emit(text,"ret\n\t");  break;
                 case label:
                     clr();  emit(text,"\n");    emit(text,name);
                     emit(text,":\n\t");     break;
                 case less:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setl "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setl\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case leq:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setle "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setle\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case equal:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"sete "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"sete\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case neq:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setne "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setne\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case geq:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setge "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setge\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case gre:
-                    emit(text,"cmp "+readreg(var1)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"mov "+writereg(dest));  emit(text,", 0\n\t");
-                    emit(text,"setg "+writereg(dest));  emit(text,"B\n\t"); clr();  break;
+                    emit(text,"cmp\t"+rrg(var1)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"mov\t"+wrg(dest));  emit(text,", 0\n\t");
+                    emit(text,"setg\t"+wrg(dest));  emit(text,"B\n\t"); clr();  break;
                 case sless:
-                    clr();
-                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstrles\n\t"); emit(text,"mov\tqword ");
-                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
-                case sleq:
-                    clr();
+                    clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstrleq\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strles\n\t"); emit(text,"mov\tqword ");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); break;
+                case sleq:
+                    clr();  funcused.add("strcmp");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\t_strleq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sequal:
-                    clr();
-                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstreql\n\t"); emit(text,"mov\tqword ");
+                    clr();  funcused.add("strcmp");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\t_streql\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sneq:
-                    clr();
-                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstrneq\n\t"); emit(text,"mov\tqword ");
+                    clr();  funcused.add("strcmp");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\t_strneq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgeq:
-                    clr();
-                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstrgeq\n\t"); emit(text,"mov\tqword ");
+                    clr();  funcused.add("strcmp");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\t_strgeq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgre:
-                    clr();
-                    emit(text,"mov rdi, "+getname(var1));   emit(text,"\n\t");
-                    emit(text,"mov rsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\tstrgre\n\t"); emit(text,"mov qword ");
+                    clr();  funcused.add("strcmp");
+                    emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
+                    emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
+                    emit(text,"call\t_strgre\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case jmp:
-                    clr();  emit(text,"jmp ");  emit(text,name);    emit(text,"\n\t");  break;
-                case jz:
-                    emit(text,"cmp "+readreg(var1));   emit(text,", 0\n\t");  clr();
-                    emit(text,"je ");   emit(text,name);    emit(text,"\n\t");  break;
-                case jnz:
-                    emit(text,"cmp "+readreg(var1));   emit(text,", 0\n\t");  clr();
-                    emit(text,"jne ");   emit(text,name);    emit(text,"\n\t");  break;
+                    clr();  emit(text,"jmp\t");  emit(text,name);    emit(text,"\n\t");  break;
+                case jaeb:
+                    emit(text,"cmp\t"+rrg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"je\t");   emit(text,name);    emit(text,"\n\t");  break;
+                case janb:
+                    emit(text,"cmp\t"+rrg(var1));   emit(text,", 0\n\t");  clr();
+                    emit(text,"jne\t");   emit(text,name);    emit(text,"\n\t");  break;
                 case malloc:
-                    clr();  emit(text,"mov     rdi, "+readreg(var1));
-                    emit(text,"\n\tcall\tmalloc\n\tmov\tqword "+writereg(dest));
+                    clr();  emit(text,"mov\trdi, "+rrg(var1));
+                    emit(text,"\n\tcall\tmalloc\n\tmov\tqword "+wrg(dest));
                     emit(text,", rax\n\t");  free();    break;
                 case newarr:
-                    clr();  emit(text,"mov     rdi, "); emit(text,getname(var1));
-                    emit(text,"\n\tcall\t_newarr\n\tmov\tqword ");
+                    clr();  emit(text,"mov\trdi, "); emit(text,getname(var1));
+                    emit(text,"\n\tcall\t_newarr\n\tmov\tqword ");  funcused.add("newarr");
                     emit(text,getname(dest));   emit(text,", rax\n\t");   free(); break;
-                case concat:
-                    clr();  emit(text,"mov     rsi, "); emit(text,getname(var2));   emit(text,"\n\tmov     rdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\tcall\t_stradd\n\t");    emit(text,"mov ");
-                    emit(text,getname(dest));   emit(text,", rax\n\t");     free();     break;
+                case stradd:
+                    clr();  emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\tmov\trdi, ");
+                    emit(text,getname(var1));   emit(text,"\n\tcall\t_stradd\n\t");    emit(text,"mov\t");
+                    emit(text,getname(dest));   emit(text,", rax\n\t");     free();     funcused.add("stradd"); break;
                 case load:
-                    getreg(var1);   emit(text,"mov "+writereg(dest)+", ["+readreg(var1));
+                    rrg(var1);  wrg(var1);
+                    emit(text,"mov\t"+wrg(dest)+", ["+rrg(var1));
                     emit(text,"]\n\t");     break;
                 case store:
-                    emit(text,"mov ["+readreg(dest)+"],"+readreg(var1));
+                    emit(text,"mov\t["+rrg(dest)+"],"+rrg(var1));
                     emit(text,"\n\t");  break;
                 case address:
-                    readreg(var1);  readreg(var2);
-                    emit(text,"mov "+writereg(dest)+","+readreg(var2));   emit(text,"\n\t");
-                    emit(text,"add "+writereg(dest));  emit(text,",1\n\t");
-                    emit(text,"shl "+writereg(dest));  emit(text,",4\n\t");
-                    emit(text,"add "+writereg(dest)+","+readreg(var1));   emit(text,"\n\t");
+                    rrg(var1);  rrg(var2);
+                    emit(text,"mov\t"+wrg(dest)+","+rrg(var2));   emit(text,"\n\t");
+                    emit(text,"add\t"+wrg(dest));  emit(text,",1\n\t");
+                    emit(text,"shl\t"+wrg(dest));  emit(text,",4\n\t");
+                    emit(text,"add\t"+wrg(dest)+","+rrg(var1));   emit(text,"\n\t");
                     break;
                 case print:
                     clr();  emit(text,print(var1));   free(); break;
                 case println:
                     clr();  emit(text,println(var1)); free(); break;
                 case getString:
-                    clr();  emit(text,"call\tgetString\n\tmov     ");
+                    clr();  emit(text,"call\t_getString\n\tmov\t"); funcused.add("getString");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case getInt:
-                    clr();  emit(text,"call\tgetInt\n\tmov     ");
+                    clr();  emit(text,"call\t_getInt\n\tmov\t"); funcused.add("getInt");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case toString:
-                    clr();  emit(text,"mov     rdi, ");     emit(text,getname(var1));
-                    emit(text,"\n\tcall\t_toString\n\tmov     qword");
+                    clr();  emit(text,"mov\trdi, ");     emit(text,getname(var1));
+                    emit(text,"\n\tcall\t_toString\n\tmov\tqword"); funcused.add("toString");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
                 case exitFunction:
                     clr();  break;
                 case enterFunction:
-                    emit(text,"push   rbp\n\tmov    rbp, rsp\n\tsub    rsp, ");
+                    emit(text,"push\trbp\n\tmov\trbp, rsp\n\tsub\trsp, ");
                     emit(text,Integer.toString(vid.size()*8+64)); emit(text,"\n\t");
                     if (name.equals("main"))
                     {
@@ -381,37 +422,35 @@ class Backend{
                         emit(text,"mov\trsp, rax\n\tmov\teax, 0\n\t");
                     }
                     break;
-                case multiArray:
+                case morarr:
                     clr();
-                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\t_morarr\n\t");
-                    emit(text,"mov\tqword ");    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
-                case multiAddress:
+                    emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");
+                    emit(text,"call\t_morarr\n\t"); emit(text,"mov\tqword ");   funcused.add("morarr");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
+                case caladd:
                     clr();
                     emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");  emit(text,"mov\trdi, ");
-                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\t_caladd\n\tmov ");
-                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
+                    emit(text,getname(var1));   emit(text,"\n\t");  emit(text,"call\t_caladd\n\tmov\t");
+                    emit(text,getname(dest));   emit(text,", rax\n\t"); free();     funcused.add("caladd"); break;
                 case substring:
                     clr();  emit(text,"mov\trsi, "); emit(text,getname(var2));   emit(text,"\n\t");
                     emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"call\tsubstring\n\tmov "); emit(text,getname(dest));
-                    emit(text,", rax\n\t");     free();     break;
+                    emit(text,"call\t_substring\n\tmov\t"); emit(text,getname(dest));
+                    emit(text,", rax\n\t");     free();     funcused.add("substring");  break;
                 case parseInt:
-                    clr();  emit(text,"call\tparseInt\n\tmov\tqword ");
+                    clr();  emit(text,"call\t_parseInt\n\tmov\tqword ");    funcused.add("parseInt");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free(); break;
                 case ord:
                     clr();  emit(text,"mov\trdi, "); emit(text,getname(var1));   emit(text,"\n\t");
-                    emit(text,"call\tord\n\tmov\tqword "); emit(text,getname(dest));
-                    emit(text,", rax\n\t");     free();     break;
+                    emit(text,"call\t_ord\n\tmov\tqword "); emit(text,getname(dest));
+                    emit(text,", rax\n\t");     free();     funcused.add("ord");    break;
                 default:    break;
             }
         }
-        emit(head,"\n");    emit(head,text);
-        emit(head,"\n");    emit(head,bss);
-        emit(head,"\n");    emit(head,data);
-        System.out.println(head.toString());
-//        PrintWriter output = new PrintWriter(new FileOutputStream(new File(ofile)));
-//        output.println(head.toString());    output.close();
-
+        emit(head,"\n");    emit(head,text);    emit(head,"\n");
+        emit(head,bss); emit(head,"\n");    emit(head,data);
+        PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));
+        output.println(head.toString());    output.close();
     }
 
     private StringBuffer getname(vara var)
@@ -489,8 +528,8 @@ class Backend{
     {
         if (wb[x] && !iscst(zcc[x]))
         {
-            emit(text,"mov qword ");    emit(text,getname(zcc[x]));
-            emit(text,",r");    emit(text,Integer.toString(x)); emit(text,"\n\t");
+            emit(text,"mov\tqword ");    emit(text,getname(zcc[x]));
+            emit(text,", r");    emit(text,Integer.toString(x)); emit(text,"\n\t");
         }
         wb[x] = false;    free[x] = true;   zcc[x] = null;
     }
@@ -500,39 +539,34 @@ class Backend{
             free[i] = true;
     }
 
-    private void put(int i, vara var, boolean read)
+    private void put(int i, vara var, boolean p)
     {
-        if (read)   if (iscst(var))
+        if (p)
         {
-            emit(text,"mov r");     emit(text,Integer.toString(i));
-            emit(text,",  ");     emit(text,getname(var));    emit(text,"\n\t");
-        }
-        else
-        {
-            emit(text,"mov r");     emit(text,Integer.toString(i));
-            emit(text,",  ");   emit(text,getname(var));    emit(text,"\n\t");
+            emit(text,"mov\tr");     emit(text,Integer.toString(i));
+            emit(text,", ");     emit(text,getname(var));    emit(text,"\n\t");
         }
         else    wb[i] = true;
         free[i] = false;    zcc[i] = var;   ban[i] = true;
     }
 
-    private int getreg(vara var, boolean read)
+    private int getreg(vara var, boolean p)
     {
         for (int i = 8; i < 16; ++i)
             if (!free[i] && zcc[i].equals(var))
             {
                 ban[i] = true;
-                if (!read)  wb[i] = true;
+                if (!p)  wb[i] = true;
                 return i;
             }
         for (int i = 8; i < 16; ++i)    if (free[i])
-            {put(i,var,read);    return i;}
+            {put(i,var,p);    return i;}
         int pos = -1, mx = -1;
         for (int i = 8; i < 16; ++i)    if (!ban[i])
         {
             if (vld.get(zcc[i]) < lnum)
             {
-                if (zcc[i].isTemp)  wb[i] = false;
+                if (zcc[i].tmp)  wb[i] = false;
                 pos = i;    break;
             }
             if (vld.get(zcc[i]) > mx)
@@ -542,27 +576,20 @@ class Backend{
             }
         }
         cr(pos);
-        put(pos,var,read);
+        put(pos,var,p);
         return pos;
     }
 
-    private String getreg(vara var)
-    {
-        getreg(var,true);
-        getreg(var,false);
-        return "r"+getreg(var,true);
-    }
-
-    private String readreg(vara var){return "r"+getreg(var,true); }
-    private String writereg(vara var){return "r"+getreg(var,false);}
+    private String rrg(vara var){return "r"+getreg(var,true); }
+    private String wrg(vara var){return "r"+getreg(var,false);}
 }
 
 class vara{
     vtype type; String name;
-    int vcnum;  boolean isTemp;
+    int vcnum;  boolean tmp;
     vara(String name, vtype type)
     {
-        isTemp = false;
+        tmp = false;
         this.name = name;
         this.type = type;
     }
@@ -570,24 +597,31 @@ class vara{
     {
         if (type.name.equals("const_int"))  return Integer.toString(vcnum);
         if (type.name.equals("const_bool")) return Integer.toString(vcnum);
-        if (this.name.equals("emptyVariable")) return "";  return name;
+        if (this.name.equals("it's empty")) return "";      return name;
     }
+    @Override public int hashCode(){return (this.name).hashCode();}
+    @Override public boolean equals(Object other)
+    {
+        if (getClass() != other.getClass())
+            return false;
+        vara aa = (vara) other;
+        return name.equals(aa.name);
+    }
+
     static boolean ig = false;
-    static final vara empty = new vara("emptyVariable",new vtype("void",0));
+    static final vara empty = new vara("it's empty",new vtype("void",0));
 }
 
 class vtype{
-    int dims;
-    String name;
-    boolean is(String str){return name.equals(str);}
+    int dims;   String name;    // "name"+"[]"*dims
     private vtype(){}
+    boolean is(String str){return name.equals(str);}
     vtype(String nam, int dim){name = nam; dims = dim;}
     static vtype tovtype(MxxParser.VtypeContext ctx)
     {
         vtype vtp = new vtype();
         vtp.name = ctx.vbtp().getText();
-        vtp.dims = ctx.kh().size();
-        return vtp;
+        vtp.dims = ctx.kh().size();     return vtp;
     }
     static vtype tovtype(MxxParser.VbtpContext ctx){
         vtype vtp = new vtype();
@@ -624,21 +658,16 @@ class vtype{
 }
 
 enum Oper{
-    not,inv,neg,
-    add,sub,mul,div,mod,
-    and,or,xor,
-    shl,shr,move,
-    call,ret,label,
-    less,leq,equal,neq,geq,gre,
-    sless,sleq,sequal,sneq,sgeq,sgre,
-    jmp,jz,jnz,
-    malloc,newarr,multiArray,concat,
-    load,store,address,multiAddress,
-    print,println,getString,getInt,toString,
-    parseInt,substring,ord,
-    saveContext,resumeContext,
-    endContext,
-    enterFunction,exitFunction,
+    add,sub,mul,div,mod,                //+ _ * / %
+    not,inv,neg,and,or,xor,             //! ~ - & | ^
+    shl,shr,move,                       //<< >> =
+    call,ret,label,                     // call ret lab:
+    less,leq,equal,neq,geq,gre,         //< <= = != >= >
+    sless,sleq,sequal,sneq,sgeq,sgre,   //for strcmp
+    jmp,jaeb,janb,                      //goto goto_if_a_equal_b goto_if_a_neq_b
+    malloc,newarr,morarr,stradd,load,store,address,caladd,          //for memory
+    print,println,getString,getInt,toString,parseInt,substring,ord, //built-in functions
+    enterFunction,exitFunction,         //literally
 }
 
 class func{
@@ -647,13 +676,10 @@ class func{
     func(String name, vtype type, ArrayList<vtype>pams)
     {this.name = name;  this.type = type;   this.pams = pams;}
     @Override public int hashCode(){return (this.name).hashCode()^(this.type.hashCode())^(this.pams.hashCode());}
-    @Override public boolean equals(Object otherObject)
+    @Override public boolean equals(Object other)
     {
-        if (this == otherObject)    return true;
-        if (null == otherObject)    return false;
-        if (getClass() != otherObject.getClass())   return false;
-        func other = (func) otherObject;
-        return name.equals(other.name);
+        if (getClass() != other.getClass())   return false;
+        func aa = (func) other; return name.equals(aa.name);
     }
 }
 
@@ -676,7 +702,7 @@ class IR{
         if (head == null)   {head = quad;   last = quad;}
         else    {last.next = quad;  last = last.next;}
     }
-    void concat(IR oth)
+    void add(IR oth)
     {
         if (oth ==  null)   return;
         if (head == null)   {this.head = oth.head;this.last = oth.last;}
@@ -685,7 +711,7 @@ class IR{
     void show()
     {
         for (sys now = head; now != null; now = now.next)
-            System.err.println(now.oper+" "+now.var1+" "+now.var2+" "+now.dest+" "+(now.name==null?"":now.name));
+            System.err.println(now.oper+","+now.var1+","+now.var2+","+now.dest+","+now.name);
     }
     private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
     void simplify()
@@ -693,48 +719,50 @@ class IR{
         while (head != null && adya(head))  head = head.next;
         for (sys now = head; now != null; now = now.next)
             while (now.next!=null && adya(now.next))    now.next = now.next.next;
-        /*
+        /*todo
          del useless template variable
+            like    t1 = c; b = t1;             -> b = c;
+            and     a = 1; b = 2; c = a+b+a*2;  -> c = 5;
          use same variable to represent same expr
-         loop (a = b) -> a = b; loop
-         why doesn't it support chinese comment?
+            like   t1 = a+b;    t2 = a+b;  t3 = t1+t2;  -> t3 = t1+t1;
+         loop hoist
+            like    while(1){ t1 = a+b;}    -> t1 = a+b; while(1){}
+         btw, why doesn't it support chinese comment?
          */
     }
 }
 
 class zcc {
-    String nfunc = "";
-    boolean global = false;
-    private int vcnt = 0;
-    private Stack<Integer>ssta = new Stack<>();
-    private HashMap<String,Integer> dmap = new HashMap<>();
-    HashSet<String>udnm = new HashSet<>();
-    HashSet<String>tmap = new HashSet<>();
-    HashMap<String,func> fmap = new HashMap<>();
-    HashMap<String,vtype> vmap = new HashMap<>();
-    HashMap<String,String> rnm = new HashMap<>();
-    HashMap<String,vtype> argvmap = new HashMap<>();
-    HashMap<String,vtype> glovmap = new HashMap<>();
-    HashMap<String,ArrayList<String> >lvar = new HashMap<>();
+    String nfunc = "";      //now in function
+    boolean global = false; //literally
+    private int vcnt = 0;   //for same name in different scope;
+    private Stack<ccz>opers = new Stack<>();                //for scope control
+    private Stack<Integer>ssta = new Stack<>();             //which scope is it now
+    private HashMap<String,Integer> dmap = new HashMap<>(); //which scope variable is
+    HashSet<String>udnm = new HashSet<>();          //name used
+    HashSet<String>tmap = new HashSet<>();          //used class name
+    HashMap<String,func> fmap = new HashMap<>();    //used func
+    HashMap<String,vtype> vmap = new HashMap<>();   //used variable
+    HashMap<String,String> rnm = new HashMap<>();   //another name
+    HashMap<String,vtype> argvmap = new HashMap<>();//literally
+    HashMap<String,vtype> glovmap = new HashMap<>();//literally
+    private HashMap<String,ArrayList<String> >lvar = new HashMap<>();//literally
     zcc(){tmap.add("int");tmap.add("string");tmap.add("bool");tmap.add("void");}
-    class Operation
+    class ccz
     {
-        String name, oldName;
+        String name, oname;
         vtype vtp;  Integer depth;
-        Operation(String name, String oldName, vtype vtp, Integer depth)
-            {this.name = name;  this.oldName = oldName; this.vtp = vtp; this.depth = depth;}
+        ccz(String nm, String onm, vtype tp, Integer d)
+            {name = nm;  oname = onm; vtp = tp; depth = d;}
     }
-    private Stack<Operation>operations = new Stack<>();
-    void nextScope(){ssta.push(operations.size());}
+    void nextScope(){ssta.push(opers.size());}
     void prevScope()
     {
-        while (operations.size() != ssta.peek())
+        while (opers.size() != ssta.peek())
         {
-            Operation operation = operations.peek();
-            operations.pop();
-            vmap.put(operation.name,operation.vtp);
-            dmap.put(operation.name,operation.depth);
-            rnm.put(operation.name,operation.oldName);
+            ccz op = opers.peek();
+            opers.pop();    vmap.put(op.name,op.vtp);
+            rnm.put(op.name,op.oname);  dmap.put(op.name,op.depth);
         }
         ssta.pop();
     }
@@ -755,7 +783,7 @@ class zcc {
             System.err.println("int a;int a;");
             System.exit(-1);
         }
-        operations.push(new Operation(name,rnm.get(name),vmap.get(name),dmap.get(name)));
+        opers.push(new ccz(name,rnm.get(name),vmap.get(name),dmap.get(name)));
         vmap.put(name,vtp);
         if (global) glovmap.put(name,vtp);
         if(!rnm.containsKey(name))    rnm.put(name, name);
@@ -850,68 +878,39 @@ class zcc {
         return  (new vtype("int",0));
     }
 }
-
-class RVistor extends MxxBaseVisitor<Integer>{
-    private String nfunc = "";
-    private HashMap<String,HashSet<String> >mtt = new HashMap<>();
-    boolean bad(String caller, String callee)
-    {
-        HashSet<String> aa = mtt.get(callee);
-        if (aa == null) return false;
-        return aa.contains(caller);
-    }
-    private void put(String a, String b)
-    {
-        if (a.equals("") || b.equals(""))   return;
-        if (!mtt.containsKey(a))  mtt.put(a, new HashSet<>());
-        if (!mtt.containsKey(b)) mtt.put(b, new HashSet<>());
-        mtt.get(a).add(b);
-    }
-    @Override public Integer visitFuncCall(MxxParser.FuncCallContext ctx)
-        {put(nfunc,ctx.fname().getText());   return visitChildren(ctx);}
-    @Override public Integer visitDeffunc(MxxParser.DeffuncContext ctx)
-        {nfunc = ctx.fname().getText(); return visitChildren(ctx);}
-    @Override public Integer visitCfunCall(MxxParser.CfunCallContext ctx)
-        {put(nfunc,ctx.fname().getText());  return visitChildren(ctx);}
-    @Override public Integer visitMthdef(MxxParser.MthdefContext ctx)
-        {nfunc = ctx.fname().getText(); return visitChildren(ctx);}
-}
-
 class MVisitor extends MxxBaseVisitor<IR>
 {
-    private vara cths;
-    private String ncls = "";
-    zcc unmhere = new zcc();
-    private vtype nclstp, nrttp = null;
-    private static int lcnt = 0;
-    private static int ct = 0;
-    private RVistor rvist = new RVistor();
-    private Stack<String>nlab = new Stack<>();
-    private Stack<String>nlabe = new Stack<>();
-    private Stack<String>nalab = new Stack<>();
-    HashMap<vara,String> cstr = new HashMap<>();
-    private ArrayList<vara> argList = new ArrayList<>();
-    private Stack<ArrayList<vtype> >nowpam = new Stack<>();
-    private HashMap<String,HashMap<String,vara> >cmeb = new HashMap<>();
-    private HashMap<String,HashMap<vara,Integer> >cmid = new HashMap<>();
-    private static String newlabel(){return "Lab_"+Integer.toString(lcnt++);}
+    private vara cths;                  //now this
+    private String ncls = "";           //now in some class
+    zcc unmhere = new zcc();            //all used name and its type
+    private vtype nclstp, nrttp = null; //now class type    now return type
+    private static int lcnt = 0;        //new label num
+    private static int ct = 0;          //new temp num
+    private Stack<String>nlabe = new Stack<>(); //if for while, end label
+    private Stack<String>nalab = new Stack<>(); //similar as nlabe
+    HashMap<vara,String> cstr = new HashMap<>();//str like "aaa" "\n"
+    private ArrayList<vara> argList = new ArrayList<>();    //name store args
+    private Stack<ArrayList<vtype> >nowpam = new Stack<>(); //now params
+    private HashMap<String,HashMap<String,vara> >cmeb = new HashMap<>();    //save a.b
+    private HashMap<String,HashMap<vara,Integer> >cmid = new HashMap<>();   //save a.b memory for further cal
 
+    private static String newlabel(){return "Lab_"+Integer.toString(lcnt++);}
     private vara nvar(vtype type)
     {
-        vara variable = new vara("t"+Integer.toString(ct++),type);
-        variable.isTemp = false;    unmhere.add(variable.name,variable.type);
+        vara variable = new vara("_t"+Integer.toString(ct++),type);
+        variable.tmp = false;    unmhere.add(variable.name,variable.type);
         return variable;
     }
     private vara nths(vtype type)
     {
-        vara variable = new vara("this"+Integer.toString(ct++),type);
-        variable.isTemp = false;    unmhere.add(variable.name,variable.type);
+        vara variable = new vara("_this"+Integer.toString(ct++),type);
+        variable.tmp = false;    unmhere.add(variable.name,variable.type);
         return variable;
     }
     private vara ncns(int vcnum, vtype type)
     {
-        vara variable =  new vara("const"+Integer.toString(ct++),type);
-        variable.isTemp = false;    variable.vcnum = vcnum;   return variable;
+        vara variable =  new vara("_const"+Integer.toString(ct++),type);
+        variable.tmp = false;    variable.vcnum = vcnum;   return variable;
     }
 
     @Override public IR visitProgram(MxxParser.ProgramContext ctx)
@@ -943,7 +942,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         for (ParseTree child : ctx.children)
             if(child.getClass().equals(MxxParser.DeffuncContext.class))
             {
-                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)(Object)child);
+                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)child);
                 String name = childContext.fname().getText();   unmhere.udnm.add(name);
             }
         IR ir5 = new IR();
@@ -952,7 +951,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         for (ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.DeffuncContext.class))
             {
-                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)(Object)child);
+                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)child);
                 String name = childContext.fname().getText();
                 unmhere.nextScope();    unmhere.nfunc = name;
                 vtype type = vtype.tovtype(childContext.vtype());
@@ -967,23 +966,23 @@ class MVisitor extends MxxBaseVisitor<IR>
         boolean okk = false;
         for (ParseTree child : ctx.children)
         {
-            if (child.getClass().equals(MxxParser.DefclassContext.class))   ir3.concat(visit(child));
+            if (child.getClass().equals(MxxParser.DefclassContext.class))   ir3.add(visit(child));
             if (child.getClass().equals(MxxParser.GvarContext.class))
-                {vara.ig = true; unmhere.global = true;  ir5.concat(visit(child));   vara.ig = false;    unmhere.global = false;}
+                {vara.ig = true; unmhere.global = true;  ir5.add(visit(child));   vara.ig = false;    unmhere.global = false;}
             if (child.getClass().equals(MxxParser.DeffuncContext.class))
             {
-                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)(Object)child);
+                MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)child);
                 String name = childContext.fname().getText();
                 if (name.equals("main"))
                 {
                     okk = true;
                     unmhere.nextScope();
-                    ir4.concat(visit(child));
+                    ir4.add(visit(child));
                     unmhere.prevScope();
                     continue;
                 }
                 unmhere.nextScope();
-                ir2.concat(visit(child));
+                ir2.add(visit(child));
                 unmhere.prevScope();
             }
         }
@@ -995,9 +994,9 @@ class MVisitor extends MxxBaseVisitor<IR>
         ir5.push(new sys(Oper.exitFunction));
         sys quad = new sys(Oper.ret,ncns(0,(new vtype("int",0))),vara.empty,vara.empty);
         quad.name = unmhere.nfunc;
-        ir5.push(quad); nir.concat(ir4);
+        ir5.push(quad); nir.add(ir4);
         nir.push(new sys(Oper.jmp,"QED"));
-        nir.concat(ir3); nir.concat(ir2); nir.concat(ir5);
+        nir.add(ir3); nir.add(ir2); nir.add(ir5);
         nir.push(new sys(Oper.label,"QED"));
         return nir;
     }
@@ -1007,7 +1006,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         ncls = ctx.cname().getText();
         nclstp = new vtype(ncls,0);
-        unmhere.nextScope();    nir.concat(visit(ctx.cbody()));
+        unmhere.nextScope();    nir.add(visit(ctx.cbody()));
         unmhere.prevScope();    ncls = "";  return nir;
     }
 
@@ -1045,7 +1044,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         for(ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.MemdefContext.class))
-                nir.concat(visit(child));
+                nir.add(visit(child));
         for (ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.MthdefContext.class))
             {
@@ -1077,7 +1076,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             }
         for (ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.MthdefContext.class))
-                nir.concat(visit(child));
+                nir.add(visit(child));
         return nir;
     }
 
@@ -1148,7 +1147,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 String str = ctx.params().param(i).vname().getText();   str = unmhere.rnm.get(str);
                 nir.push(new sys(Oper.move, argList.get(i), vara.empty, new vara(str, pams.get(i))));
             }
-        nir.concat(stmt);
+        nir.add(stmt);
         if (type.is("void"))
         {
             sys tmp = new sys(Oper.ret, nvar((new vtype("void",0))), vara.empty, vara.empty);
@@ -1168,14 +1167,10 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR(), cl = visit(ctx.cval());
         String str = ctx.fname().getText();
         func function = unmhere.fmap.get(cl.last.dest.type.name+"_"+str);
-        nir.concat(cl);
-        if (ctx.exprs() != null)    nir.concat(visit(ctx.exprs()));
+        nir.add(cl);
+        if (ctx.exprs() != null)    nir.add(visit(ctx.exprs()));
         nir.push(new sys(Oper.move,cl.last.dest,vara.empty,argList.get(63)));
-        if (function != null)
-        {
-            vara tret = nvar(function.type);
-            nir.push(new sys(Oper.call, function.name,tret));
-        }
+        if (function != null)   nir.push(new sys(Oper.call, function.name,nvar(function.type)));
         else
         {
             vara tmp = nvar((new vtype("int",0)));
@@ -1241,15 +1236,15 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (ctx.variable(i).index() != null)
                 for (int j = 0; j < ctx.variable(i).index().size(); ++j)
                 {
-                    IR tmp = visit(ctx.variable(i).index(j));  nir.concat(tmp);
+                    IR tmp = visit(ctx.variable(i).index(j));  nir.add(tmp);
                     tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                     ++tnt;  tt.push(new sys(Oper.store,tmp.last.dest,vara.empty,head));
                     --cur.type.dims;
                 }
         }
         vara result = nvar(cur.type);
-        tt.push(new sys(Oper.multiAddress,start,arr,result));
-        nir.concat(tt);  nir.push(new sys(Oper.load,result,vara.empty,result));
+        tt.push(new sys(Oper.caladd,start,arr,result));
+        nir.add(tt);  nir.push(new sys(Oper.load,result,vara.empty,result));
         return nir;
     }
 
@@ -1257,14 +1252,14 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         IR lch = visit(ctx.expr());
-        nir.concat(lch);
+        nir.add(lch);
         vara start = lch.last.dest;
         for (int i = 0; i < ctx.dotAtom().size(); ++i)
             if (ctx.dotAtom(i).fname() != null)
             {
                 String fname = ctx.dotAtom(i).fname().getText();
                 if (ctx.dotAtom(i).exprs() != null)
-                    nir.concat(visit(ctx.dotAtom(i).exprs()));
+                    nir.add(visit(ctx.dotAtom(i).exprs()));
                 nir.push(new sys(Oper.move,start,vara.empty,argList.get(63)));
                 func function = unmhere.fmap.get(start.type.name+"_"+fname);
                 if (function == null)
@@ -1316,7 +1311,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         vtype vtp = vtype.tovtype(ctx.vbtp());
         vara temp = nvar(vtype.tovtype(ctx.vbtp()));
-        temp.isTemp = true;
+        temp.tmp = true;
         if (vtp.name.equals("int") || vtp.name.contains("bool"))
             nir.push(new sys(Oper.malloc,ncns(8,(new vtype("const_int",0))),vara.empty,temp));
         else
@@ -1332,7 +1327,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         vtype vtp = vtype.tovtype(ctx.vbtp());
         vara temp = nvar(vtype.tovtype(ctx.vbtp()));
-        temp.isTemp = true;
+        temp.tmp = true;
         if (vtp.name.equals("int") || vtp.name.contains("bool"))
             nir.push(new sys(Oper.malloc,ncns(8,(new vtype("const_int",0))),vara.empty,temp));
         else
@@ -1354,7 +1349,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         nir.push(new sys(Oper.move,new vara(unmhere.rnm.get(str),stype),vara.empty,start));
         ArrayList<IR> pams = new ArrayList<>();
         for (int i = 0; i < ctx.variable(0).index().size(); ++i)
-            {pams.add(visit(ctx.variable(0).index(i).expr()));  nir.concat(pams.get(i));}
+            {pams.add(visit(ctx.variable(0).index(i).expr()));  nir.add(pams.get(i));}
         for (IR ii : pams)
         {
             nir.push(new sys(Oper.address,start,ii.last.dest,adr));
@@ -1369,7 +1364,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             nir.push(new sys(Oper.load,adr,vara.empty,start));
             start.type = variable.type.cpy();   pams.clear();
             for (int j = 0; j < ctx.variable(i).index().size(); ++j)
-                {pams.add(visit(ctx.variable(i).index(j).expr()));nir.concat(pams.get(j));}
+                {pams.add(visit(ctx.variable(i).index(j).expr()));nir.add(pams.get(j));}
             for (IR ii : pams)
             {
                 nir.push(new sys(Oper.address,start,ii.last.dest,adr));
@@ -1417,15 +1412,15 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (ctx.variable(i).index() != null)
                 for (int j = 0; j < ctx.variable(i).index().size(); ++j)
                 {
-                    IR tmp = visit(ctx.variable(i).index(j));  nir.concat(tmp);
+                    IR tmp = visit(ctx.variable(i).index(j));  nir.add(tmp);
                     tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                     ++tnt;  tt.push(new sys(Oper.store,tmp.last.dest,vara.empty,head));
                     --cur.type.dims;
                 }
         }
         vara result = nvar(cur.type);
-        tt.push(new sys(Oper.multiAddress,start,arr,result));
-        nir.concat(tt); return nir;
+        tt.push(new sys(Oper.caladd,start,arr,result));
+        nir.add(tt); return nir;
     }
 
     private IR getAddress(String vnm,ArrayList<IR> pams)
@@ -1450,7 +1445,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                     System.err.println("a[\"b\"]");
                     System.exit(-1);
                 }
-                nir.concat(tmpIR);
+                nir.add(tmpIR);
             }
             vara adr = nvar((new vtype("int",0))), start = nvar(vtp.cpy());
             nir.push(new sys(Oper.move,variable,vara.empty,start));
@@ -1469,7 +1464,7 @@ class MVisitor extends MxxBaseVisitor<IR>
 
     private IR assign(String vnm,IR exp,ArrayList<IR> pams)
     {
-        IR nir = new IR();  nir.concat(exp);
+        IR nir = new IR();  nir.add(exp);
         vtype vtp = unmhere.getVariable(vnm);
         if (vtp == null)    vtp = cmeb.get(ncls).get(vnm).type;
         if (vtp == null)
@@ -1497,7 +1492,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                     System.err.println("a[\"b\"]");
                     System.exit(-1);
                 }
-                nir.concat(tmp);
+                nir.add(tmp);
             }
             vara adr = nvar((new vtype("int",0)));
             vara start = nvar(vtp.cpy());
@@ -1534,7 +1529,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         else
         {
             IR nir = new IR(), left = visit(ctx.lval()), exp = visit(ctx.expr());
-            nir.concat(left);   nir.concat(exp);
+            nir.add(left);   nir.add(exp);
             nir.push(new sys(Oper.store,exp.last.dest,vara.empty,left.last.dest));
             return nir;
         }
@@ -1588,7 +1583,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 String newName = unmhere.rnm.get(vnm);
                 nir.push(new sys(Oper.move, argList.get(i), vara.empty, new vara(newName, pams.get(i))));
             }
-        nir.concat(stmt);
+        nir.add(stmt);
         sys quad = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
         quad.name = function.name;  nir.push(quad); nir.push(new sys(Oper.exitFunction,name));
         unmhere.prevScope();    unmhere.nfunc = ""; return nir;
@@ -1598,7 +1593,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         for (int i = 0; i < ctx.getChildCount(); ++i)
-            nir.concat(visit(ctx.getChild(i)));
+            nir.add(visit(ctx.getChild(i)));
         return nir;
     }
 
@@ -1607,7 +1602,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         unmhere.nextScope();
         IR nir = new IR();
         for (int i = 0; i < ctx.getChildCount(); ++i)
-            nir.concat(visit(ctx.getChild(i)));
+            nir.add(visit(ctx.getChild(i)));
         unmhere.prevScope();
         return nir;
     }
@@ -1616,7 +1611,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         IR exp = visit(ctx.expr());
-        nir.concat(exp);
+        nir.add(exp);
         if ((new vtype("bool",0)).notmatch(exp.last.dest.type))
         {
             System.err.println("if (int)");
@@ -1627,18 +1622,18 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             unmhere.nextScope();    IR tir = visit(ctx.sob());   unmhere.prevScope();
             unmhere.nextScope();    IR fir = visit(ctx.elseBlock().sob());  unmhere.prevScope();
-            sys aa = new sys(Oper.jz,exp.last.dest,vara.empty,vara.empty);  aa.name = lab1;
-            nir.push(aa);   nir.concat(tir);
+            sys aa = new sys(Oper.jaeb,exp.last.dest,vara.empty,vara.empty);  aa.name = lab1;
+            nir.push(aa);   nir.add(tir);
             nir.push(new sys(Oper.jmp,lab2));
             nir.push(new sys(Oper.label,lab1));
-            nir.concat(fir);
+            nir.add(fir);
             nir.push(new sys(Oper.label,lab2));
         }
         else
         {
             unmhere.nextScope();    IR tir = visit(ctx.sob());  unmhere.prevScope();
-            sys aa = new sys(Oper.jz,exp.last.dest,vara.empty,vara.empty);  aa.name=lab2;
-            nir.push(aa);   nir.concat(tir);
+            sys aa = new sys(Oper.jaeb,exp.last.dest,vara.empty,vara.empty);  aa.name=lab2;
+            nir.push(aa);   nir.add(tir);
             nir.push(new sys(Oper.label,lab2));
         }
         return nir;
@@ -1648,23 +1643,23 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         String lab1 = newlabel(), lab2=newlabel();
-        nlab.push(lab1);    nlabe.push(lab2);   nalab.push(lab1);
+        nlabe.push(lab2);   nalab.push(lab1);
         IR exp = visit(ctx.expr());
         unmhere.nextScope();    IR stmt = new IR();
         if (ctx.sob() != null)  stmt = visit(ctx.sob());
         unmhere.prevScope();
         nir.push(new sys(Oper.label,lab1));
-        nir.concat(exp);
+        nir.add(exp);
         if ((new vtype("bool",0)).notmatch(exp.last.dest.type))
         {
             System.err.println("while(int)");
             System.exit(-1);
         }
-        sys ss = new sys(Oper.jz,exp.last.dest,vara.empty,vara.empty);  ss.name = lab2;
-        nir.push(ss);   nir.concat(stmt);
+        sys ss = new sys(Oper.jaeb,exp.last.dest,vara.empty,vara.empty);  ss.name = lab2;
+        nir.push(ss);   nir.add(stmt);
         nir.push(new sys(Oper.jmp,lab1));
         nir.push(new sys(Oper.label,lab2));
-        nlab.pop(); nlabe.pop();    nalab.pop();
+        nlabe.pop();    nalab.pop();
         return nir;
     }
 
@@ -1672,7 +1667,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         String lab1 = newlabel(), lab2 = newlabel(), lab3 = newlabel();
-        nlab.push(lab1);    nlabe.push(lab2);   nalab.push(lab3);
+        nlabe.push(lab2);   nalab.push(lab3);
         IR A = null, B = null, C = null;
         if (ctx.A != null)  A = visit(ctx.A);
         if (ctx.B != null)  B = visit(ctx.B);
@@ -1681,9 +1676,9 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR stmt = new IR();
         if (ctx.sob() != null)  stmt = visit(ctx.sob());
         unmhere.prevScope();
-        nir.concat(A);
+        nir.add(A);
         nir.push(new sys(Oper.label,lab1));
-        nir.concat(B);
+        nir.add(B);
         if (B != null)
         {
             if((new vtype("bool",0)).notmatch(B.last.dest.type))
@@ -1691,15 +1686,15 @@ class MVisitor extends MxxBaseVisitor<IR>
                 System.err.println("for(;int;)");
                 System.exit(-1);
             }
-            sys quad = new sys(Oper.jz, B.last.dest, vara.empty, vara.empty);
+            sys quad = new sys(Oper.jaeb, B.last.dest, vara.empty, vara.empty);
             quad.name = lab2;   nir.push(quad);
         }
-        nir.concat(stmt);
+        nir.add(stmt);
         nir.push(new sys(Oper.label,lab3));
-        nir.concat(C);
+        nir.add(C);
         nir.push(new sys(Oper.jmp,lab1));
         nir.push(new sys(Oper.label,lab2));
-        nlab.pop(); nlabe.pop();    nalab.pop();
+        nlabe.pop();    nalab.pop();
         return nir;
     }
 
@@ -1713,7 +1708,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         }
         else
         {
-            nir.concat(visit(ctx.expr()));
+            nir.add(visit(ctx.expr()));
             if (nir.last.dest.type.is("void"))
             {
                 System.err.println("ret void");
@@ -1733,7 +1728,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitContinueStmt(MxxParser.ContinueStmtContext ctx)
     {
         IR nir = new IR();
-        if (nlab.empty())
+        if (nlabe.empty())
         {
             System.err.println("cant continue");
             System.exit(-1);
@@ -1759,13 +1754,13 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR(), ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         String lab1 = newlabel(), lab2 = newlabel();
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,"||",ir1.last.dest.type) );
-        temp.isTemp = true; nir.concat(ir0);
-        sys aa = new sys(Oper.jz,ir0.last.dest,vara.empty,vara.empty);
+        temp.tmp = true; nir.add(ir0);
+        sys aa = new sys(Oper.jaeb,ir0.last.dest,vara.empty,vara.empty);
         aa.name = lab1; nir.push(aa);
         nir.push(new sys(Oper.move,ncns(1,(new vtype("const_bool",0))),vara.empty,temp));
         nir.push(new sys(Oper.jmp,lab2));
         nir.push(new sys(Oper.label,lab1));
-        nir.concat(ir1);
+        nir.add(ir1);
         nir.push(new sys(Oper.move,ir1.last.dest,vara.empty,temp));
         nir.push(new sys(Oper.label,lab2));
         nir.push(new sys(Oper.move,temp,vara.empty,temp));
@@ -1777,13 +1772,13 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR(), ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         String lab1 = newlabel(), lab2 = newlabel();
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,"&&",ir1.last.dest.type) );
-        temp.isTemp = true; nir.concat(ir0);
-        sys aa = new sys(Oper.jnz,ir0.last.dest,vara.empty,vara.empty);
+        temp.tmp = true; nir.add(ir0);
+        sys aa = new sys(Oper.janb,ir0.last.dest,vara.empty,vara.empty);
         aa.name = lab1; nir.push(aa);
         nir.push(new sys(Oper.move,ncns(0,(new vtype("const_bool",0))),vara.empty,temp));
         nir.push(new sys(Oper.jmp,lab2));
         nir.push(new sys(Oper.label,lab1));
-        nir.concat(ir1);
+        nir.add(ir1);
         nir.push(new sys(Oper.move,ir1.last.dest,vara.empty,temp));
         nir.push(new sys(Oper.label,lab2));
         nir.push(new sys(Oper.move,temp,vara.empty,temp));
@@ -1794,7 +1789,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type) );
-        temp.isTemp = true;
+        temp.tmp = true;
         if (ir0.last.dest.type.name.contains("string"))
         {
             Oper oper = Oper.sless;
@@ -1802,7 +1797,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (ctx.op.getText().equals(">"))   oper = Oper.sgre;
             if (ctx.op.getText().equals(">="))  oper = Oper.sgeq;
             sys quad = new sys(oper, ir0.last.dest, ir1.last.dest, temp);
-            ir0.concat(ir1);    ir0.push(quad);
+            ir0.add(ir1);    ir0.push(quad);
         }
         else
         {
@@ -1811,7 +1806,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (ctx.op.getText().equals(">"))   oper = Oper.gre;
             if (ctx.op.getText().equals(">="))  oper = Oper.geq;
             sys quad = new sys(oper, ir0.last.dest, ir1.last.dest, temp);
-            ir0.concat(ir1);    ir0.push(quad);
+            ir0.add(ir1);    ir0.push(quad);
         }
         return ir0;
     }
@@ -1820,16 +1815,16 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type) );
-        temp.isTemp = true;
+        temp.tmp = true;
         if (ir0.last.dest.type.name.contains("string"))
         {
             sys quad = new sys(ctx.op.getText().equals("==")?Oper.sequal:Oper.sneq,ir0.last.dest,ir1.last.dest,temp);
-            ir0.concat(ir1);    ir0.push(quad);
+            ir0.add(ir1);    ir0.push(quad);
         }
         else
         {
             sys quad = new sys(ctx.op.getText().equals("==")?Oper.equal:Oper.neq,ir0.last.dest,ir1.last.dest,temp);
-            ir0.concat(ir1);    ir0.push(quad);
+            ir0.add(ir1);    ir0.push(quad);
         }
         return ir0;
     }
@@ -1838,9 +1833,9 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type));
-        temp.isTemp = true;
+        temp.tmp = true;
         sys quad = new sys(ctx.op.getText().equals("<<")?Oper.shl:Oper.shr,ir0.last.dest,ir1.last.dest,temp);
-        ir0.concat(ir1);    ir0.push(quad);
+        ir0.add(ir1);    ir0.push(quad);
         return ir0;
     }
 
@@ -1848,26 +1843,26 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,"&",ir1.last.dest.type));
-        temp.isTemp =true;  sys quad = new sys(Oper.and,ir0.last.dest,ir1.last.dest,temp);
-        ir0.concat(ir1);    ir0.push(quad); return ir0;
+        temp.tmp = true;  sys quad = new sys(Oper.and,ir0.last.dest,ir1.last.dest,temp);
+        ir0.add(ir1);    ir0.push(quad); return ir0;
     }
 
     @Override public IR visitOr(MxxParser.OrContext ctx)
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,"|",ir1.last.dest.type) );
-        temp.isTemp = true;
+        temp.tmp = true;
         sys quad = new sys(Oper.or,ir0.last.dest,ir1.last.dest,temp);
-        ir0.concat(ir1);    ir0.push(quad); return ir0;
+        ir0.add(ir1);    ir0.push(quad); return ir0;
     }
 
     @Override public IR visitXor(MxxParser.XorContext ctx)
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,"^",ir1.last.dest.type) );
-        temp.isTemp = true;
+        temp.tmp = true;
         sys quad = new sys(Oper.xor,ir0.last.dest,ir1.last.dest,temp);
-        ir0.concat(ir1);    ir0.push(quad); return ir0;
+        ir0.add(ir1);    ir0.push(quad); return ir0;
     }
 
     @Override public IR visitIndex(MxxParser.IndexContext ctx){return visit(ctx.expr());}
@@ -1879,7 +1874,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara adr = nvar(new vtype(ctx.type.getText(),dims));
         ArrayList<IR>pams  = new ArrayList<>();
         for (int i = 0;i < ctx.index().size(); ++i)
-            {pams.add(visitIndex(ctx.index(i))); nir.concat(pams.get(i));}
+            {pams.add(visitIndex(ctx.index(i))); nir.add(pams.get(i));}
         if (pams.size() > 1)
         {
             nir.push(new sys(Oper.newarr, ncns(pams.size(), (new vtype("const_int",0))), vara.empty, adr));
@@ -1891,7 +1886,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                     pams.get(i).last.dest.vcnum = 160000;
                 nir.push(new sys(Oper.store, pams.get(i).last.dest, vara.empty, pos));
             }
-            nir.push(new sys(Oper.multiArray, adr, vara.empty, adr));
+            nir.push(new sys(Oper.morarr, adr, vara.empty, adr));
         }
         else    nir.push(new sys(Oper.newarr, pams.get(0).last.dest, vara.empty, adr));
         String name = ctx.type.getText();
@@ -1904,7 +1899,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = visit(ctx.expr());
         vara last = nir.last.dest, temp = nvar(unmhere.operate(ctx.op.getText(),last.type));
-        temp.isTemp = true; sys aa;
+        temp.tmp = true; sys aa;
         switch (ctx.op.getText()){
             case "-":
                 aa = new sys(Oper.neg,last,vara.empty,temp);
@@ -1929,11 +1924,11 @@ class MVisitor extends MxxBaseVisitor<IR>
             ArrayList<IR> pams = new ArrayList<>();
             for (int i = 0; i < ctx.lval().variable(0).index().size(); ++i)
                 pams.add(visit(ctx.lval().variable(0).index().get(i)));
-            IR adr = getAddress(vnm,pams); nir.concat(adr);
+            IR adr = getAddress(vnm,pams); nir.add(adr);
             if (pams.size() == 0)   nir.push(new sys(oper,adr.last.dest,ncns(1,(new vtype("const_int",0))),adr.last.dest));
             else
             {
-                vara tmp = nvar((new vtype("int",0))); tmp.isTemp = true;
+                vara tmp = nvar((new vtype("int",0))); tmp.tmp = true;
                 nir.push(new sys(Oper.load,adr.last.dest,vara.empty,tmp));
                 nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
                 nir.push(new sys(Oper.store,tmp,vara.empty,adr.last.dest));
@@ -1942,8 +1937,8 @@ class MVisitor extends MxxBaseVisitor<IR>
         }
         else
         {
-            IR left = visit(ctx.lval());   nir.concat(left);
-            vara tmp =nvar((new vtype("int",0)));  tmp.isTemp = true;
+            IR left = visit(ctx.lval());   nir.add(left);
+            vara tmp =nvar((new vtype("int",0)));  tmp.tmp = true;
             nir.push(new sys(Oper.load,left.last.dest,vara.empty,tmp));
             nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
             nir.push(new sys(Oper.store,tmp,vara.empty,left.last.dest));
@@ -1963,7 +1958,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             ArrayList<IR> pams = new ArrayList<>();
             for (int i = 0; i < ctx.lval().variable(0).index().size(); ++i)
                 pams.add(visit(ctx.lval().variable(0).index().get(i)));
-            IR adr = getAddress(vnm,pams);  nir.concat(adr);
+            IR adr = getAddress(vnm,pams);  nir.add(adr);
             if (!adr.last.dest.type.name.contains("int"))
             {
                 System.err.println("bool++");
@@ -1988,7 +1983,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         else
         {
             IR left = visit(ctx.lval());
-            nir.concat(left);   vara tmp = nvar((new vtype("int",0)));
+            nir.add(left);   vara tmp = nvar((new vtype("int",0)));
             nir.push(new sys(Oper.load,left.last.dest,vara.empty,tmp));
             nir.push(new sys(Oper.move,tmp,vara.empty,value));
             nir.push(new sys(oper,tmp,ncns(1,(new vtype("const_int",0))),tmp));
@@ -2002,29 +1997,29 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type) );
-        temp.isTemp = true; Oper oper = Oper.mul;
+        temp.tmp = true; Oper oper = Oper.mul;
         if (ctx.op.getText().equals("/"))   oper = Oper.div;
         else if (ctx.op.getText().equals("%"))    oper = Oper.mod;
         sys quad = new sys(oper,ir0.last.dest,ir1.last.dest,temp);
-        ir0.concat(ir1);    ir0.push(quad); return ir0;
+        ir0.add(ir1);    ir0.push(quad); return ir0;
     }
 
     @Override public IR visitOp5(MxxParser.Op5Context ctx)
     {
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type) );
-        temp.isTemp = true; Oper oper = Oper.add;
+        temp.tmp = true; Oper oper = Oper.add;
         if (ctx.op.getText().equals("-"))   oper = Oper.sub;
         sys aa;
         if (temp.type.name.equals("string"))
         {
-            aa = new sys(Oper.concat,ir0.last.dest,ir1.last.dest,temp);
-            ir0.concat(ir1);    ir0.push(aa);
+            aa = new sys(Oper.stradd,ir0.last.dest,ir1.last.dest,temp);
+            ir0.add(ir1);    ir0.push(aa);
         }
         else
         {
             aa = new sys(oper,ir0.last.dest,ir1.last.dest,temp);
-            ir0.concat(ir1);    ir0.push(aa);
+            ir0.add(ir1);    ir0.push(aa);
         }
         return ir0;
     }
@@ -2058,7 +2053,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                     System.err.println("a[bool]");
                     System.exit(-1);
                 }
-                nir.concat(tmpIR);
+                nir.add(tmpIR);
             }
             vara adr = nvar((new vtype("int",0))), start = nvar(vtp.cpy());
             nir.push(new sys(Oper.move,variable,vara.empty,start));
@@ -2111,24 +2106,15 @@ class MVisitor extends MxxBaseVisitor<IR>
             if (function == null)   function = unmhere.fmap.get(functionName);
         }
         else    function = unmhere.fmap.get(functionName);
-        ArrayList<String> local = null;
-        if (rvist.bad(unmhere.nfunc,functionName) && function!=null && unmhere.lvar.get(unmhere.nfunc)!=null )
-        {
-            local = (ArrayList<String>) unmhere.lvar.get(unmhere.nfunc).clone();
-            nir.push(new sys(Oper.saveContext));
-            nir.push(new sys(Oper.endContext));
-        }
         ArrayList<vtype>parameter = new ArrayList<>();
         if (ctx.exprs() != null)
         {
-            nir.concat(visit(ctx.exprs()));
+            nir.add(visit(ctx.exprs()));
             parameter = nowpam.peek();    nowpam.pop();
         }
-        vara tret = ncns(0,(new vtype("const_int",0)));
         if (function != null)
         {
-            tret = nvar(function.type);
-            nir.push(new sys(Oper.call,function.name,tret));
+            nir.push(new sys(Oper.call,function.name,nvar(function.type)));
             if (parameter.size() != function.pams.size())
             {
                 System.err.println("param number wrong");
@@ -2168,12 +2154,6 @@ class MVisitor extends MxxBaseVisitor<IR>
                     System.exit(-1);
                     break;
             }
-        }
-        if (rvist.bad(unmhere.nfunc,functionName) && function!=null && local !=null)
-        {
-            nir.push(new sys(Oper.resumeContext));
-            nir.push(new sys(Oper.endContext));
-            nir.push(new sys(Oper.move,tret,vara.empty,tret));
         }
         return nir;
     }
@@ -2220,7 +2200,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         String str = ctx.vname().getText();
         vtype vtp = vtype.tovtype(ctx.vtype());
         IR nir = new IR(), chs = visit(ctx.expr());
-        nir.concat(chs);
+        nir.add(chs);
         if (!unmhere.tmap.contains(vtp.name))
         {
             System.err.println("no a = b");
@@ -2251,7 +2231,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         if (ctx.expr() != null) for (int i = 0;i < ctx.expr().size(); ++i)
         {
             IR tt = visit(ctx.expr(i));
-            nir.concat(tt);
+            nir.add(tt);
             arrayList.add(tt.last.dest);
             pams.add(tt.last.dest.type);
         }
@@ -2260,7 +2240,6 @@ class MVisitor extends MxxBaseVisitor<IR>
             nir.push(new sys(Oper.move,arrayList.get(i),vara.empty,argList.get(i)));
         return nir;
     }
-
     @Override public IR visitXkh(MxxParser.XkhContext ctx) {return visit(ctx.expr());}
 }
 
@@ -2273,7 +2252,7 @@ class MxxErrorListener extends BaseErrorListener
 public class Main{
     private static void run(InputStream input) throws Exception
     {
-        ANTLRInputStream in = new ANTLRInputStream(input);
+        CharStream in =  CharStreams.fromStream(input);
         MxxLexer lexer = new MxxLexer(in);
         lexer.addErrorListener(MxxErrorListener.INSTANCE);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -2282,10 +2261,10 @@ public class Main{
         ParseTree tree = parser.program();
         MVisitor visitor = new MVisitor();
         IR iir = visitor.visit(tree);
-//        iir.show();
-        iir.simplify();
+//        iir.show();   end of semantic and ir
+        iir.simplify(); //todo
         Backend back = new Backend();
-        back.init(iir,visitor.cstr,visitor.unmhere,"test.asm");
+        back.init(iir,visitor.cstr,visitor.unmhere);
     }
 
     public static void main(String [] args) throws Exception
