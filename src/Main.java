@@ -163,9 +163,9 @@ class Backend{
     private void addconstantfunc()
     {
         if (funcused.contains("ord"))  emit(text,funcord());
+        if (funcused.contains("morarr"))  emit(text,funcmorarr());
         if (funcused.contains("newarr"))  emit(text,funcnewarr());
         if (funcused.contains("stradd"))  emit(text,funcstradd());
-        if (funcused.contains("morarr"))  emit(text,funcmorarr());
         if (funcused.contains("caladd"))  emit(text,funccaladd());
         if (funcused.contains("strcmp"))  emit(text,funcstrcmp());
         if (funcused.contains("getInt"))  emit(text,funcgetInt());
@@ -216,7 +216,7 @@ class Backend{
             emit(data,Integer.toString(shl(str)));    emit(data,",");
             emit(data,shc(str));     emit(data,",0\n");
         }
-        addconstantfunc();  lnum = 0;
+        lnum = 0;
         for (sys now = ir.head; now != null; now = now.next)
         {
             ++lnum;     String name = now.name;
@@ -447,6 +447,7 @@ class Backend{
                 default:    break;
             }
         }
+        addconstantfunc();
         emit(head,"\n");    emit(head,text);    emit(head,"\n");
         emit(head,bss); emit(head,"\n");    emit(head,data);
         PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));
