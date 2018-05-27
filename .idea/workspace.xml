@@ -18,10 +18,11 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="1319" column="40" selection-start-line="1319" selection-start-column="34" selection-end-line="1319" selection-end-column="40" />
+            <state relative-caret-position="361">
+              <caret line="168" column="19" lean-forward="true" selection-start-line="168" selection-start-column="19" selection-end-line="168" selection-end-column="19" />
               <folding>
                 <element signature="method#funcord#0;class#Backend#0" />
+                <element signature="method#funcnewarr#0;class#Backend#0" />
                 <element signature="method#funcstradd#0;class#Backend#0" />
                 <element signature="method#funcmorarr#0;class#Backend#0" />
                 <element signature="method#funccaladd#0;class#Backend#0" />
@@ -36,23 +37,16 @@
                 <element signature="class#func#0" />
                 <element signature="method#equals#0;class#func#0" />
                 <element signature="class#sys#0" />
-                <element signature="class#IR#0" />
-                <element signature="e#101527#102159#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java">
+      <file leaf-file-name="ConstantPool.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="407" column="18" lean-forward="true" selection-start-line="407" selection-start-column="18" selection-end-line="407" selection-end-column="18" />
-              <folding>
-                <element signature="e#14252#14253#0" expanded="true" />
-                <element signature="e#14302#14303#0" expanded="true" />
-                <element signature="e#23755#23773#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="3705">
+              <caret line="195" selection-start-line="195" selection-end-line="195" />
             </state>
           </provider>
         </entry>
@@ -61,18 +55,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rvist</find>
-      <find>local</find>
-      <find>RecursionVisitor</find>
-      <find>nalab</find>
-      <find>constStringPool</find>
-      <find>nlab</find>
-      <find>nextVariable</find>
-      <find>arglis</find>
-      <find>mv</find>
-      <find>arglist</find>
-      <find>nowpam</find>
-      <find>cmeb</find>
       <find>cmid</find>
       <find>global</find>
       <find>SymbolMap</find>
@@ -91,6 +73,18 @@
       <find>isTemp</find>
       <find>tret</find>
       <find>newarr</find>
+      <find>_newarr</find>
+      <find>morarr</find>
+      <find>print</find>
+      <find>to</find>
+      <find>varName</find>
+      <find>getname</find>
+      <find>println</find>
+      <find>getInt</find>
+      <find>getint</find>
+      <find>getString</find>
+      <find>show</find>
+      <find>todo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -104,9 +98,10 @@
         <option value="$PROJECT_DIR$/src/aliu.g4" />
         <option value="$PROJECT_DIR$/src/Mxx.g4" />
         <option value="$PROJECT_DIR$/test.mxx" />
-        <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
         <option value="$PROJECT_DIR$/src/Irtox86.java" />
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
+        <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java" />
+        <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -121,9 +116,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -136,16 +129,12 @@
               <item name="tester" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="tester" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tester" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Main.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -241,12 +230,21 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="11" />
+      <window_info anchor="bottom" id="TODO" order="11" weight="0.3297491" />
       <window_info anchor="bottom" id="Tool Output" order="0" weight="0.054446463" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3405018" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
@@ -255,13 +253,13 @@
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="6" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info active="true" anchor="bottom" id="Run" order="4" visible="true" weight="0.22759856" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.22759856" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.75174016" visible="true" weight="0.29830235" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.75089604" visible="true" weight="0.3031528" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5662432" />
-      <window_info id="Structure" order="6" sideWeight="0.24825986" side_tool="true" visible="true" weight="0.29830235" />
+      <window_info id="Structure" order="6" sideWeight="0.24910395" side_tool="true" visible="true" weight="0.3031528" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -297,6 +295,7 @@
           <caret line="731" lean-forward="true" selection-start-line="731" selection-end-line="731" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -311,8 +310,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -330,6 +327,7 @@
           <caret line="385" column="12" selection-start-line="385" selection-start-column="12" selection-end-line="385" selection-end-column="12" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -344,8 +342,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -377,6 +373,7 @@
           <caret line="330" column="26" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -391,8 +388,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -410,6 +405,7 @@
           <caret line="863" column="39" lean-forward="true" selection-start-line="863" selection-start-column="39" selection-end-line="863" selection-end-column="39" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -424,8 +420,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -444,6 +438,7 @@
           <caret line="284" column="44" selection-start-line="284" selection-start-column="39" selection-end-line="284" selection-end-column="44" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -458,8 +453,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -478,6 +471,7 @@
           <caret line="311" column="18" lean-forward="true" selection-start-line="311" selection-start-column="18" selection-end-line="311" selection-end-column="18" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -492,8 +486,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -512,6 +504,7 @@
           <caret line="891" column="18" lean-forward="true" selection-start-line="891" selection-start-column="18" selection-end-line="891" selection-end-column="18" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -526,8 +519,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -552,6 +543,7 @@
           <caret line="95" column="5" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -566,8 +558,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -585,6 +575,7 @@
           <caret line="95" column="5" lean-forward="true" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -599,8 +590,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -618,6 +607,7 @@
           <caret line="534" lean-forward="true" selection-start-line="534" selection-end-line="534" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -632,8 +622,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -651,6 +639,7 @@
           <caret line="311" column="49" selection-start-line="311" selection-start-column="49" selection-end-line="311" selection-end-column="49" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -665,8 +654,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -684,6 +671,7 @@
           <caret line="430" lean-forward="true" selection-start-line="430" selection-end-line="430" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -698,8 +686,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -717,6 +703,7 @@
           <caret line="242" selection-start-line="242" selection-end-line="242" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -731,8 +718,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -750,6 +735,7 @@
           <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -764,8 +750,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>
@@ -842,13 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="170" column="36" selection-start-line="170" selection-start-column="30" selection-end-line="170" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Builder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -856,31 +833,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="893" column="32" selection-start-line="893" selection-start-column="32" selection-end-line="893" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
           <caret line="407" column="18" lean-forward="true" selection-start-line="407" selection-start-column="18" selection-end-line="407" selection-end-column="18" />
-          <folding>
-            <element signature="e#14252#14253#0" expanded="true" />
-            <element signature="e#14302#14303#0" expanded="true" />
-            <element signature="e#23755#23773#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="161" column="38" lean-forward="true" selection-start-line="161" selection-start-column="38" selection-end-line="161" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3705">
+          <caret line="195" selection-start-line="195" selection-end-line="195" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="1319" column="40" selection-start-line="1319" selection-start-column="34" selection-end-line="1319" selection-end-column="40" />
+        <state relative-caret-position="361">
+          <caret line="168" column="19" lean-forward="true" selection-start-line="168" selection-start-column="19" selection-end-line="168" selection-end-column="19" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcmorarr#0;class#Backend#0" />
             <element signature="method#funccaladd#0;class#Backend#0" />
@@ -895,8 +875,6 @@
             <element signature="class#func#0" />
             <element signature="method#equals#0;class#func#0" />
             <element signature="class#sys#0" />
-            <element signature="class#IR#0" />
-            <element signature="e#101527#102159#0" />
           </folding>
         </state>
       </provider>

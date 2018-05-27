@@ -105,9 +105,10 @@ class Backend{
         return ret;
     }
     private StringBuffer funcgetInt() {
-        StringBuffer ret = new StringBuffer();
-        //todo
-        return ret;
+        StringBuffer ret = new StringBuffer("_getInt:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n\tlea\trax, [rbp-8H]\n");
+        emit(ret,"\tmov\trsi, rax\n\tmov\tedi, GS_31\n\tmov\teax, 0\n");
+        emit(ret,"\tcall\tscanf\n\tmov\trax, qword [rbp-8H]\n\tleave\n\tret\n\n");    return ret;
     }
     private StringBuffer funcaddress() {
         StringBuffer ret = new StringBuffer("_address:\n");
@@ -149,8 +150,17 @@ class Backend{
         return ret;
     }
     private StringBuffer funcgetString() {
-        StringBuffer ret = new StringBuffer();
-        //todo
+        StringBuffer ret = new StringBuffer("_getString:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 32\n\tmov\tesi, buff.1788\n");
+        emit(ret,"\tmov\tedi, GS_32\n\tmov\teax, 0\n\tcall\tscanf\n\tmov\tedi, buff.1788\n");
+        emit(ret,"\tcall\tstrlen\n\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\n");
+        emit(ret,"\tadd\trax, 2\n\tmov\trdi, rax\n\tcall\tmalloc\n\tmov\tqword [rbp-18H], rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-10H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"\tmov\tbyte [rax], dl\n\tmov\tqword [rbp-8H], 1\n\tjmp\tGS_20\nGS_19:\n");
+        emit(ret,"\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trdx, rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-8H]\n\tsub\trax, 1\nmovzx\teax, byte [abs buff.1788+rax]\n");
+        emit(ret,"\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\nGS_20:\n\tmov\trax, qword [rbp-8H]\n");
+        emit(ret,"\tcmp\trax, qword [rbp-10H]\n\tjle\tGS_19\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n");
         return ret;
     }
     private StringBuffer funcsubstring() {
@@ -484,14 +494,16 @@ class Backend{
 
     private StringBuffer println(vara var)
     {
-        StringBuffer ret = new StringBuffer();
-        //todo
+        StringBuffer ret = new StringBuffer("mov\trdi, ");
+        emit(ret,getname(var));
+        emit(ret," \n\tadd\trdi, 1\n\tcall\tputs\n\t");
         return ret;
     }
     private StringBuffer print(vara var)
     {
-        StringBuffer ret = new StringBuffer();
-        //todo
+        StringBuffer ret = new StringBuffer("mov\trdi, format\n\t");
+        emit(ret,"mov\trsi,");  emit(ret,getname(var));
+        emit(ret," \n\tadd\trsi, 1 \n\txor\trax, rax\n\tcall\tprintf\n\t");
         return ret;
     }
     private String shc(String s)
@@ -711,18 +723,20 @@ class IR{
     }
     void show()
     {
-        for (sys now = head; now != null; now = now.next)
-            System.err.println(now.oper+","+now.var1+","+now.var2+","+now.dest+","+now.name);
+        System.err.println("it's end of semantic and ir");
+//        for (sys now = head; now != null; now = now.next)
+//            System.err.println(now.oper+","+now.var1+","+now.var2+","+now.dest+","+now.name);
     }
     private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
     void simplify()
     {
+        System.err.println("pretend to be simplifying");
         while (head != null && adya(head))  head = head.next;
         for (sys now = head; now != null; now = now.next)
             while (now.next!=null && adya(now.next))    now.next = now.next.next;
         /*todo
          del useless template variable
-            like    t1 = c; b = t1;             -> b = c;
+            like    t1 = a+b; c = t1;           -> c = a+b;
             and     a = 1; b = 2; c = a+b+a*2;  -> c = 5;
          use same variable to represent same expr
             like   t1 = a+b;    t2 = a+b;  t3 = t1+t2;  -> t3 = t1+t1;
@@ -2262,8 +2276,7 @@ public class Main{
         ParseTree tree = parser.program();
         MVisitor visitor = new MVisitor();
         IR iir = visitor.visit(tree);
-//        iir.show();   end of semantic and ir
-        iir.simplify(); //todo
+        iir.show(); iir.simplify();
         Backend back = new Backend();
         back.init(iir,visitor.cstr,visitor.unmhere);
     }
