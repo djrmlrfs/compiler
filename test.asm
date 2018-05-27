@@ -12,14 +12,14 @@
 main:
 	push	rbp
 	mov	rbp, rsp
-	sub	rsp, 192
+	sub	rsp, 136
 	mov	rax, 536870912
 	cdqe
 	mov	rdi, rax
 	call	malloc
 	mov	edx, dword 536870912
 	movsxd	rdx, edx
-	sub	rdx, 2176
+	sub	rdx, 2120
 	add	rax, rdx
 	mov	qword [trsp], rsp
 	mov	rsp, rax
@@ -30,123 +30,65 @@ main:
 	mov	r9, r10
 	mov	r12, 0
 	mov	r11, r12
-	mov	r13, 0
-	cmp	r11,r13
-	mov	r14, 0
-	setne	r14B
+	mov	r14, 1
+	mov	r13, r14
 	mov	qword [rsp+8*1], r8
 	mov	qword [rsp+8*2], r9
 	mov	qword [rsp+8*3], r11
-	mov	qword [rsp+8*4], r14
-	mov	r8, [rsp+8*4]
-	cmp	r8, 0
-	jne	Lab_0
-	mov	r9, 0
-	mov	r8, r9
-	mov	qword [rsp+8*5], r8
-	jmp	Lab_1
+	mov	qword [rsp+8*4], r13
 	
 Lab_0:
-	xor	rdx, rdx
-	mov	r8, [rsp+8*2]
-	mov	rax, r8
-	mov	r9, [rsp+8*3]
-	mov	rbx, r9
-	cdq
-	idiv rbx
-	mov	r10, rax
-	mov	r11, 1
-	cmp	r10,r11
-	mov	r12, 0
-	setne	r12B
-	mov	qword [rsp+8*6], r10
-	mov	qword [rsp+8*7], r12
-	mov	r9, [rsp+8*7]
-	mov	r8, r9
-	mov	qword [rsp+8*5], r8
-	
-Lab_1:
+	mov	r8, [rsp+8*4]
+	mov	r9, [rsp+8*2]
+	cmp	r8,r9
+	mov	r10, 0
+	setle	r10B
+	mov	qword [rsp+8*5], r10
 	mov	r8, [rsp+8*5]
 	cmp	r8, 0
-	je	Lab_2
-	mov	r9, 10
+	je	Lab_1
+	mov	r9, 1
 	mov	r8, r9
-	mov	qword [rsp+8*8], r8
-	jmp	Lab_3
-	
-Lab_2:
-	mov	r9, 20
-	mov	r8, r9
-	mov	qword [rsp+8*8], r8
+	mov	qword [rsp+8*6], r8
 	
 Lab_3:
-	mov	r8, [rsp+8*8]
-	mov	r9, 10
+	mov	r8, [rsp+8*6]
+	mov	r9, [rsp+8*2]
 	cmp	r8,r9
 	mov	r10, 0
-	sete	r10B
-	mov	qword [rsp+8*9], r10
-	mov	r8, [rsp+8*9]
+	setle	r10B
+	mov	qword [rsp+8*7], r10
+	mov	r8, [rsp+8*7]
 	cmp	r8, 0
-	jne	Lab_4
-	mov	r9, 0
-	mov	r8, r9
-	mov	qword [rsp+8*10], r8
-	jmp	Lab_5
-	
-Lab_4:
-	xor	rdx, rdx
-	mov	r8, [rsp+8*2]
-	mov	rax, r8
-	mov	r9, [rsp+8*3]
-	mov	rbx, r9
-	cdq
-	idiv rbx
-	mov	r10, rax
-	mov	r11, 0
-	cmp	r10,r11
-	mov	r12, 0
-	sete	r12B
-	mov	qword [rsp+8*11], r10
-	mov	qword [rsp+8*12], r12
-	mov	r9, [rsp+8*12]
-	mov	r8, r9
-	mov	qword [rsp+8*10], r8
+	je	Lab_4
+	mov	r8, [rsp+8*3]
+	mov	r9, [rsp+8*4]
+	mov	r10, r8
+	add	r10, r9
+	mov	r8, r10
+	mov	qword [rsp+8*3], r8
+	mov	qword [rsp+8*8], r10
 	
 Lab_5:
-	mov	r8, [rsp+8*10]
-	cmp	r8, 0
-	jne	Lab_6
-	mov	r9, 0
-	mov	r8, r9
-	mov	qword [rsp+8*13], r8
-	jmp	Lab_7
+	mov	r8, [rsp+8*6]
+	mov	r9, 1
+	mov	r8, r8
+	add	r8, r9
+	mov	qword [rsp+8*6], r8
+	jmp	Lab_3
 	
-Lab_6:
-	mov	r8, [rsp+8*2]
-	mov	r9, 5
-	cmp	r8,r9
-	mov	r10, 0
-	sete	r10B
-	mov	qword [rsp+8*14], r10
-	mov	r9, [rsp+8*14]
-	mov	r8, r9
-	mov	qword [rsp+8*13], r8
+Lab_4:
 	
-Lab_7:
-	mov	r8, 0
-	mov	r9, [rsp+8*13]
-	cmp	r9, 0
-	sete	r8B
-	cmp	r8, 0
-	mov	qword [rsp+8*15], r8
-	je	Lab_9
-	mov	r9, 30
-	mov	r8, r9
-	mov	qword [rsp+8*8], r8
+Lab_2:
+	mov	r8, [rsp+8*4]
+	mov	r9, 1
+	mov	r8, r8
+	add	r8, r9
+	mov	qword [rsp+8*4], r8
+	jmp	Lab_0
 	
-Lab_9:
-	mov	r8, [rsp+8*8]
+Lab_1:
+	mov	r8, [rsp+8*3]
 	mov	rax, r8
 	mov	rsp, qword [trsp]
 	leave
@@ -161,8 +103,8 @@ Lab_9:
 _global_init:
 	push	rbp
 	mov	rbp, rsp
-	sub	rsp, 192
-	mov	r8, [rsp+8*16]
+	sub	rsp, 136
+	mov	r8, [rsp+8*9]
 	mov	rax, r8
 	leave
 	ret
@@ -172,7 +114,7 @@ QED:
 
 	section	.bss
 gbl:
-	resb	2176
+	resb	2120
 buff.1788:
 	resb	256
 arg:
