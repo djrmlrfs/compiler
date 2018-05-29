@@ -22,12 +22,19 @@ class Backend{
         ir = iir; cstr = csp;
         unmh = smp; work();
     }
-    private StringBuffer funcord() {
-        StringBuffer ret = new StringBuffer();
-        //todo
-        return ret;
+
+    private void emit(StringBuffer str, String st){str.append(st);}
+    private void emit(StringBuffer str, StringBuffer st){str.append(st);}
+
+    private Set<String> funcused = new HashSet<>();
+    private StringBuffer funcord(){
+        StringBuffer ret = new StringBuffer("_ord");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-18H], rdi\n\tmov\tr8,qword [arg+8*63]\n");
+        emit(ret,"\tmov\tqword [rbp-8H], r8\n\tmov\trax, qword [rbp-18H]\n\tlea\trdx, [rax+1H]\n");
+        emit(ret,"\tmov\trax, qword [rbp-8H]\n\tadd\trax, rdx\n\tmovzx\teax, byte [rax]\n");
+        emit(ret,"\tmovzx\teax, al\n\tpop\trbp\n\tret\n\n");    return ret;
     }
-    private StringBuffer funcnewarr() {
+    private StringBuffer funcnewarr(){
         StringBuffer ret = new StringBuffer("_newarr:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 32\n\tmov\tqword [rbp-18H], rdi\n");
         emit(ret,"\tmov\trax, qword [rbp-18H]\n\tadd\trax, 1\n\tshl\trax, 4\n\tmov\trdi, rax\n");
@@ -37,7 +44,7 @@ class Backend{
         emit(ret,"\tmov\trdx, qword [rbp-18H]\n\tmov\tqword [rax], rdx\n\tmov\trax, qword [rbp-8H]\n\tleave\n\tret\n\n");
         return ret;
     }
-    private StringBuffer funcstradd() {
+    private StringBuffer funcstradd(){
         StringBuffer ret = new StringBuffer("_stradd:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-28H]\n\tmovzx\teax, byte [rax]\n");
@@ -59,7 +66,7 @@ class Backend{
         emit(ret,"\tadd\trax, rdx\n\tmov\tbyte [rax], 0\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n\n");
         return ret;
     }
-    private StringBuffer funcmorarr() {
+    private StringBuffer funcmorarr(){
         StringBuffer ret = new StringBuffer("_mor:\n");  funcused.add("newarr");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tpush\trbx\n\tsub\trsp, 56\n");
         emit(ret,"\tmov\tdword [rbp-34H], edi\n\tmov\tqword [rbp-40H], rsi\n");
@@ -81,7 +88,7 @@ class Backend{
         emit(ret,"\tmov\tqword [rbp-8H], rdi\n\tmov\trax, qword [rbp-8H]\n\tmov\trsi, rax\n\tmov\tedi, 0\n\tcall\t_mor\n\tleave\n\tret\n");
         return ret;
     }
-    private StringBuffer funccaladd() {
+    private StringBuffer funccaladd(){
         StringBuffer ret = new StringBuffer("_caladd:\n");  funcused.add("address");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\trax, qword [rbp-30H]\n\tmov\trax, qword [rax]\n");
@@ -99,18 +106,29 @@ class Backend{
         emit(ret,"\tmov\tqword [rbp-10H], rax\n\tmov\trax, qword [rbp-10H]\nmAd_008:\n\tleave\n\tret\n\n");
         return ret;
     }
-    private StringBuffer funcstrcmp() {
-        StringBuffer ret = new StringBuffer();
-        //todo
+    private StringBuffer funcstrcmp(){
+//        name+pre+pd+nxt
+        StringBuffer pre = new StringBuffer("\tpush\trbp\n");
+        emit(pre,"\tmov\trbp, rsp\n\tsub\trsp, 16\n\tmov\tqword [rbp-8H], rdi\n\tmov\tqword [rbp-10H], rsi\n");
+        emit(pre,"\tmov\trax, qword [rbp-10H]\n\tlea\trdx, [rax+1H]\n\tmov\trax, qword [rbp-8H]\n\tadd\trax, 1\n");
+        emit(pre,"\tmov\trsi, rdx\n\tmov\trdi, rax\n\tcall\tstrcmp\n");
+        StringBuffer nxt = new StringBuffer("\tmovzx\teax, al\n\tleave\n\tret\n\n");
+        StringBuffer ret = new StringBuffer("_strls:\n");
+        emit(ret,pre);  emit(ret,"\tshr\teax, 31\n");   emit(ret,nxt);
+        emit(ret,"_strle:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetle\tal");  emit(ret,nxt);
+        emit(ret,"_streq:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsete\tal");  emit(ret,nxt);
+        emit(ret,"_strge:\n");  emit(ret,pre);  emit(ret,"\tnot\teax\n\tshr\teax, 31");  emit(ret,nxt);
+        emit(ret,"_strgt:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetg\tal");  emit(ret,nxt);
+        emit(ret,"_strne:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetne\tal");  emit(ret,nxt);
         return ret;
     }
-    private StringBuffer funcgetInt() {
+    private StringBuffer funcgetInt(){
         StringBuffer ret = new StringBuffer("_getInt:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 16\n\tlea\trax, [rbp-8H]\n");
         emit(ret,"\tmov\trsi, rax\n\tmov\tedi, GS_31\n\tmov\teax, 0\n");
         emit(ret,"\tcall\tscanf\n\tmov\trax, qword [rbp-8H]\n\tleave\n\tret\n\n");    return ret;
     }
-    private StringBuffer funcaddress() {
+    private StringBuffer funcaddress(){
         StringBuffer ret = new StringBuffer("_address:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tqword [rbp-8H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-10H], rsi\n\tmov\trax, qword [rbp-10H]\n");
@@ -118,12 +136,22 @@ class Backend{
         emit(ret,"\tadd\trax, rdx\n\tpop\trbp\n\tret\n\n");
         return ret;
     }
-    private StringBuffer funcparseInt() {
-        StringBuffer ret = new StringBuffer();
-        //todo
+    private StringBuffer funcparseInt(){
+        StringBuffer ret = new StringBuffer("_parseInt:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tr8,qword [arg+8*63]\n\tmov\tqword [rbp-18H], r8\n");
+        emit(ret,"\tmov\tqword [rbp-10H], 0\n\tmov\tqword [rbp-8H], 1\n\tjmp\tPSL_025\nPSL_023:\n\tmov\trdx, qword [rbp-8H]\n");
+        emit(ret,"\tmovrax, qword [rbp-18H]\n\tadd\trax, rdx\n\tmovzx\teax, byte [rax]\n\tcmp\tal, 47\n");
+        emit(ret,"\tjbe\tPSL_024\n\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trax, rdx\n");
+        emit(ret,"\tmovzx   eax, byte [rax]\n\tcmp\tal, 57\n\tja\tPSL_024\n\tmov\trdx, qword [rbp-10H]\n");
+        emit(ret,"\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
+        emit(ret,"\tmov\trdx, rax\nmov\trcx, qword [rbp-8H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trax, rcx\n");
+        emit(ret,"\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tsub\teax, 48\n\tcdqe\n\tadd\trax, rdx\n");
+        emit(ret,"\tmov\tqword [rbp-10H], rax\n\tadd\tqword [rbp-8H], 1\n\tjmp\tPSL_025\nPSL_024:\n\tmov\trax, qword [rbp-10H]\n");
+        emit(ret,"\tjmp\tPSL_026\nPSL_025:\n\tmov\trax, qword [rbp-18H]\n\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n");
+        emit(ret,"\tcmp\trax, qword [rbp-8H]\n\tjge\tPSL_023\n\tmov\trax, qword [rbp-10H]\nPSL_026:\n\tpop\trbp\n\tret\n");
         return ret;
     }
-    private StringBuffer functoString() {
+    private StringBuffer functoString(){
         StringBuffer ret = new StringBuffer("_toString:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 64\n\tmov\tqword [rbp-38H], rdi\n");
         emit(ret,"\tmov\tqword [rbp-8H], 0\n\tmov\tqword [rbp-10H], 1\n\tcmp\tqword [rbp-38H], 0\n");
@@ -149,7 +177,7 @@ class Backend{
         emit(ret,"\tjg\tL_007\n\tmov\trax, qword [rbp-28H]\n\tleave\n\tret\n\n");
         return ret;
     }
-    private StringBuffer funcgetString() {
+    private StringBuffer funcgetString(){
         StringBuffer ret = new StringBuffer("_getString:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 32\n\tmov\tesi, buff.1788\n");
         emit(ret,"\tmov\tedi, GS_32\n\tmov\teax, 0\n\tcall\tscanf\n\tmov\tedi, buff.1788\n");
@@ -163,15 +191,24 @@ class Backend{
         emit(ret,"\tcmp\trax, qword [rbp-10H]\n\tjle\tGS_19\n\tmov\trax, qword [rbp-18H]\n\tleave\n\tret\n");
         return ret;
     }
-    private StringBuffer funcsubstring() {
-        StringBuffer ret = new StringBuffer();
-        //todo
+    private StringBuffer funcsubstring(){
+        StringBuffer ret = new StringBuffer("_substring:\n");
+        emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tsub\trsp, 48\n\tmov\tqword [rbp-28H], rdi\n");
+        emit(ret,"\tmov\tqword [rbp-30H], rsi\n\tmov\tr8,qword [arg+8*63]\n\tmov\tqword [rbp-18H], r8\n");
+        emit(ret,"\tmov\trax, qword [rbp-28H]\n\tmov\trdx, qword [rbp-30H]\n\tsub\trdx, rax\n");
+        emit(ret,"\tmov\trax, rdx\n\tadd\trax, 3\n\tmov\trdi, rax\n\tcall\tmalloc\n\tmov\tqword [rbp-20H], rax\n");
+        emit(ret,"\tmov\trax, qword [rbp-30H]\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-28H]\n\tsub\tedx, eax\n");
+        emit(ret,"\tmov\teax, edx\n\tadd\teax, 1\n\tmov\tedx, eax\n\tmov\trax, qword [rbp-20H]\n\tmov\tbyte [rax], dl\n");
+        emit(ret,"\tmov\tqword [rbp-10H], 0\n\tmov\trax, qword [rbp-28H]\n\tmov\tqword [rbp-8H], rax\n\tjmp\tPSL_022\n");
+        emit(ret,"PSL_021:\n\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tadd\trdx, rax\n\tmov\trax, qword [rbp-8H]\n\tlea\trcx, [rax+1H]\n\tmov\trax, qword [rbp-18H]\n");
+        emit(ret,"\tadd\trax, rcx\n\tmovzx\teax, byte [rax]\n\tmov\tbyte [rdx], al\n\tadd\tqword [rbp-8H], 1\n");
+        emit(ret,"PSL_022:\n\tmov\trax, qword [rbp-8H]\n\tcmp\trax, qword [rbp-30H]\n\tjle\tPSL_021\n");
+        emit(ret,"\tadd\tqword [rbp-10H], 1\n\tmov\trdx, qword [rbp-10H]\n\tmov\trax, qword [rbp-20H]\n");
+        emit(ret,"\tadd\trax, rdx\n\tmov\tbyte [rax], 0\n\tmov\trax, qword [rbp-20H]\n\tleave\n\tret\n\n");
         return ret;
     }
-
-    private Set<String> funcused = new HashSet<>();
-    private void addconstantfunc()
-    {
+    private void addconstantfunc() {
         if (funcused.contains("ord"))  emit(text,funcord());
         if (funcused.contains("morarr"))  emit(text,funcmorarr());
         if (funcused.contains("newarr"))  emit(text,funcnewarr());
@@ -185,8 +222,7 @@ class Backend{
         if (funcused.contains("getString"))  emit(text,funcgetString());
         if (funcused.contains("substring"))  emit(text,funcsubstring());
     }
-    private void emit(StringBuffer str, String st){str.append(st);}
-    private void emit(StringBuffer str, StringBuffer st){str.append(st);}
+
     private void advar(vara var)
     {
         if (var==null || var.equals(vara.empty))    return;
@@ -197,12 +233,7 @@ class Backend{
     private void work()throws Exception
     {
         System.err.println("djrmlrfs");
-        for (int i = 0; i < 16; ++i)
-        {
-            free[i] = true;
-            ban[i] = false;
-            wb[i] = false;
-        }
+        for (int i = 0; i < 16; ++i)    {free[i] = true; ban[i] = false; wb[i] = false;}
         StringBuffer head = new StringBuffer(), bss = new StringBuffer(), data = new StringBuffer();
         text = new StringBuffer();
         emit(head,"\tglobal\tmain\n\textern\tputs\n\textern\tprintf\n");
@@ -492,13 +523,6 @@ class Backend{
         return  (!unmh.argvmap.containsKey(var.name) && !unmh.glovmap.containsKey(var.name) && !vid.containsKey(var));
     }
 
-    private StringBuffer println(vara var)
-    {
-        StringBuffer ret = new StringBuffer("mov\trdi, ");
-        emit(ret,getname(var));
-        emit(ret," \n\tadd\trdi, 1\n\tcall\tputs\n\t");
-        return ret;
-    }
     private StringBuffer print(vara var)
     {
         StringBuffer ret = new StringBuffer("mov\trdi, format\n\t");
@@ -506,6 +530,14 @@ class Backend{
         emit(ret," \n\tadd\trsi, 1 \n\txor\trax, rax\n\tcall\tprintf\n\t");
         return ret;
     }
+    private StringBuffer println(vara var)
+    {
+        StringBuffer ret = new StringBuffer("mov\trdi, ");
+        emit(ret,getname(var));
+        emit(ret," \n\tadd\trdi, 1\n\tcall\tputs\n\t");
+        return ret;
+    }
+
     private String shc(String s)
     {
         StringBuffer ret = new StringBuffer();
@@ -532,11 +564,7 @@ class Backend{
         return ans;
     }
 
-    private void clr()
-    {
-        for (int i = 0; i < 16; ++i)
-            if (!free[i])   cr(i);
-    }
+    private void clr(){for (int i = 0; i < 16; ++i)    if (!free[i])   cr(i);}
     private void cr(int x)
     {
         if (wb[x] && !iscst(zcc[x]))
@@ -546,11 +574,7 @@ class Backend{
         }
         wb[x] = false;    free[x] = true;   zcc[x] = null;
     }
-    private void free()
-    {
-        for (int i = 0; i < 16; ++i)
-            free[i] = true;
-    }
+    private void free(){for (int i = 0; i < 16; ++i)    free[i] = true;}
 
     private void put(int i, vara var, boolean p)
     {
@@ -620,9 +644,8 @@ class vara{
         vara aa = (vara) other;
         return name.equals(aa.name);
     }
-
     static boolean ig = false;
-    static final vara empty = new vara("it's empty",new vtype("void",0));
+    static final vara empty = new vara("_orzcc_",new vtype("void",0));
 }
 
 class vtype{
@@ -670,18 +693,6 @@ class vtype{
     }
 }
 
-enum Oper{
-    add,sub,mul,div,mod,                //+ _ * / %
-    not,inv,neg,and,or,xor,             //! ~ - & | ^
-    shl,shr,move,                       //<< >> =
-    call,ret,label,                     // call ret lab:
-    less,leq,equal,neq,geq,gre,         //< <= = != >= >
-    sless,sleq,sequal,sneq,sgeq,sgre,   //for strcmp
-    jmp,jaeb,janb,                      //goto goto_if_a_equal_b goto_if_a_neq_b
-    malloc,newarr,morarr,stradd,load,store,address,caladd,          //for memory
-    print,println,getString,getInt,toString,parseInt,substring,ord, //built-in functions
-    enterFunction,exitFunction,         //literally
-}
 
 class func{
     String name;vtype type;
@@ -699,14 +710,14 @@ class func{
 class sys{
     sys next;  String name;
     Oper oper;  vara var1, var2, dest;
-    sys(Oper oper, vara var1, vara var2, vara dest)
-        {this.oper = oper;   this.var1 = var1;   this.var2 = var2;   this.dest = dest;   this.next = null;}
-    sys(Oper oper, String label){this.oper = oper; this.name = label;}
-    sys(Oper oper, String label, vara dest){this.oper = oper;  this.name = label;  this.dest = dest;}
-    sys(Oper oper){    this.oper = oper;}
+    sys(Oper op){oper = op;}
+    sys(Oper op, String lab){oper = op; name = lab;}
+    sys(Oper op, String lab, vara dst){oper = op; name = lab; dest = dst;}
+    sys(Oper op, vara v1, vara v2, vara dst){oper = op; var1 = v1; var2 = v2; dest = dst; next = null;}
 }
 
 class IR{
+    int ct;
     sys last, head;
     IR(){   head = null;    last = null;}
     void push(sys quad)
@@ -723,28 +734,157 @@ class IR{
     }
     void show()
     {
-        System.err.println("it's end of semantic and ir");
-//        for (sys now = head; now != null; now = now.next)
-//            System.err.println(now.oper+","+now.var1+","+now.var2+","+now.dest+","+now.name);
+        System.err.println("\nnow output ir:");
+        for (sys now = head; now != null; now = now.next)
+        {
+            System.err.print(now.oper);
+            if (now.var1 != null && !now.var1.equals(vara.empty))
+                System.err.print(","+now.var1);
+            if (now.var2 != null && !now.var2.equals(vara.empty))
+                System.err.print(","+now.var2);
+            if (now.dest != null && !now.dest.equals(vara.empty))
+                System.err.print(","+now.dest);
+            if (now.name != null)   System.err.print(","+now.name);
+            System.err.println();
+        }
     }
     private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
+
+
+    private Integer npt = 1;
+    private HashMap<String,Integer> stoi = new HashMap<>();
+    private int gval(String str)
+    {
+        if (stoi.containsKey(str))
+            return stoi.get(str);
+        stoi.put(str,++npt);
+        return npt;
+    }
+    private int tot;
+    private boolean[] u;
+    private int[] nxt, hed, ver;
+    private void added(int a, int b)
+    {
+        nxt[++tot] = hed[a];
+        hed[a] = tot; ver[tot] = b;
+    }
+    private void dfs(int p)
+    {
+        u[p] = true;
+        for (int i = hed[p]; i != 0; i = nxt[i])
+            if (!u[ver[i]]) dfs(ver[i]);
+    }
     void simplify()
     {
+        nxt = new int[ct];  ver = new int[ct*2];
+        hed = new int[ct*2];    u = new boolean[ct];
         System.err.println("pretend to be simplifying");
-        while (head != null && adya(head))  head = head.next;
         for (sys now = head; now != null; now = now.next)
-            while (now.next!=null && adya(now.next))    now.next = now.next.next;
-        /*todo
-         del useless template variable
-            like    t1 = a+b; c = t1;           -> c = a+b;
-            and     a = 1; b = 2; c = a+b+a*2;  -> c = 5;
-         use same variable to represent same expr
-            like   t1 = a+b;    t2 = a+b;  t3 = t1+t2;  -> t3 = t1+t1;
-         loop hoist
-            like    while(1){ t1 = a+b;}    -> t1 = a+b; while(1){}
-         btw, why doesn't it support chinese comment?
-         */
+        {
+            while (now.next != null && adya(now.next))
+                now.next = now.next.next;
+        }
+        HashMap<String,Integer> used = new HashMap<>();
+        for (sys now = head; now != null; now = now.next)
+        {
+            String x = "", y = "", z = "";
+            if (now.var1 != null)   x = now.var1.name;
+            if (now.var2 != null)   y = now.var2.name;
+            if (now.dest != null)   z = now.dest.name;
+            if (now.oper.compareTo(Oper.store) <= 0)
+            {
+                if (now.oper.equals(Oper.move))
+                    used.put(x,used.getOrDefault(x,0)+1);
+                else used.put(x,used.getOrDefault(x,1)+1);
+                added(gval(z),gval(x));
+            }
+            else if (now.oper.compareTo(Oper.caladd) <= 0)
+            {
+                used.put(x,used.getOrDefault(x,1)+1);
+                used.put(y,used.getOrDefault(y,1)+1);
+                added(gval(z),gval(x)); added(gval(z),gval(y));
+            }
+            else if (now.oper.compareTo(Oper.ret) <= 0)
+            {
+                used.put(x,used.getOrDefault(x,1)+1);
+                added(gval("_st"),gval(x));
+            }
+            else if (now.oper.compareTo(Oper.janb) <= 0)
+            {
+                used.put(x,used.getOrDefault(x,1)+1);
+                used.put(y,used.getOrDefault(y,1)+1);
+                added(gval("_st"),gval(x)); added(gval("_st"),gval(y));
+            }
+        }
+        for (int i = 0; i < 64; ++i)
+        {
+            used.put("_t"+i,1);
+            added(gval("_st"),gval("_t"+i));
+        }
+        u[1] = true;
+        dfs(gval("_st"));   sys nx;
+        HashMap<String,sys> lst = new HashMap<>();
+        for (sys now = head; now.next != null;)
+        {
+            nx = now.next;
+            if (nx.dest != null && !nx.dest.equals(vara.empty)) {
+                if (!u[stoi.getOrDefault(nx.dest.name, 1)])
+                {
+                    //System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
+                    now.next = nx.next;
+                }
+                else
+                {
+                    if (nx.oper.equals(Oper.move) && used.getOrDefault(nx.var1.name, 0) == 1)
+                    {
+                        if (lst.containsKey(nx.var1.name))
+                        {
+                            //System.err.println("chg:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
+                            sys zz = lst.get(nx.var1.name);
+                            zz.next = nx.next;
+                            zz.dest = nx.dest;
+                            now.next = zz;  nx = now.next;
+                            //System.err.println("to:   " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
+                        }
+                    }
+                    if (used.getOrDefault(nx.dest.name, 0) == 1) {
+                        lst.put(nx.dest.name, nx);
+                        now.next = nx.next;
+                    }
+                    else now = now.next;
+                }
+            }
+            else now = now.next;
+        }
+
+//        show();
+        /*
+
+        loop hoist
+        empty if/for/while
+        * */
     }
+}
+enum Oper{
+    toString,ord,                       //built-in          z = op x
+    not,inv,neg,move,                   //! ~ - =           z = op x
+    malloc,newarr,morarr,load,store,    //for memory        z = op x
+    //z->x
+    add,sub,mul,div,mod,                //+ _ * / %         z = x op y
+    and,or,xor,shl,shr,                 //& | ^ << >>       z = x op y
+    less,leq,equal,neq,geq,gre,         //< <= = != >= >    z = x op y
+    sless,sleq,sequal,sneq,sgeq,sgre,   //for strcmp        z = x op y
+    substring,                          //built-in          z = x op y
+    stradd,address,caladd,              //string, class     z = x op y
+    //z->x, z->y
+    print,println,ret,                  //output return     op x
+    //st->x
+    jaeb,janb,                          //goto if(if not)   name = x op y
+    //st->x, st->y
+    getString,getInt,parseInt,          //input & built-in  z = op
+    call,                               //call              z = op name
+    label,jmp,                          //label goto        op name
+    enterFunction,exitFunction,         //literally         op name
 }
 
 class zcc {
@@ -895,12 +1035,12 @@ class zcc {
 }
 class MVisitor extends MxxBaseVisitor<IR>
 {
+    static int ct = 0;                  //new temp num
     private vara cths;                  //now this
     private String ncls = "";           //now in some class
     zcc unmhere = new zcc();            //all used name and its type
     private vtype nclstp, nrttp = null; //now class type    now return type
     private static int lcnt = 0;        //new label num
-    private static int ct = 0;          //new temp num
     private Stack<String>nlabe = new Stack<>(); //if for while, end label
     private Stack<String>nalab = new Stack<>(); //similar as nlabe
     HashMap<vara,String> cstr = new HashMap<>();//str like "aaa" "\n"
@@ -912,20 +1052,18 @@ class MVisitor extends MxxBaseVisitor<IR>
     private static String newlabel(){return "Lab_"+Integer.toString(lcnt++);}
     private vara nvar(vtype type)
     {
-        vara variable = new vara("_t"+Integer.toString(ct++),type);
-        variable.tmp = false;    unmhere.add(variable.name,variable.type);
-        return variable;
+        vara var = new vara("_t"+Integer.toString(ct++),type);
+        unmhere.add(var.name,var.type);             return var;
     }
     private vara nths(vtype type)
     {
-        vara variable = new vara("_this"+Integer.toString(ct++),type);
-        variable.tmp = false;    unmhere.add(variable.name,variable.type);
-        return variable;
+        vara var = new vara("_this"+Integer.toString(ct++),type);
+        unmhere.add(var.name,var.type);             return var;
     }
     private vara ncns(int vcnum, vtype type)
     {
-        vara variable =  new vara("_const"+Integer.toString(ct++),type);
-        variable.tmp = false;    variable.vcnum = vcnum;   return variable;
+        vara var =  new vara("_const"+Integer.toString(ct++),type);
+        var.vcnum = vcnum;                          return var;
     }
 
     @Override public IR visitProgram(MxxParser.ProgramContext ctx)
@@ -934,9 +1072,9 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara.ig = true;   unmhere.global = true;  ct = 0;
         for (int i = 0; i < 64; ++i)
         {
-            vara variable = nvar((new vtype("int",0)));
-            variable.vcnum = i;    argList.add(variable);
-            unmhere.argvmap.put(variable.name,variable.type);
+            vara var = nvar((new vtype("int",0)));
+            var.vcnum = i;    argList.add(var);
+            unmhere.argvmap.put(var.name,var.type);
         }
         unmhere.global = false; vara.ig = false;
         for(ParseTree child : ctx.children)
@@ -2276,7 +2414,8 @@ public class Main{
         ParseTree tree = parser.program();
         MVisitor visitor = new MVisitor();
         IR iir = visitor.visit(tree);
-        iir.show(); iir.simplify();
+        iir.ct = MVisitor.ct+visitor.unmhere.udnm.size()+100;
+        iir.simplify();
         Backend back = new Backend();
         back.init(iir,visitor.cstr,visitor.unmhere);
     }
