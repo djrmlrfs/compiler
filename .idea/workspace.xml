@@ -18,8 +18,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="1509" column="30" lean-forward="true" selection-start-line="1509" selection-start-column="30" selection-end-line="1509" selection-end-column="30" />
+            <state relative-caret-position="108">
+              <caret line="839" column="35" lean-forward="true" selection-start-line="839" selection-start-column="35" selection-end-line="839" selection-end-column="35" />
               <folding>
                 <element signature="method#funcord#0;class#Backend#0" />
                 <element signature="method#funcnewarr#0;class#Backend#0" />
@@ -53,8 +53,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>stradd</find>
-      <find>load</find>
       <find>store</find>
       <find>address</find>
       <find>caladd</find>
@@ -76,13 +74,15 @@
       <find>ct</find>
       <find>vara</find>
       <find>used</find>
-      <find>simplify</find>
       <find>backend</find>
       <find>work</find>
       <find>ret</find>
       <find>gcd</find>
-      <find>label</find>
       <find>move</find>
+      <find>label</find>
+      <find>show</find>
+      <find>add</find>
+      <find>simplify</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -239,7 +239,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="11" weight="0.3297491" />
@@ -948,8 +947,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="1509" column="30" lean-forward="true" selection-start-line="1509" selection-start-column="30" selection-end-line="1509" selection-end-column="30" />
+        <state relative-caret-position="108">
+          <caret line="839" column="35" lean-forward="true" selection-start-line="839" selection-start-column="35" selection-end-line="839" selection-end-column="35" />
           <folding>
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />

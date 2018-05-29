@@ -784,7 +784,7 @@ class IR{
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
         }
-//        show();
+        show();
         HashMap<String,Integer> used = new HashMap<>();
         for (sys now = head; now != null; now = now.next)
         {
@@ -835,21 +835,12 @@ class IR{
                     //System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
                     now.next = nx.next;
                 }
-                else if (nx.next != null)
-                {
-                    if (nx.next.oper.equals(Oper.move) && nx.next.var1.equals(nx.dest))
-                    {
-                        nx.dest = nx.next.dest;
-                        nx.next = nx.next.next;
-                    }
-                    else    now = now.next;
-                }
                 else    now = now.next;
             }
             else    now = now.next;
         }
 
-        //show();
+        show();
         /*
         a = a*1
         a = 1, b = 2, c = a+b;
