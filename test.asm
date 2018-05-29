@@ -26,12 +26,13 @@ main:
 	mov	eax, 0
 	call	_global_init
 	mov	r8, rax
-	mov	r10, 5
+	mov	r10, 1
 	mov	r9, r10
 	mov	r11, 1
 	mov	r9, r9
 	add	r9, r11
-	mov	rax, r9
+	mov	r12, 1
+	mov	rax, r12
 	mov	qword [rsp+8*1], r8
 	mov	qword [rsp+8*2], r9
 	mov	rsp, qword [trsp]

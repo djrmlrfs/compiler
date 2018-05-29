@@ -1,387 +1,84 @@
+now output ir:
+label,main
+enterFunction,main
+call,_t81,_global_init
+move,5,la
+newarr,la,_t65
+move,_t65,a
+move,0,cnt
+move,0,i
+label,Lab_0
+less,i,la,_t68
+jaeb,_t68,Lab_1
+add,cnt,1,cnt
+move,a,_t72
+address,_t72,i,_t71
+store,cnt,_t71
+label,Lab_2
+add,i,1,i
+jmp,Lab_0
+label,Lab_1
+move,0,sum
+move,0,i
+label,Lab_3
+less,i,la,_t75
+jaeb,_t75,Lab_4
+move,a,_t78
+address,_t78,i,_t77
+load,_t77,_t79
+add,sum,_t79,_t80
+move,_t80,sum
+label,Lab_5
+add,i,1,i
+jmp,Lab_3
+label,Lab_4
+ret,sum,main
+ret,0,main
+exitFunction,main
+jmp,QED
+label,_global_init
+enterFunction,_global_init
+exitFunction
+ret,_const83,
+label,QED
 
-
---label--:
-	 section   .text
-
-main:
-	
-
---enterFunction--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	
-
---call--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	
-
---move--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	
-
---ret--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	
-
---exitFunction--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	
-
---jmp--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-
---label--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-global_init:
-	
-
---enterFunction--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-global_init:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	
-
---exitFunction--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-global_init:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	
-
---ret--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-global_init:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov r8,  [rsp+8*3]
-	mov rax, r8
-	leave
-	ret
-	
-
---label--:
-	 section   .text
-
-main:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov     rax, 536870912
-        cdqe
-        mov     rdi, rax
-        call    malloc
-        mov     edx, dword 536870912
-        movsxd  rdx, edx
-        sub     rdx, 2072
-        add     rax, rdx
-        mov     qword [trsp], rsp
-        mov     rsp, rax
-        mov     eax, 0
-	call global_init
-	mov r8, rax
-	mov r10,  5
-	mov r9,r10
-	mov qword [rsp+8*1],r8
-	mov qword [rsp+8*2],r9
-	call null
-	mov r8, rax
-	mov r9,  0
-	mov rax, r9
-	mov qword [rsp+8*2],r8
-	mov rsp, qword [trsp]
-	leave
-	ret
-	jmp QED
-	
-global_init:
-	push   rbp
-	mov    rbp, rsp
-	sub    rsp, 88
-	mov r8,  [rsp+8*3]
-	mov rax, r8
-	leave
-	ret
-	
-QED:
-	
+now output ir:
+label,main
+enterFunction,main
+call,_t81,_global_init
+move,5,la
+newarr,la,_t65
+move,_t65,a
+move,0,i
+label,Lab_0
+less,i,la,_t68
+jaeb,_t68,Lab_1
+label,Lab_2
+add,i,1,i
+jmp,Lab_0
+label,Lab_1
+move,0,sum
+move,0,i
+label,Lab_3
+less,i,la,_t75
+jaeb,_t75,Lab_4
+move,a,_t78
+address,_t78,i,_t77
+load,_t77,_t79
+add,sum,_t79,_t80
+move,_t80,sum
+label,Lab_5
+add,i,1,i
+jmp,Lab_3
+label,Lab_4
+ret,sum,main
+ret,0,main
+exitFunction,main
+jmp,QED
+label,_global_init
+enterFunction,_global_init
+exitFunction
+ret,_const83,
+label,QED
+djrmlrfs
+finished!

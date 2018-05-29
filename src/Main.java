@@ -750,7 +750,7 @@ class IR{
     }
     private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
 
-
+/*
     private Integer npt = 1;
     private HashMap<String,Integer> stoi = new HashMap<>();
     private int gval(String str)
@@ -773,19 +773,26 @@ class IR{
         u[p] = true;
         for (int i = hed[p]; i != 0; i = nxt[i])
             if (!u[ver[i]]) dfs(ver[i]);
-    }
+    }*/
     void simplify()
     {
-        nxt = new int[ct];  ver = new int[ct*2];
-        hed = new int[ct*2];    u = new boolean[ct];
+/*        nxt = new int[ct];  ver = new int[ct*2];
+        hed = new int[ct*2];    u = new boolean[ct];*/
         System.err.println("pretend to be simplifying");
         for (sys now = head; now != null; now = now.next)
-        {
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
-        }
+        for (sys now = head; now != null; now = now.next)
+        while (now.next!=null &&now.next.oper.equals(Oper.move)
+            && now.dest!=null &&!now.dest.equals(vara.empty)&&
+            now.dest.tmp && now.next.var1.equals(now.dest))
+            {
+                now.dest = now.next.dest;
+                now.next = now.next.next;
+            }
         show();
-        HashMap<String,Integer> used = new HashMap<>();
+
+/*        HashMap<String,Integer> used = new HashMap<>();
         for (sys now = head; now != null; now = now.next)
         {
             String x = "", y = "", z = "";
@@ -832,7 +839,7 @@ class IR{
             {
                 if (!u[stoi.getOrDefault(nx.dest.name, 1)])
                 {
-                    //System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
+                    System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
                     now.next = nx.next;
                 }
                 else    now = now.next;
@@ -840,7 +847,7 @@ class IR{
             else    now = now.next;
         }
 
-        show();
+        //show();
         /*
         a = a*1
         a = 1, b = 2, c = a+b;
