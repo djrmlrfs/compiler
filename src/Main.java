@@ -784,6 +784,7 @@ class IR{
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
         }
+//        show();
         HashMap<String,Integer> used = new HashMap<>();
         for (sys now = head; now != null; now = now.next)
         {
@@ -827,41 +828,33 @@ class IR{
         for (sys now = head; now.next != null;)
         {
             nx = now.next;
-            if (nx.dest != null && !nx.dest.equals(vara.empty)) {
+            if (nx.dest != null && !nx.dest.equals(vara.empty))
+            {
                 if (!u[stoi.getOrDefault(nx.dest.name, 1)])
                 {
                     //System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
                     now.next = nx.next;
                 }
-                else
+                else if (nx.next != null)
                 {
-                    if (nx.oper.equals(Oper.move) && used.getOrDefault(nx.var1.name, 0) == 1)
+                    if (nx.next.oper.equals(Oper.move) && nx.next.var1.equals(nx.dest))
                     {
-                        if (lst.containsKey(nx.var1.name))
-                        {
-                            //System.err.println("chg:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
-                            sys zz = lst.get(nx.var1.name);
-                            zz.next = nx.next;
-                            zz.dest = nx.dest;
-                            now.next = zz;  nx = now.next;
-                            //System.err.println("to:   " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
-                        }
+                        nx.dest = nx.next.dest;
+                        nx.next = nx.next.next;
                     }
-                    if (used.getOrDefault(nx.dest.name, 0) == 1) {
-                        lst.put(nx.dest.name, nx);
-                        now.next = nx.next;
-                    }
-                    else now = now.next;
+                    else    now = now.next;
                 }
+                else    now = now.next;
             }
-            else now = now.next;
+            else    now = now.next;
         }
 
-//        show();
+        //show();
         /*
-
-        loop hoist
-        empty if/for/while
+        a = a*1
+        a = 1, b = 2, c = a+b;
+        for (?){c = a+b} d = c;
+        if(?){empty}
         * */
     }
 }

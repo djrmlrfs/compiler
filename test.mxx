@@ -1,15 +1,30 @@
+int gcd(int x, int y) {
+  if (x%y == 0) return 1;
+}
+
 int main()
 {
-	int a = 1;
-	a = 2;
-	int c = 12;
-	a = c;
-	int b = a;
-	return b;
+    println(toString(gcd(10,1)));
 }
-/*
-	t1 = c*d
-	t2 = e+f
-	t2 = t1+a
-	b = t2
-*/
+
+
+/*!! metadata:
+=== comment ===
+codegen2-5140309569-xushichao.txt
+gcd_modified
+=== input ===
+
+=== assert ===
+output
+=== timeout ===
+1.0
+=== output ===
+1
+1029
+171
+=== phase ===
+codegen pretest
+=== is_public ===
+True
+
+!!*/
