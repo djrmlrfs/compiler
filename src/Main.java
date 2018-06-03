@@ -121,7 +121,7 @@ class IR{
         //show();
         for (BB now = bhead; now != null; now = now.nxt)
         {
-            now.show();
+        //    now.show();
         }
     }
 }
@@ -350,7 +350,9 @@ class Backend{
         if (var==null || var.equals(vara.empty))    return;
         vld.put(var,lnum);
         if (!var.type.name.contains("const") && !vid.containsKey(var))
+        {
             vid.put(var,vid.size()+1);
+        }
     }
     private void work()throws Exception
     {
@@ -491,37 +493,37 @@ class Backend{
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_strles\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strls\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sleq:
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_strleq\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strle\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sequal:
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_streql\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_streq\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sneq:
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_strneq\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strne\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgeq:
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_strgeq\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strge\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case sgre:
                     clr();  funcused.add("strcmp");
                     emit(text,"mov\trdi, "+getname(var1));   emit(text,"\n\t");
                     emit(text,"mov\trsi, "+getname(var2));   emit(text,"\n\t");
-                    emit(text,"call\t_strgre\n\t"); emit(text,"mov\tqword ");
+                    emit(text,"call\t_strgt\n\t"); emit(text,"mov\tqword ");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); break;
                 case jmp:
                     clr();  emit(text,"jmp\t");  emit(text,name);    emit(text,"\n\t");  break;
@@ -629,12 +631,12 @@ class Backend{
                 return new StringBuffer("rdi");
             if (var.vcnum == 1)
                 return new StringBuffer("rsi");
-            return new StringBuffer("[arg+8*"+Integer.toString(var.vcnum)+"]");
+            return new StringBuffer("[arg+8*"+var.vcnum+"]");
         }
         if (unmh.glovmap.containsKey(var.name))
-            return new StringBuffer("[gbl+8*"+Integer.toString(vid.get(var))+"]");
+            return new StringBuffer("[gbl+8*"+vid.get(var)+"]");
         if (vid.containsKey(var))
-            return new StringBuffer("[rsp+8*"+Integer.toString(vid.get(var))+"]");
+            return new StringBuffer("[rsp+8*"+vid.get(var)+"]");
         return new StringBuffer(Integer.toString(var.vcnum));
     }
 
@@ -916,9 +918,9 @@ class zcc {
         }
         opers.push(new ccz(name,rnm.get(name),vmap.get(name),dmap.get(name)));
         vmap.put(name,vtp);
-        if (global) glovmap.put(name,vtp);
         if(!rnm.containsKey(name))    rnm.put(name, name);
         else    rnm.put(name, name + "_" + vcnt);
+        if (global) glovmap.put(rnm.get(name),vtp);
         if (!nfunc.equals(""))
         {
             ArrayList<String> arrayList = lvar.get(nfunc);
@@ -1097,7 +1099,10 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             if (child.getClass().equals(MxxParser.DefclassContext.class))   ir3.add(visit(child));
             if (child.getClass().equals(MxxParser.GvarContext.class))
-                {vara.ig = true; unmhere.global = true;  ir5.add(visit(child));   vara.ig = false;    unmhere.global = false;}
+            {
+                vara.ig = true; unmhere.global = true;
+                ir5.add(visit(child));
+                vara.ig = false;    unmhere.global = false;}
             if (child.getClass().equals(MxxParser.DeffuncContext.class))
             {
                 MxxParser.DeffuncContext childContext =((MxxParser.DeffuncContext)child);
