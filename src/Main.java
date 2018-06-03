@@ -4,6 +4,128 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
 import java.util.*;
+
+class IR{
+    int ct;
+    sys last, head;
+    IR(){   head = null;    last = null;}
+    void push(sys quad)
+    {
+        if (quad == null)   return;
+        if (head == null)   {head = quad;   last = quad;}
+        else    {last.next = quad;  last = last.next;}
+    }
+    void add(IR oth)
+    {
+        if (oth ==  null)   return;
+        if (head == null)   {this.head = oth.head;this.last = oth.last;}
+        else if (oth.head != null) {last.next = oth.head;   last = oth.last;}
+    }
+    void show()
+    {
+        System.err.println("\nnow output ir:");
+        for (sys now = head; now != null; now = now.next)
+        {
+            System.err.print(now.oper);
+            if (now.var1 != null && !now.var1.equals(vara.empty))
+                System.err.print(","+now.var1);
+            if (now.var2 != null && !now.var2.equals(vara.empty))
+                System.err.print(","+now.var2);
+            if (now.dest != null && !now.dest.equals(vara.empty))
+                System.err.print(","+now.dest);
+            if (now.name != null)   System.err.print(","+now.name);
+            System.err.println();
+        }
+        System.err.println();
+    }
+    private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
+    class BB{
+        BB nxt;
+        sys head, tail;
+        BB()
+        {
+            nxt = null;
+            head = null;
+            tail = null;
+        }
+        void add(sys nsys)
+        {
+            if (nsys == null)   return;
+            nsys.next = null;
+            if (head == null)   head = tail = nsys;
+            else{
+                tail.next = nsys;
+                tail = nsys;
+            }
+        }
+        void show()
+        {
+            System.err.println("BB head");
+            for (sys now = head; now != null; now = now.next)
+            {
+                System.err.print(now.oper);
+                if (now.var1 != null && !now.var1.equals(vara.empty))
+                    System.err.print(","+now.var1);
+                if (now.var2 != null && !now.var2.equals(vara.empty))
+                    System.err.print(","+now.var2);
+                if (now.dest != null && !now.dest.equals(vara.empty))
+                    System.err.print(","+now.dest);
+                if (now.name != null)   System.err.print(","+now.name);
+                System.err.println();
+            }
+            System.err.println("BB tail\n");
+        }
+    }
+    private BB bhead = null;
+    private BB btail = null;
+    private void addBB(BB aa)
+    {
+        if (aa == null)   return;
+        aa.nxt = null;
+        if (bhead == null)   bhead = btail = aa;
+        else{
+            btail.nxt = aa;
+            btail = aa;
+        }
+    }
+    void simplify()
+    {
+        System.err.println("pretend to be simplifying");
+        for (sys now = head; now != null; now = now.next)
+            while (now.next != null && adya(now.next))
+                now.next = now.next.next;
+        for (sys now = head; now != null; now = now.next)
+        {
+            while (now.next != null && now.next.oper.equals(Oper.move)
+                    && now.dest != null && !now.dest.equals(vara.empty) &&
+                    now.dest.tmp && now.next.var1.equals(now.dest))
+            {
+                now.dest = now.next.dest;
+                now.next = now.next.next;
+            }
+        }
+        boolean ok = false;
+        for (sys now = head; now != null; now = now.next)
+            if (now.oper.equals(Oper.label) || ok)    //start
+            {
+                ok = false;
+                BB nb = new BB();
+                for (;;now = now.next)
+                {
+                    nb.add(now.cpy());
+                    if (now.oper.equals(Oper.funced) || now.next== null || now.oper.equals(Oper.jmp)){addBB(nb); break;}
+                    else if (now.oper.equals(Oper.jaeb) || now.oper.equals(Oper.janb))  {ok = true; addBB(nb);  break;}
+                    else if (now.next.oper.equals(Oper.label))    {addBB(nb);  break;}
+                }
+            }
+        //show();
+        for (BB now = bhead; now != null; now = now.nxt)
+        {
+            now.show();
+        }
+    }
+}
+
 class Backend{
     private IR ir;
     private zcc unmh;
@@ -115,11 +237,11 @@ class Backend{
         StringBuffer nxt = new StringBuffer("\tmovzx\teax, al\n\tleave\n\tret\n\n");
         StringBuffer ret = new StringBuffer("_strls:\n");
         emit(ret,pre);  emit(ret,"\tshr\teax, 31\n");   emit(ret,nxt);
-        emit(ret,"_strle:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetle\tal");  emit(ret,nxt);
-        emit(ret,"_streq:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsete\tal");  emit(ret,nxt);
-        emit(ret,"_strge:\n");  emit(ret,pre);  emit(ret,"\tnot\teax\n\tshr\teax, 31");  emit(ret,nxt);
-        emit(ret,"_strgt:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetg\tal");  emit(ret,nxt);
-        emit(ret,"_strne:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetne\tal");  emit(ret,nxt);
+        emit(ret,"_strle:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetle\tal\n");  emit(ret,nxt);
+        emit(ret,"_streq:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsete\tal\n");  emit(ret,nxt);
+        emit(ret,"_strge:\n");  emit(ret,pre);  emit(ret,"\tnot\teax\n\tshr\teax, 31\n");  emit(ret,nxt);
+        emit(ret,"_strgt:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetg\tal\n");  emit(ret,nxt);
+        emit(ret,"_strne:\n");  emit(ret,pre);  emit(ret,"\ttest\teax, eax\n\tsetne\tal\n");  emit(ret,nxt);
         return ret;
     }
     private StringBuffer funcgetInt(){
@@ -140,9 +262,9 @@ class Backend{
         StringBuffer ret = new StringBuffer("_parseInt:\n");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tr8,qword [arg+8*63]\n\tmov\tqword [rbp-18H], r8\n");
         emit(ret,"\tmov\tqword [rbp-10H], 0\n\tmov\tqword [rbp-8H], 1\n\tjmp\tPSL_025\nPSL_023:\n\tmov\trdx, qword [rbp-8H]\n");
-        emit(ret,"\tmovrax, qword [rbp-18H]\n\tadd\trax, rdx\n\tmovzx\teax, byte [rax]\n\tcmp\tal, 47\n");
+        emit(ret,"\tmov\trax, qword [rbp-18H]\n\tadd\trax, rdx\n\tmovzx\teax, byte [rax]\n\tcmp\tal, 47\n");
         emit(ret,"\tjbe\tPSL_024\n\tmov\trdx, qword [rbp-8H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trax, rdx\n");
-        emit(ret,"\tmovzx   eax, byte [rax]\n\tcmp\tal, 57\n\tja\tPSL_024\n\tmov\trdx, qword [rbp-10H]\n");
+        emit(ret,"\tmovzx\teax, byte [rax]\n\tcmp\tal, 57\n\tja\tPSL_024\n\tmov\trdx, qword [rbp-10H]\n");
         emit(ret,"\tmov\trax, rdx\n\tshl\trax, 2\n\tadd\trax, rdx\n\tadd\trax, rax\n");
         emit(ret,"\tmov\trdx, rax\nmov\trcx, qword [rbp-8H]\n\tmov\trax, qword [rbp-18H]\n\tadd\trax, rcx\n");
         emit(ret,"\tmovzx\teax, byte [rax]\n\tmovzx\teax, al\n\tsub\teax, 48\n\tcdqe\n\tadd\trax, rdx\n");
@@ -449,9 +571,9 @@ class Backend{
                     clr();  emit(text,"mov\trdi, ");     emit(text,getname(var1));
                     emit(text,"\n\tcall\t_toString\n\tmov\tqword"); funcused.add("toString");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
-                case exitFunction:
+                case funced:
                     clr();  break;
-                case enterFunction:
+                case funcst:
                     emit(text,"push\trbp\n\tmov\trbp, rsp\n\tsub\trsp, ");
                     emit(text,Integer.toString(vid.size()*8+64)); emit(text,"\n\t");
                     if (name.equals("main"))
@@ -710,150 +832,13 @@ class func{
 class sys{
     sys next;  String name;
     Oper oper;  vara var1, var2, dest;
-    sys(Oper op){oper = op;}
     sys(Oper op, String lab){oper = op; name = lab;}
     sys(Oper op, String lab, vara dst){oper = op; name = lab; dest = dst;}
     sys(Oper op, vara v1, vara v2, vara dst){oper = op; var1 = v1; var2 = v2; dest = dst; next = null;}
-}
-
-class IR{
-    int ct;
-    sys last, head;
-    IR(){   head = null;    last = null;}
-    void push(sys quad)
+    sys cpy()
     {
-        if (quad == null)   return;
-        if (head == null)   {head = quad;   last = quad;}
-        else    {last.next = quad;  last = last.next;}
-    }
-    void add(IR oth)
-    {
-        if (oth ==  null)   return;
-        if (head == null)   {this.head = oth.head;this.last = oth.last;}
-        else if (oth.head != null) {last.next = oth.head;   last = oth.last;}
-    }
-    void show()
-    {
-        System.err.println("\nnow output ir:");
-        for (sys now = head; now != null; now = now.next)
-        {
-            System.err.print(now.oper);
-            if (now.var1 != null && !now.var1.equals(vara.empty))
-                System.err.print(","+now.var1);
-            if (now.var2 != null && !now.var2.equals(vara.empty))
-                System.err.print(","+now.var2);
-            if (now.dest != null && !now.dest.equals(vara.empty))
-                System.err.print(","+now.dest);
-            if (now.name != null)   System.err.print(","+now.name);
-            System.err.println();
-        }
-    }
-    private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
-
-/*
-    private Integer npt = 1;
-    private HashMap<String,Integer> stoi = new HashMap<>();
-    private int gval(String str)
-    {
-        if (stoi.containsKey(str))
-            return stoi.get(str);
-        stoi.put(str,++npt);
-        return npt;
-    }
-    private int tot;
-    private boolean[] u;
-    private int[] nxt, hed, ver;
-    private void added(int a, int b)
-    {
-        nxt[++tot] = hed[a];
-        hed[a] = tot; ver[tot] = b;
-    }
-    private void dfs(int p)
-    {
-        u[p] = true;
-        for (int i = hed[p]; i != 0; i = nxt[i])
-            if (!u[ver[i]]) dfs(ver[i]);
-    }*/
-    void simplify()
-    {
-/*        nxt = new int[ct];  ver = new int[ct*2];
-        hed = new int[ct*2];    u = new boolean[ct];*/
-        System.err.println("pretend to be simplifying");
-        for (sys now = head; now != null; now = now.next)
-            while (now.next != null && adya(now.next))
-                now.next = now.next.next;
-        for (sys now = head; now != null; now = now.next)
-        while (now.next!=null &&now.next.oper.equals(Oper.move)
-            && now.dest!=null &&!now.dest.equals(vara.empty)&&
-            now.dest.tmp && now.next.var1.equals(now.dest))
-            {
-                now.dest = now.next.dest;
-                now.next = now.next.next;
-            }
-        show();
-
-/*        HashMap<String,Integer> used = new HashMap<>();
-        for (sys now = head; now != null; now = now.next)
-        {
-            String x = "", y = "", z = "";
-            if (now.var1 != null)   x = now.var1.name;
-            if (now.var2 != null)   y = now.var2.name;
-            if (now.dest != null)   z = now.dest.name;
-            if (now.oper.compareTo(Oper.store) <= 0)
-            {
-                if (now.oper.equals(Oper.move))
-                    used.put(x,used.getOrDefault(x,0)+1);
-                else used.put(x,used.getOrDefault(x,1)+1);
-                added(gval(z),gval(x));
-            }
-            else if (now.oper.compareTo(Oper.caladd) <= 0)
-            {
-                used.put(x,used.getOrDefault(x,1)+1);
-                used.put(y,used.getOrDefault(y,1)+1);
-                added(gval(z),gval(x)); added(gval(z),gval(y));
-            }
-            else if (now.oper.compareTo(Oper.ret) <= 0)
-            {
-                used.put(x,used.getOrDefault(x,1)+1);
-                added(gval("_st"),gval(x));
-            }
-            else if (now.oper.compareTo(Oper.janb) <= 0)
-            {
-                used.put(x,used.getOrDefault(x,1)+1);
-                used.put(y,used.getOrDefault(y,1)+1);
-                added(gval("_st"),gval(x)); added(gval("_st"),gval(y));
-            }
-        }
-        for (int i = 0; i < 64; ++i)
-        {
-            used.put("_t"+i,1);
-            added(gval("_st"),gval("_t"+i));
-        }
-        u[1] = true;
-        dfs(gval("_st"));   sys nx;
-        HashMap<String,sys> lst = new HashMap<>();
-        for (sys now = head; now.next != null;)
-        {
-            nx = now.next;
-            if (nx.dest != null && !nx.dest.equals(vara.empty))
-            {
-                if (!u[stoi.getOrDefault(nx.dest.name, 1)])
-                {
-                    System.err.println("del:  " + nx.oper + " " + nx.var1 + " " + nx.var2 + " " + nx.dest);
-                    now.next = nx.next;
-                }
-                else    now = now.next;
-            }
-            else    now = now.next;
-        }
-
-        //show();
-        /*
-        a = a*1
-        a = 1, b = 2, c = a+b;
-        for (?){c = a+b} d = c;
-        if(?){empty}
-        * */
+        sys nsys = new sys(oper,var1,var2,dest);
+        nsys.name = name;   return nsys;
     }
 }
 enum Oper{
@@ -875,7 +860,7 @@ enum Oper{
     getString,getInt,parseInt,          //input & built-in  z = op
     call,                               //call              z = op name
     label,jmp,                          //label goto        op name
-    enterFunction,exitFunction,         //literally         op name
+    funcst,funced,         //literally         op name
 }
 
 class zcc {
@@ -1048,12 +1033,12 @@ class MVisitor extends MxxBaseVisitor<IR>
     }
     private vara nths(vtype type)
     {
-        vara var = new vara("_this"+Integer.toString(ct++),type);
+        vara var = new vara("_th"+Integer.toString(ct++),type);
         unmhere.add(var.name,var.type);             return var;
     }
     private vara ncns(int vcnum, vtype type)
     {
-        vara var =  new vara("_const"+Integer.toString(ct++),type);
+        vara var =  new vara("_cst"+Integer.toString(ct++),type);
         var.vcnum = vcnum;                          return var;
     }
 
@@ -1081,7 +1066,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                 nclstp = new vtype(ncls,0);
                 cmeb.put(ncls,new HashMap<>());
                 cmid.put(ncls,new HashMap<>());
-                classDefinition((MxxParser.DefclassContext)child);ncls = "";
+                precls((MxxParser.DefclassContext)child);ncls = "";
             }
         for (ParseTree child : ctx.children)
             if(child.getClass().equals(MxxParser.DeffuncContext.class))
@@ -1090,8 +1075,8 @@ class MVisitor extends MxxBaseVisitor<IR>
                 String name = childContext.fname().getText();   unmhere.udnm.add(name);
             }
         IR ir5 = new IR();
-        ir5.push(new sys(Oper.label,"_global_init"));
-        ir5.push(new sys(Oper.enterFunction,"_global_init"));
+        ir5.push(new sys(Oper.label,"_init"));
+        ir5.push(new sys(Oper.funcst,"_init"));
         for (ParseTree child : ctx.children)
             if (child.getClass().equals(MxxParser.DeffuncContext.class))
             {
@@ -1135,7 +1120,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.err.println("no func main");
             System.exit(-1);
         }
-        ir5.push(new sys(Oper.exitFunction));
+        ir5.push(new sys(Oper.funced,"_init"));
         sys quad = new sys(Oper.ret,ncns(0,(new vtype("int",0))),vara.empty,vara.empty);
         quad.name = unmhere.nfunc;
         ir5.push(quad); nir.add(ir4);
@@ -1154,12 +1139,12 @@ class MVisitor extends MxxBaseVisitor<IR>
         unmhere.prevScope();    ncls = "";  return nir;
     }
 
-    private void classDefinition(MxxParser.DefclassContext ctx)
+    private void precls(MxxParser.DefclassContext ctx)
     {
         unmhere.nextScope();
         for (ParseTree child : ctx.cbody().children)
             if (child.getClass().equals(MxxParser.MemdefContext.class))
-                memberDefinition((MxxParser.MemdefContext) child);
+                premem((MxxParser.MemdefContext) child);
         for (ParseTree child : ctx.cbody().children)
             if (child.getClass().equals(MxxParser.MthdefContext.class))
             {
@@ -1234,7 +1219,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         return nir;
     }
 
-    private void memberDefinition(MxxParser.MemdefContext ctx)
+    private void premem(MxxParser.MemdefContext ctx)
     {
         unmhere.add(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
         vara variable = new vara(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
@@ -1283,7 +1268,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         func function = new func(name,type,pams);
         nrttp = type;   IR stmt = visit(ctx.block());   nrttp = null;
         nir.push(new sys(Oper.label,name));
-        nir.push(new sys(Oper.enterFunction,name));
+        nir.push(new sys(Oper.funcst,name));
         nir.push(new sys(Oper.move, argList.get(63), vara.empty, mths));
         if (ctx.params() != null)
             for (int i = 0; i < ctx.params().param().size(); ++i)
@@ -1302,7 +1287,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             sys tmp = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
             tmp.name = function.name;  nir.push(tmp);
         }
-        nir.push(new sys(Oper.exitFunction,name));
+        nir.push(new sys(Oper.funced,name));
         unmhere.prevScope();    unmhere.nfunc = ""; return nir;
     }
 
@@ -1710,10 +1695,10 @@ class MVisitor extends MxxBaseVisitor<IR>
         func function = new func(name,type,pams);
         nrttp = type;   IR stmt = visit(ctx.fbody());   nrttp = null;
         nir.push(new sys(Oper.label,name));
-        nir.push(new sys(Oper.enterFunction,name));
+        nir.push(new sys(Oper.funcst,name));
         if (name.equals("main"))
         {
-            nir.push(new sys(Oper.call, "_global_init", nvar((new vtype("int",0)))));
+            nir.push(new sys(Oper.call, "_init", nvar((new vtype("int",0)))));
             if (!type.name.equals("int"))
             {
                 System.err.println("bool main");
@@ -1729,7 +1714,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             }
         nir.add(stmt);
         sys quad = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
-        quad.name = function.name;  nir.push(quad); nir.push(new sys(Oper.exitFunction,name));
+        quad.name = function.name;  nir.push(quad); nir.push(new sys(Oper.funced,name));
         unmhere.prevScope();    unmhere.nfunc = ""; return nir;
     }
 

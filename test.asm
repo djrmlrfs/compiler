@@ -12,29 +12,23 @@
 main:
 	push	rbp
 	mov	rbp, rsp
-	sub	rsp, 88
+	sub	rsp, 104
 	mov	rax, 536870912
 	cdqe
 	mov	rdi, rax
 	call	malloc
 	mov	edx, dword 536870912
 	movsxd	rdx, edx
-	sub	rdx, 2072
+	sub	rdx, 2088
 	add	rax, rdx
 	mov	qword [trsp], rsp
 	mov	rsp, rax
 	mov	eax, 0
 	call	_global_init
 	mov	r8, rax
-	mov	r10, 1
-	mov	r9, r10
-	mov	r11, 1
-	mov	r9, r9
-	add	r9, r11
-	mov	r12, 1
-	mov	rax, r12
+	mov	r9, 12
+	mov	rax, r9
 	mov	qword [rsp+8*1], r8
-	mov	qword [rsp+8*2], r9
 	mov	rsp, qword [trsp]
 	leave
 	ret
@@ -45,11 +39,47 @@ main:
 	ret
 	jmp	QED
 	
+qq:
+	push	rbp
+	mov	rbp, rsp
+	sub	rsp, 104
+	mov	r9, 1
+	mov	r8, r9
+	mov	qword [rsp+8*2], r8
+	
+Lab_0:
+	mov	r8, [rsp+8*2]
+	mov	r9, 100
+	cmp	r8,r9
+	mov	r10, 0
+	setle	r10B
+	mov	qword [rsp+8*3], r10
+	mov	r8, [rsp+8*3]
+	cmp	r8, 0
+	je	Lab_1
+	mov	r9, 2
+	mov	r8, r9
+	mov	qword [rsp+8*4], r8
+	
+Lab_2:
+	mov	r8, [rsp+8*2]
+	mov	r9, 1
+	mov	r8, r8
+	add	r8, r9
+	mov	qword [rsp+8*2], r8
+	jmp	Lab_0
+	
+Lab_1:
+	mov	r8, 0
+	mov	rax, r8
+	leave
+	ret
+	
 _global_init:
 	push	rbp
 	mov	rbp, rsp
-	sub	rsp, 88
-	mov	r8, [rsp+8*3]
+	sub	rsp, 104
+	mov	r8, [rsp+8*5]
 	mov	rax, r8
 	leave
 	ret
@@ -59,7 +89,7 @@ QED:
 
 	section	.bss
 gbl:
-	resb	2072
+	resb	2088
 buff.1788:
 	resb	256
 arg:
