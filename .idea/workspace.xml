@@ -19,9 +19,11 @@
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="89">
-              <caret line="120" column="10" selection-start-line="120" selection-start-column="10" selection-end-line="120" selection-end-column="10" />
+              <caret line="937" selection-start-line="937" selection-end-line="937" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1365#1366#0" expanded="true" />
+                <element signature="e#1452#1453#0" expanded="true" />
                 <element signature="method#funcord#0;class#Backend#0" />
                 <element signature="method#funcnewarr#0;class#Backend#0" />
                 <element signature="method#funcstradd#0;class#Backend#0" />
@@ -47,60 +49,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="512" column="9" lean-forward="true" selection-start-line="512" selection-start-column="9" selection-end-line="512" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Mxx.g4" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" selection-start-line="9" selection-end-line="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>nths</find>
-      <find>this</find>
-      <find>strles</find>
-      <find>strle</find>
-      <find>strne</find>
-      <find>st</find>
-      <find>backend</find>
-      <find>getname(</find>
-      <find>getname</find>
-      <find>system.err.p</find>
-      <find>work</find>
-      <find>vid</find>
-      <find>vid.put</find>
-      <find>advar</find>
-      <find>vara</find>
-      <find>gbl</find>
-      <find>glo</find>
-      <find>GlobalVariableDefinitionContext</find>
-      <find>gvar</find>
-      <find>defvar</find>
-      <find>lcnt</find>
-      <find>ct</find>
-      <find>defv</find>
-      <find>GlobalVariable</find>
-      <find>glovmap</find>
+      <find>vmap</find>
+      <find>vmap.put</find>
+      <find>variableMap</find>
       <find>rnm</find>
-      <find>globalVariableMap</find>
+      <find>no</find>
+      <find>cval</find>
+      <find>pre</find>
+      <find>scope</find>
+      <find>new op</find>
+      <find>okk</find>
+      <find>prevscope</find>
+      <find>nextScope</find>
+      <find>visitc</find>
+      <find>MemdefContext</find>
       <find>debug</find>
-      <find>err.pr</find>
+      <find>size()</find>
+      <find>.add</find>
+      <find>second</find>
+      <find>add</find>
+      <find>zcc</find>
+      <find>vcnt</find>
+      <find>opers</find>
+      <find>a</find>
+      <find>visitmem</find>
+      <find>visitm</find>
+      <find>classMemberIndex</find>
+      <find>visitMember</find>
+      <find>mvis</find>
+      <find>lval</find>
       <find>show</find>
     </findStrings>
   </component>
@@ -119,6 +100,7 @@
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java" />
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
+        <option value="$PROJECT_DIR$/../zz/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
@@ -135,8 +117,6 @@
     </navigator>
     <panes>
       <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -153,6 +133,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -275,9 +257,9 @@
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7413793" visible="true" weight="0.32821342" />
-      <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5662432" />
-      <window_info id="Structure" order="6" sideWeight="0.25862068" side_tool="true" visible="true" weight="0.32821342" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.73275864" visible="true" weight="0.33953112" />
+      <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5645161" />
+      <window_info id="Structure" order="6" sideWeight="0.2672414" side_tool="true" visible="true" weight="0.33953112" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -288,7 +270,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
+      <window_info active="true" anchor="bottom" id="Find" order="3" visible="true" weight="0.32616487" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -313,6 +295,8 @@
           <caret line="731" lean-forward="true" selection-start-line="731" selection-end-line="731" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -350,6 +334,8 @@
           <caret line="385" column="12" selection-start-line="385" selection-start-column="12" selection-end-line="385" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -401,6 +387,8 @@
           <caret line="330" column="26" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -438,6 +426,8 @@
           <caret line="863" column="39" lean-forward="true" selection-start-line="863" selection-start-column="39" selection-end-line="863" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -476,6 +466,8 @@
           <caret line="284" column="44" selection-start-line="284" selection-start-column="39" selection-end-line="284" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -514,6 +506,8 @@
           <caret line="311" column="18" lean-forward="true" selection-start-line="311" selection-start-column="18" selection-end-line="311" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -552,6 +546,8 @@
           <caret line="891" column="18" lean-forward="true" selection-start-line="891" selection-start-column="18" selection-end-line="891" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -596,6 +592,8 @@
           <caret line="95" column="5" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -633,6 +631,8 @@
           <caret line="95" column="5" lean-forward="true" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -670,6 +670,8 @@
           <caret line="534" lean-forward="true" selection-start-line="534" selection-end-line="534" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -707,6 +709,8 @@
           <caret line="311" column="49" selection-start-line="311" selection-start-column="49" selection-end-line="311" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -744,6 +748,8 @@
           <caret line="430" lean-forward="true" selection-start-line="430" selection-end-line="430" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -781,6 +787,8 @@
           <caret line="242" selection-start-line="242" selection-end-line="242" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -818,6 +826,8 @@
           <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />
@@ -910,29 +920,31 @@
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Builder.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java" />
-    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="512" column="9" lean-forward="true" selection-start-line="512" selection-start-column="9" selection-end-line="512" selection-end-column="9" />
+        <state relative-caret-position="127">
+          <caret line="1320" column="41" selection-start-line="1320" selection-start-column="33" selection-end-line="1320" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="51" column="28" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="89">
-          <caret line="120" column="10" selection-start-line="120" selection-start-column="10" selection-end-line="120" selection-end-column="10" />
+          <caret line="937" selection-start-line="937" selection-end-line="937" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
             <element signature="method#funcstradd#0;class#Backend#0" />

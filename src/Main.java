@@ -38,7 +38,9 @@ class IR{
         }
         System.err.println();
     }
-    private boolean adya(sys aa) {return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));}
+    private boolean adya(sys aa){
+        return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));
+    }
     class BB{
         BB nxt;
         sys head, tail;
@@ -836,7 +838,13 @@ class sys{
     Oper oper;  vara var1, var2, dest;
     sys(Oper op, String lab){oper = op; name = lab;}
     sys(Oper op, String lab, vara dst){oper = op; name = lab; dest = dst;}
-    sys(Oper op, vara v1, vara v2, vara dst){oper = op; var1 = v1; var2 = v2; dest = dst; next = null;}
+    sys(Oper op, vara v1, vara v2, vara dst){oper = op; var1 = v1; var2 = v2; dest = dst;
+        if (op.equals(Oper.move))
+        {
+            if (v1.name == null)
+            System.err.println("wronghere");
+        }
+    }
     sys cpy()
     {
         sys nsys = new sys(oper,var1,var2,dest);
@@ -895,9 +903,16 @@ class zcc {
         {
             ccz op = opers.peek();
             opers.pop();    vmap.put(op.name,op.vtp);
-            rnm.put(op.name,op.oname);  dmap.put(op.name,op.depth);
+            dmap.put(op.name,op.depth);
+            rnm.put(op.name,op.oname);
         }
         ssta.pop();
+    }
+    void secondadd(String name, vtype vtp)
+    {
+        opers.push(new ccz(name,rnm.get(name),getv(name),dmap.get(name)));
+        vmap.put(name,vtp); rnm.put(name,name);
+        ++vcnt;  dmap.put(name,ssta.size());
     }
     void add(String name, vtype vtp)
     {
@@ -916,7 +931,7 @@ class zcc {
             System.err.println("int a;int a;");
             System.exit(-1);
         }
-        opers.push(new ccz(name,rnm.get(name),vmap.get(name),dmap.get(name)));
+        opers.push(new ccz(name,rnm.get(name),getv(name),dmap.get(name)));
         vmap.put(name,vtp);
         if(!rnm.containsKey(name))    rnm.put(name, name);
         else    rnm.put(name, name + "_" + vcnt);
@@ -930,7 +945,7 @@ class zcc {
         }
         ++vcnt;  dmap.put(name,ssta.size());
     }
-    vtype getVariable(String name){return vmap.get(name);}
+    vtype getv(String name){return vmap.get(name);}
     vtype operate(String operator, vtype type)
     {
         switch (operator){
@@ -1140,8 +1155,10 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         ncls = ctx.cname().getText();
         nclstp = new vtype(ncls,0);
-        unmhere.nextScope();    nir.add(visit(ctx.cbody()));
-        unmhere.prevScope();    ncls = "";  return nir;
+        unmhere.nextScope();
+        nir.add(visit(ctx.cbody()));
+        unmhere.prevScope();    ncls = "";
+        return nir;
     }
 
     private void precls(MxxParser.DefclassContext ctx)
@@ -1221,6 +1238,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.err.println("class a{class_not_exist b;}");
             System.exit(-1);
         }
+        unmhere.add(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
         return nir;
     }
 
@@ -1293,7 +1311,8 @@ class MVisitor extends MxxBaseVisitor<IR>
             tmp.name = function.name;  nir.push(tmp);
         }
         nir.push(new sys(Oper.funced,name));
-        unmhere.prevScope();    unmhere.nfunc = ""; return nir;
+        unmhere.prevScope();
+        unmhere.nfunc = ""; return nir;
     }
 
     @Override public IR visitCfunCall(MxxParser.CfunCallContext ctx)
@@ -1341,7 +1360,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         String str = ctx.variable(0).vname().getText();
         if (str.equals("this")) str = cths.name;
-        vtype stype = unmhere.getVariable(str);
+        vtype stype = unmhere.getv(str);
         if (stype == null)  stype = cmeb.get(ncls).get(str).type;
         vara start = nvar(stype.cpy());
         start.name = unmhere.rnm.get(str);
@@ -1472,14 +1491,13 @@ class MVisitor extends MxxBaseVisitor<IR>
         return nir;
     }
 
-    @Override public IR visitCval(MxxParser.CvalContext ctx)
-    {
+    @Override public IR visitCval(MxxParser.CvalContext ctx) {
         IR nir = new IR();
         String str = ctx.variable(0).vname().getText();
         if (str.equals("this")) str = cths.name;
-        vtype stype = unmhere.getVariable(str);
-        if (stype == null)  stype = cmeb.get(ncls).get(str).type;
-        vara start = nvar(stype.cpy()), adr=nvar((new vtype("int",0)));
+        vtype stype = unmhere.getv(str);
+        if (stype == null) stype = cmeb.get(ncls).get(str).type;
+        vara start = nvar(stype.cpy()), adr = nvar((new vtype("int", 0)));
         nir.push(new sys(Oper.move,new vara(unmhere.rnm.get(str),stype),vara.empty,start));
         ArrayList<IR> pams = new ArrayList<>();
         for (int i = 0; i < ctx.variable(0).index().size(); ++i)
@@ -1514,7 +1532,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR nir = new IR();
         String str = ctx.variable(0).vname().getText();
         if (str.equals("this")) str = cths.name;
-        vtype stype = unmhere.getVariable(str);
+        vtype stype = unmhere.getv(str);
         boolean ok = false;
         if (stype == null) {stype = cmeb.get(ncls).get(str).type;   ok = true;}
         vara start = nvar(stype.cpy());
@@ -1560,7 +1578,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     private IR getAddress(String vnm,ArrayList<IR> pams)
     {
         IR nir = new IR();
-        vtype vtp = unmhere.getVariable(vnm);
+        vtype vtp = unmhere.getv(vnm);
         if (vtp == null)    vtp = cmeb.get(ncls).get(vnm).type;
         if (vtp == null)
         {
@@ -1599,7 +1617,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     private IR assign(String vnm,IR exp,ArrayList<IR> pams)
     {
         IR nir = new IR();  nir.add(exp);
-        vtype vtp = unmhere.getVariable(vnm);
+        vtype vtp = unmhere.getv(vnm);
         if (vtp == null)    vtp = cmeb.get(ncls).get(vnm).type;
         if (vtp == null)
         {
@@ -1652,7 +1670,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitAssign(MxxParser.AssignContext ctx)
     {
         String vnm = ctx.lval().variable(0).vname().getText();
-        if (ctx.lval().variable().size()==1 && unmhere.getVariable(vnm)!=null)
+        if (ctx.lval().variable().size()==1 && unmhere.getv(vnm)!=null)
         {
             IR exp = visit(ctx.expr());
             ArrayList<IR> pams = new ArrayList<>();
@@ -1720,7 +1738,8 @@ class MVisitor extends MxxBaseVisitor<IR>
         nir.add(stmt);
         sys quad = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
         quad.name = function.name;  nir.push(quad); nir.push(new sys(Oper.funced,name));
-        unmhere.prevScope();    unmhere.nfunc = ""; return nir;
+        unmhere.prevScope();
+        unmhere.nfunc = ""; return nir;
     }
 
     @Override public IR visitFbody(MxxParser.FbodyContext ctx)
@@ -2340,7 +2359,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.err.println("no a = b");
             System.exit(-1);
         }
-        else if(unmhere.getVariable(vtp.name) != null)
+        else if(unmhere.getv(vtp.name) != null)
         {
             System.err.println("int a; int a;");
             System.exit(-1);
