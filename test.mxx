@@ -1,5 +1,5 @@
 int lol (int x) {
-return x + 1;
+return x;
 }
 
 int c = 123;
