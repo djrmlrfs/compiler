@@ -45,7 +45,7 @@ expr
     |   NEW vbtp '(' exprs? ')'                                                     # nvar
     |   NEW vbtp                                                                    # nvar2
     |   NEW type=vbtp (index)+ (kh)*                                                # narr
-    |   variable ('.' variable)+                                                    # pnt
+    |   variable ('.' variable)+                                                    # pnt//need this
     |   expr ('.' dotAtom)+                                                         # pnt2
     |   vname ('[' expr ']')*                                                       # inarr
     |   op=('!' |'~'|'-') expr                                                      # op1

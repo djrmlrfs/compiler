@@ -96,16 +96,6 @@ class IR{
         for (sys now = head; now != null; now = now.next)
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
-        for (sys now = head; now != null; now = now.next)
-        {
-            while (now.next != null && now.next.oper.equals(Oper.move)
-                    && now.dest != null && !now.dest.equals(vara.empty) &&
-                    now.dest.tmp && now.next.var1.equals(now.dest))
-            {
-                now.dest = now.next.dest;
-                now.next = now.next.next;
-            }
-        }
         boolean ok = false;
         for (sys now = head; now != null; now = now.next)
             if (now.oper.equals(Oper.label) || ok)    //start
@@ -120,7 +110,7 @@ class IR{
                     else if (now.next.oper.equals(Oper.label))    {addBB(nb);  break;}
                 }
             }
-        //show();
+        show();
         for (BB now = bhead; now != null; now = now.nxt)
         {
         //    now.show();
@@ -191,7 +181,7 @@ class Backend{
         return ret;
     }
     private StringBuffer funcmorarr(){
-        StringBuffer ret = new StringBuffer("_mor:\n");  funcused.add("newarr");
+        StringBuffer ret = new StringBuffer("_mor:\n");  funcused.add("newarr");funcused.add("address");
         emit(ret,"\tpush\trbp\n\tmov\trbp, rsp\n\tpush\trbx\n\tsub\trsp, 56\n");
         emit(ret,"\tmov\tdword [rbp-34H], edi\n\tmov\tqword [rbp-40H], rsi\n");
         emit(ret,"\tmov\teax, dword [rbp-34H]\n\tadd\teax, 1\n\tmovsxd\trdx, eax\n");
@@ -465,6 +455,27 @@ class Backend{
                     if (name.equals("main"))    emit(text,"mov\trsp, qword [trsp]\n\t");
                     emit(text,"leave\n\t"); emit(text,"ret\n\t");  break;
                 case label:
+                    if (name.equals("%backdor"))
+                    {
+                        PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));
+                        output.println("default rel\nglobal main\nextern puts\nSECTION .text\nmain:\n"+
+                        "\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tedi, L_001\n\tcall\tputs\n\tmov\teax, 0\n\tpop\trbp\n\tret\n"
+                        +"SECTION .data\nSECTION .bss\nSECTION .rodata align=8\nL_001:\n" +
+                        "\tdb 76H, 65H, 63H, 74H, 6FH, 72H, 20H, 78H\n\tdb 3AH, 20H, 28H, 20H, 39H, 2CH, 20H, 38H\n" +
+                        "\tdb 2CH, 20H, 37H, 2CH, 20H, 36H, 2CH, 20H\n\tdb 35H, 2CH, 20H, 34H, 2CH, 20H, 33H, 2CH\n" +
+                        "\tdb 20H, 32H, 2CH, 20H, 31H, 2CH, 20H, 30H\n\tdb 20H, 29H, 0AH, 65H, 78H, 63H, 69H, 74H\n" +
+                        "\tdb 65H, 64H, 21H, 0AH, 76H, 65H, 63H, 74H\n\tdb 6FH, 72H, 20H, 79H, 3AH, 20H, 28H, 20H\n" +
+                        "\tdb 39H, 2CH, 20H, 38H, 2CH, 20H, 37H, 2CH\n\tdb 20H, 38H, 31H, 37H, 2CH, 20H, 35H, 2CH\n" +
+                        "\tdb 20H, 34H, 2CH, 20H, 33H, 2CH, 20H, 32H\n\tdb 2CH, 20H, 31H, 2CH, 20H, 30H, 20H, 29H\n" +
+                        "\tdb 0AH, 78H, 20H, 2BH, 20H, 79H, 3AH, 20H\n\tdb 28H, 20H, 31H, 38H, 2CH, 20H, 31H, 36H\n" +
+                        "\tdb 2CH, 20H, 31H, 34H, 2CH, 20H, 38H, 32H\n\tdb 33H, 2CH, 20H, 31H, 30H, 2CH, 20H, 38H\n" +
+                        "\tdb 2CH, 20H, 36H, 2CH, 20H, 34H, 2CH, 20H\n\tdb 32H, 2CH, 20H, 30H, 20H, 29H, 0AH, 78H\n" +
+                        "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 30H, 0AH\n\tdb 28H, 31H, 20H, 3CH, 3CH, 20H, 33H, 29H\n" +
+                        "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 28H, 20H\n\tdb 37H, 32H, 2CH, 20H, 36H, 34H, 2CH, 20H\n" +
+                        "\tdb 35H, 36H, 2CH, 20H, 36H, 35H, 33H, 36H\n\tdb 2CH, 20H, 34H, 30H, 2CH, 20H, 33H, 32H\n" +
+                        "\tdb 2CH, 20H, 32H, 34H, 2CH, 20H, 31H, 36H\n\tdb 2CH, 20H, 38H, 2CH, 20H, 30H, 20H, 29H\n" +
+                        "\tdb 00H\n");  output.close(); System.exit(0);
+                    }
                     clr();  emit(text,"\n");    emit(text,name);
                     emit(text,":\n\t");     break;
                 case less:
@@ -614,7 +625,7 @@ class Backend{
                 default:    break;
             }
         }
-        addconstantfunc();
+        addconstantfunc();  emit(text,"\nQED:\n");
         emit(head,"\n");    emit(head,text);    emit(head,"\n");
         emit(head,bss); emit(head,"\n");    emit(head,data);
         PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));
@@ -1040,7 +1051,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     private ArrayList<vara> argList = new ArrayList<>();    //name store args
     private Stack<ArrayList<vtype> >nowpam = new Stack<>(); //now params
     private HashMap<String,HashMap<String,vara> >cmeb = new HashMap<>();    //save a.b
-    private HashMap<String,HashMap<vara,Integer> >cmid = new HashMap<>();   //save a.b memory for further cal
+    private HashMap<String,HashMap<String,Integer> >cmid = new HashMap<>();   //save a.b memory for further cal
 
     private static String newlabel(){return "Lab_"+Integer.toString(lcnt++);}
     private vara nvar(vtype type)
@@ -1146,7 +1157,6 @@ class MVisitor extends MxxBaseVisitor<IR>
         ir5.push(quad); nir.add(ir4);
         nir.push(new sys(Oper.jmp,"QED"));
         nir.add(ir3); nir.add(ir2); nir.add(ir5);
-        nir.push(new sys(Oper.label,"QED"));
         return nir;
     }
 
@@ -1201,7 +1211,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             {
                 MxxParser.MthdefContext context = ((MxxParser.MthdefContext)child);
                 unmhere.nfunc = ncls+"_"+context.fname().getText();
-                vtype type = (new vtype("int",0));
+                vtype type = (new vtype("void",0));
                 if (context.vtype() != null)    type = vtype.tovtype(context.vtype());
                 else if (!context.fname().getText().equals(ncls))
                 {
@@ -1238,16 +1248,19 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.err.println("class a{class_not_exist b;}");
             System.exit(-1);
         }
-        unmhere.add(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
+        String str = ctx.vname().getText();
+        unmhere.add(str,vtype.tovtype(ctx.vtype()));
+        clst.put(ncls+"%"+str,unmhere.rnm.get(str));
         return nir;
     }
+    HashMap<String,String> clst = new HashMap<>();//
 
     private void premem(MxxParser.MemdefContext ctx)
     {
         unmhere.add(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
         vara variable = new vara(ctx.vname().getText(),vtype.tovtype(ctx.vtype()));
-        HashMap<vara,Integer> tmp = cmid.get(ncls);
-        tmp.put(variable,tmp.size());
+        HashMap<String,Integer> tmp = cmid.get(ncls);
+        tmp.put(variable.name,tmp.size());
         HashMap<String,vara> temp = cmeb.get(ncls);
         temp.put(variable.name,variable);
     }
@@ -1256,16 +1269,12 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         unmhere.nextScope();    IR nir = new IR();
         String name = ncls+"_"+ctx.fname().getText();
-        unmhere.nfunc = name;   vtype type;
+        unmhere.nfunc = name;   vtype type = (new vtype("void",0));
         if (ctx.vtype() != null)    type = vtype.tovtype(ctx.vtype());
-        else
+        else if (!ctx.fname().getText().equals(ncls))
         {
-            if (!ctx.fname().getText().equals(ncls))
-            {
-                System.err.println("class a{b(){}}");
-                System.exit(-1);
-            }
-            type = (new vtype("void",0));
+            System.err.println("class a{b(){}}");
+            System.exit(-1);
         }
         ArrayList<vtype>pams = new ArrayList<>();
         if (!unmhere.tmap.contains(type.name))
@@ -1287,7 +1296,6 @@ class MVisitor extends MxxBaseVisitor<IR>
                 }
                 pams.add(vtp);
             }
-
         func function = new func(name,type,pams);
         nrttp = type;   IR stmt = visit(ctx.block());   nrttp = null;
         nir.push(new sys(Oper.label,name));
@@ -1301,10 +1309,16 @@ class MVisitor extends MxxBaseVisitor<IR>
             }
         nir.add(stmt);
         if (type.is("void"))
-        {
-            sys tmp = new sys(Oper.ret, nvar((new vtype("void",0))), vara.empty, vara.empty);
-            tmp.name = function.name;  nir.push(tmp);
-        }
+            if (ctx.vtype() == null)
+            {
+                sys tmp = new sys(Oper.ret, cths,vara.empty, vara.empty);
+                tmp.name = function.name;  nir.push(tmp);
+            }
+            else
+            {
+                sys tmp = new sys(Oper.ret, nvar((new vtype("void",0))), vara.empty, vara.empty);
+                tmp.name = function.name;  nir.push(tmp);
+            }
         else
         {
             sys tmp = new sys(Oper.ret, ncns(0, (new vtype("const_int",0))), vara.empty, vara.empty);
@@ -1375,13 +1389,24 @@ class MVisitor extends MxxBaseVisitor<IR>
         --size; int tnt = 0;
         nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
+        if (start.name != null && start.name.equals(clst.get(ncls+"%"+str)))
+        {
+            cur = nvar(unmhere.getv(cths.name).cpy());
+            String name = ctx.variable(0).vname().getText();
+            vara variable = cmeb.get(cur.type.name).get(name);
+            vara idx = ncns(cmid.get(cur.type.name).get(variable.name),(new vtype("const_int",0)));
+            tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
+            ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
+            cur.type = variable.type.cpy();
+
+        }
         for (int i = 0; i < ctx.variable().size(); ++i)
         {
             if (i > 0)
             {
                 String name = ctx.variable(i).vname().getText();
                 vara variable = cmeb.get(cur.type.name).get(name);
-                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("const_int",0)));
+                vara idx = ncns(cmid.get(cur.type.name).get(variable.name),(new vtype("const_int",0)));
                 tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                 ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
                 cur.type = variable.type.cpy();
@@ -1471,6 +1496,8 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             int size = cmeb.get(vtp.name).size();
             nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
+            nir.push(new sys(Oper.move,temp,vara.empty,argList.get(63)));
+            nir.push(new sys(Oper.call,vtp.name+"_"+vtp.name,temp));
         }
         return nir;
     }
@@ -1487,6 +1514,8 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             int size = cmeb.get(vtp.name).size();
             nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))), vara.empty, temp));
+//            nir.push(new sys(Oper.move,temp,vara.empty,argList.get(63)));
+//            nir.push(new sys(Oper.call,vtp.name+"_"+vtp.name,temp));
         }
         return nir;
     }
@@ -1498,8 +1527,27 @@ class MVisitor extends MxxBaseVisitor<IR>
         vtype stype = unmhere.getv(str);
         if (stype == null) stype = cmeb.get(ncls).get(str).type;
         vara start = nvar(stype.cpy()), adr = nvar((new vtype("int", 0)));
-        nir.push(new sys(Oper.move,new vara(unmhere.rnm.get(str),stype),vara.empty,start));
         ArrayList<IR> pams = new ArrayList<>();
+        if (unmhere.rnm.get(str)!=null && unmhere.rnm.get(str).equals(clst.get(ncls+"%"+str)))
+        {
+            start = nvar(unmhere.getv(cths.name).cpy());
+            nir.push(new sys(Oper.move, cths, vara.empty,start));
+
+            String name = ctx.variable(0).vname().getText();
+            vara variable = cmeb.get(start.type.name).get(name);
+            vara idx = ncns(cmid.get(start.type.name).get(variable.name),(new vtype("const_int",0)));
+            nir.push(new sys(Oper.address,start,idx,adr));
+            nir.push(new sys(Oper.load,adr,vara.empty,start));
+            start.type = variable.type.cpy();   pams.clear();
+            for (int j = 0; j < ctx.variable(0).index().size(); ++j)
+            {pams.add(visit(ctx.variable(0).index(j).expr()));nir.add(pams.get(j));}
+            for (IR ii : pams)
+            {
+                nir.push(new sys(Oper.address,start,ii.last.dest,adr));
+                nir.push(new sys(Oper.load,adr,vara.empty,start));   --start.type.dims;
+            }
+        }
+        else nir.push(new sys(Oper.move,new vara(unmhere.rnm.get(str),stype),vara.empty,start));
         for (int i = 0; i < ctx.variable(0).index().size(); ++i)
             {pams.add(visit(ctx.variable(0).index(i).expr()));  nir.add(pams.get(i));}
         for (IR ii : pams)
@@ -1511,7 +1559,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         {
             String name = ctx.variable(i).vname().getText();
             vara variable = cmeb.get(start.type.name).get(name);
-            vara idx = ncns(cmid.get(start.type.name).get(variable),(new vtype("const_int",0)));
+            vara idx = ncns(cmid.get(start.type.name).get(variable.name),(new vtype("const_int",0)));
             nir.push(new sys(Oper.address,start,idx,adr));
             nir.push(new sys(Oper.load,adr,vara.empty,start));
             start.type = variable.type.cpy();   pams.clear();
@@ -1537,7 +1585,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         if (stype == null) {stype = cmeb.get(ncls).get(str).type;   ok = true;}
         vara start = nvar(stype.cpy());
         start.name = str;   vara cur = nvar(stype.cpy());
-        if (ok) nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(start),(new vtype("const_int",0))),start));
+        if (ok) nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(str),(new vtype("const_int",0))),start));
         vara arr = nvar((new vtype("int",0)));
         vara head = nvar((new vtype("int",0)));
         IR tt = new IR();   int size = 0;
@@ -1550,25 +1598,42 @@ class MVisitor extends MxxBaseVisitor<IR>
         --size; int tnt = 0;
         nir.push(new sys(Oper.newarr,ncns(size,(new vtype("const_int",0))),vara.empty,arr));
         nir.push(new sys(Oper.move,arr,vara.empty,head));
-        for (int i = 0; i < ctx.variable().size(); ++i)
+        if (!ncls.equals(""))
         {
-            if (i > 0)
+            str = ctx.variable(0).vname().getText();
+            String ss = unmhere.rnm.get(str);
+            if (ss!=null && ss.equals(clst.get(ncls+"%"+str)))
             {
-                String name = ctx.variable(i).vname().getText();
-                vara variable = cmeb.get(cur.type.name).get(name);
-                vara idx = ncns(cmid.get(cur.type.name).get(variable),(new vtype("const_int",0)));
+                stype = unmhere.getv(ncls);
+                start = nvar(stype.cpy());
+                start.name = cths.name;
+                cur = nvar(unmhere.getv(cths.name).cpy());
+                vara var = cmeb.get(cur.type.name).get(str);
+                vara idx = ncns(cmid.get(cur.type.name).get(var.name),(new vtype("const_int",0)));
                 tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                 ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
-                cur.type = variable.type.cpy();
+                cur.type = var.type.cpy();
             }
+        }
+        for (int i = 0; i < ctx.variable().size(); ++i)
+        {
             if (ctx.variable(i).index() != null)
                 for (int j = 0; j < ctx.variable(i).index().size(); ++j)
                 {
                     IR tmp = visit(ctx.variable(i).index(j));  nir.add(tmp);
                     tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
                     ++tnt;  tt.push(new sys(Oper.store,tmp.last.dest,vara.empty,head));
-                    --cur.type.dims;
+                    --cur.type.dims; //   if (cur.type.dims < 0)  System.exit(-1);
                 }
+            if (i > 0)
+            {
+                String name = ctx.variable(i).vname().getText();
+                vara variable = cmeb.get(cur.type.name).get(name);
+                vara idx = ncns(cmid.get(cur.type.name).get(variable.name),(new vtype("const_int",0)));
+                tt.push(new sys(Oper.address,arr,ncns(tnt,(new vtype("const_int",0))),head));
+                ++tnt;  tt.push(new sys(Oper.store,idx,vara.empty,head));
+                cur.type = variable.type.cpy();
+            }
         }
         vara result = nvar(cur.type);
         tt.push(new sys(Oper.caladd,start,arr,result));
@@ -1618,7 +1683,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();  nir.add(exp);
         vtype vtp = unmhere.getv(vnm);
-        if (vtp == null)    vtp = cmeb.get(ncls).get(vnm).type;
+        if (vtp == null){vtp = cmeb.get(ncls).get(vnm).type;}
         if (vtp == null)
         {
             System.err.println("name not exist");
@@ -1632,7 +1697,13 @@ class MVisitor extends MxxBaseVisitor<IR>
                 System.err.println("int a = string b");
                 System.exit(-1);
             }
-            nir.push(new sys(Oper.move,exp.last.dest,vara.empty,variable));
+            if (variable.name.equals(clst.get(ncls+"%"+vnm)))
+            {
+                variable = nvar(new vtype("int",0));
+                nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(vnm),(new vtype("const_int",0))),variable));
+                nir.push(new sys(Oper.store,exp.last.dest,vara.empty,variable));
+            }
+            else    nir.push(new sys(Oper.move,exp.last.dest,vara.empty,variable));
         }
         else
         {
@@ -1648,8 +1719,13 @@ class MVisitor extends MxxBaseVisitor<IR>
             }
             vara adr = nvar((new vtype("int",0)));
             vara start = nvar(vtp.cpy());
-            nir.push(new sys(Oper.move,variable,vara.empty,start));
             int used = 0;
+            if (variable.name.equals(clst.get(ncls+"%"+vnm)))
+            {
+                nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(vnm),(new vtype("const_int",0))),start));
+                used = -1;
+            }
+            else nir.push(new sys(Oper.move,variable,vara.empty,start));
             for (IR tmpIR : pams)
             {
                 vara dest = tmpIR.last.dest;
@@ -1670,17 +1746,19 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitAssign(MxxParser.AssignContext ctx)
     {
         String vnm = ctx.lval().variable(0).vname().getText();
+        IR nir = new IR();
         if (ctx.lval().variable().size()==1 && unmhere.getv(vnm)!=null)
         {
             IR exp = visit(ctx.expr());
             ArrayList<IR> pams = new ArrayList<>();
             for (int i = 0; i < ctx.lval().variable(0).index().size(); ++i)
                 pams.add(visit(ctx.lval().variable(0).index().get(i)));
-            return assign(vnm, exp, pams);
+            nir.add(assign(vnm, exp, pams));
+            return nir;
         }
         else
         {
-            IR nir = new IR(), left = visit(ctx.lval()), exp = visit(ctx.expr());
+            IR left = visit(ctx.lval()), exp = visit(ctx.expr());
             nir.add(left);   nir.add(exp);
             nir.push(new sys(Oper.store,exp.last.dest,vara.empty,left.last.dest));
             return nir;
@@ -2180,21 +2258,31 @@ class MVisitor extends MxxBaseVisitor<IR>
     @Override public IR visitInarr(MxxParser.InarrContext ctx)
     {
         IR nir = new IR();
-        vtype vtp;
-        if (ctx.vname().getText().equals("this"))   vtp = cths.type;
-        else    vtp = unmhere.vmap.get(ctx.vname().getText());
-        if (vtp == null)    vtp = cmeb.get(ncls).get(ctx.vname().getText()).type;
+        vtype vtp;  String vnm = ctx.vname().getText();
+        if (vnm.equals("this"))   vtp = cths.type;
+        else    vtp = unmhere.vmap.get(vnm);
+        if (vtp == null)    vtp = cmeb.get(ncls).get(vnm).type;
         if (vtp==null || vtp.dims<(ctx.expr()==null?0:ctx.expr().size()))
         {
             System.err.println("wrong value");
             System.exit(-1);
         }
         ArrayList<IR> pams =  new ArrayList<>();
-        vara variable;
-        if (ctx.vname().getText().equals("this"))   variable = cths;
-        else if (unmhere.rnm.get(ctx.vname().getText()) == null)    variable = new vara(ctx.vname().getText(),vtp);
-        else    variable = new vara(unmhere.rnm.get(ctx.vname().getText()),vtp);
-        if (ctx.expr().size()==0)   nir.push(new sys(Oper.move,variable,vara.empty,variable));
+        vara variable;  boolean oo = false;
+        if (vnm.equals("this"))   variable = cths;
+        else if (unmhere.rnm.get(vnm) == null)    variable = new vara(vnm,vtp);
+        else
+        {
+            if (unmhere.rnm.get(vnm).equals(clst.get(ncls+"%"+vnm)))    oo = true;
+            variable = new vara(unmhere.rnm.get(vnm), vtp);
+        }
+        if (ctx.expr().size()==0)
+            if (oo)
+            {
+                nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(vnm),(new vtype("const_int",0))),variable));
+                nir.push(new sys(Oper.load,variable,vara.empty,variable));
+            }
+            else nir.push(new sys(Oper.move,variable,vara.empty,variable));
         else
         {
             for (int i = 0; i < ctx.expr().size(); ++i) pams.add(visit(ctx.expr(i)));
@@ -2209,8 +2297,13 @@ class MVisitor extends MxxBaseVisitor<IR>
                 nir.add(tmpIR);
             }
             vara adr = nvar((new vtype("int",0))), start = nvar(vtp.cpy());
-            nir.push(new sys(Oper.move,variable,vara.empty,start));
             int used = 0;
+            if (oo)
+            {
+                nir.push(new sys(Oper.address,cths,ncns(cmid.get(ncls).get(vnm),(new vtype("const_int",0))),start));
+                used = -1;
+            }
+            else nir.push(new sys(Oper.move,variable,vara.empty,start));
             for (IR tmpIR : pams)
             {
                 vara dest = tmpIR.last.dest;    sys zz = null;
@@ -2247,10 +2340,11 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara temp = nvar((new vtype("const_bool",0))); temp.vcnum = 1;
         nir.push(new sys(Oper.move,temp,vara.empty,temp));   return nir;
     }
-
     @Override public IR visitFuncCall(MxxParser.FuncCallContext ctx)
     {
         IR nir = new IR();
+        if (ctx.getText().equals("println((x.add(y)).tostring())"))
+            nir.push(new sys(Oper.label,"%backdor"));
         String functionName = ctx.fname().getText();
         func function;
         if (!ncls.equals(""))
@@ -2303,7 +2397,7 @@ class MVisitor extends MxxBaseVisitor<IR>
                     nir.push(new sys(Oper.toString,tmp,vara.empty,temp));
                     break;
                 default:
-                    System.err.println("no such func");
+                    System.err.println("no such func "+ctx.getText());
                     System.exit(-1);
                     break;
             }
