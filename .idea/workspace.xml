@@ -18,8 +18,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="461" column="32" selection-start-line="461" selection-start-column="32" selection-end-line="461" selection-end-column="32" />
+            <state relative-caret-position="231">
+              <caret line="476" column="56" selection-start-line="476" selection-start-column="56" selection-end-line="476" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1365#1366#0" expanded="true" />
@@ -73,7 +73,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cths,ncns(cmid.get(ncls).get(start),(new vtype(&quot;const_int&quot;,0))),start));</find>
       <find>address</find>
       <find>no such func</find>
       <find>pnt</find>
@@ -103,6 +102,7 @@
       <find>simplify</find>
       <find>label</find>
       <find>back</find>
+      <find>db</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -921,8 +921,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="461" column="32" selection-start-line="461" selection-start-column="32" selection-end-line="461" selection-end-column="32" />
+        <state relative-caret-position="231">
+          <caret line="476" column="56" selection-start-line="476" selection-start-column="56" selection-end-line="476" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1365#1366#0" expanded="true" />
