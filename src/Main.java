@@ -110,7 +110,7 @@ class IR{
                     else if (now.next.oper.equals(Oper.label))    {addBB(nb);  break;}
                 }
             }
-        show();
+        //show();
         for (BB now = bhead; now != null; now = now.nxt)
         {
         //    now.show();
