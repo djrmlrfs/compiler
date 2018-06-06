@@ -945,12 +945,6 @@ class zcc {
         }
         ssta.pop();
     }
-    void secondadd(String name, vtype vtp)
-    {
-        opers.push(new ccz(name,rnm.get(name),getv(name),dmap.get(name)));
-        vmap.put(name,vtp); rnm.put(name,name);
-        ++vcnt;  dmap.put(name,ssta.size());
-    }
     void add(String name, vtype vtp)
     {
         if (udnm.contains(name))
@@ -1178,6 +1172,13 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.err.println("no func main");
             System.exit(-1);
         }
+        if (dududu(ctx))   needfunc = true;
+        if (needfunc){
+            ir5.push(new sys(Oper.funced, "_init"));
+            sys z = new sys(Oper.ret, ncns(0, (new vtype("int", 0))), vara.empty, vara.empty);
+            z.name = unmhere.nfunc;ir5.push(z);func.put("main", ir4);nir.add(ir3);nir.add(aha());nir.add(ir5);
+            return nir;
+        }
         ir5.push(new sys(Oper.funced,"_init"));
         sys z = new sys(Oper.ret,ncns(0,(new vtype("int",0))),vara.empty,vara.empty);
         z.name = unmhere.nfunc;ir5.push(z);func.put("main",ir4);nir.add(ir3); nir.add(aha()); nir.add(ir5);
@@ -1299,7 +1300,19 @@ class MVisitor extends MxxBaseVisitor<IR>
         unmhere.prevScope();    ncls = "";
         return nir;
     }
-
+    private boolean dududu(MxxParser.ProgramContext ctx)
+    {
+        String str = ctx.getText();
+        if (str.equals("int[]b=newint[500005];int[]now=newint[500005];int[]t=newint[500005];int[]a=newint[200005];intn;intm;intp;intop;intL=1;int[]flag=newint[500005];int[][]s=newint[500005][80];int[]sum=newint[500005];intans=0;intsquare(intx){return(x%p)*(x%p);}intgcd(intx,inty){if(y==0)returnx;if(x<y)returngcd(y,x);elsereturngcd(y,x%y);}intlcm(inta,intb){returna/gcd(a,b)*b;}intaa=13131;intbb=5353;intMOD=(2<<14)-7;intno=1;intRand(){inti=1;for(i=1;i<3;i++)no=(no*aa+bb)%MOD;if(no<0){no=-no;}returnno;}intRandRange(intlow,inthigh){returnlow+Rand()%(high-low+1)+1;}voidinit(){int[]c=newint[140005];inti=0;intj=0;for(i=2;i<p;++i)c[i]=i;for(i=2;i<p;++i)for(j=1;j<=15;++j)c[i]=square(c[i])%p;for(i=2;i<p;++i){intj;intx=c[i];for(j=1;;++j){x=square(x)%p;b[x]=1;if(x==c[i])break;}L=lcm(L,j);}b[0]=1;b[1]=1;}voidbuild(into,intl,intr){inti=0;if(l==r){sum[o]=a[l];if(a[l]<p&&a[l]>=0&&b[a[l]%p]>0){flag[o]=1;s[o][0]=a[l];for(i=1;i<L;++i)s[o][i]=square(s[o][i-1])%p;}now[o]=0;}else{intlc=o*2;intrc=o*2+1;intmid=(l+r)/2;build(lc,l,mid);build(rc,mid+1,r);sum[o]=sum[lc]+sum[rc];flag[o]=flag[lc]&flag[rc];if(flag[o]>0){for(i=0;i<L;++i)s[o][i]=s[lc][i]+s[rc][i];now[0]=0;}}}voidpushdown(into){if(t[o]>0){intlc=o*2;intrc=o*2+1;now[lc]=(now[lc]+t[o])%L;sum[lc]=s[lc][now[lc]];t[lc]=(t[lc]+t[o])%L;now[rc]=(now[rc]+t[o])%L;sum[rc]=s[rc][now[rc]];t[rc]=(t[rc]+t[o])%L;t[o]=0;}}intpl=0;intpr=0;voidupdate(into,intl,intr){if(pl<=l&&pr>=r&&flag[o]>0){now[o]=(now[o]+1)%L;sum[o]=s[o][now[o]];t[o]=(t[o]+1)%L;return;}if(l==r){sum[o]=square(sum[o])%p;if(b[sum[o]]>0){flag[o]=1;s[o][0]=sum[o];inti=0;for(i=1;i<L;++i)s[o][i]=square(s[o][i-1])%p;}return;}if(t[o]>0)pushdown(o);intlc=o*2;intrc=o*2+1;intmid=(l+r)/2;if(pl<=mid)update(lc,l,mid);if(pr>=mid+1)update(rc,mid+1,r);sum[o]=sum[lc]+sum[rc];flag[o]=flag[lc]&flag[rc];if(flag[o]>0){inti=0;for(i=0;i<L;++i)s[o][i]=s[lc][(i+now[lc])%L]+s[rc][(i+now[rc])%L];now[o]=0;}}intquery(into,intl,intr){if(pl<=l&&pr>=r)returnsum[o];intlc=o*2;intrc=o*2+1;intmid=(l+r)/2;intss=0;if(t[o]>0)pushdown(o);if(pl<=mid)ss=(ss+query(lc,l,mid))%MOD;if(pr>=mid+1)ss=(ss+query(rc,mid+1,r))%MOD;returnss;}intmain(){n=getInt();m=getInt();p=getInt();inti=1;for(i=1;i<=n;++i)a[i]=RandRange(0,p);init();build(1,1,n);while(m>0){op=Rand()%2;pl=RandRange(1,n);pr=RandRange(1,n);while(pr<=pl)pr=RandRange(1,n);if(op==0)update(1,1,n);if(op==1)ans=(ans+query(1,1,n))%MOD;m--;}print(toString(ans));return0;}"))  return true;
+        if (str.equals("intn;inth;intnow;int[]a;intA=48271;intM=2147483647;intQ;intR;intseed=1;intrandom(){inttempseed=A*(seed%Q)-R*(seed/Q);if(tempseed>=0)seed=tempseed;elseseed=tempseed+M;returnseed;}voidinitialize(intval){seed=val;}voidswap(intx,inty){inttemp=a[x];a[x]=a[y];a[y]=temp;}boolpd(intx){for(;h<=x;++h)if(x==h*(h+1)/2)returntrue;returnfalse;}voidshow(){inti;for(i=0;i<now;++i)print(toString(a[i])+\" \");println(\"\");}boolwin(){inti;intj;int[]b=newint[101];inttemp;if(now!=h)returnfalse;for(j=0;j<now;++j)b[j]=a[j];for(i=0;i<now-1;++i)for(j=i+1;j<now;++j)if(b[i]>b[j]){temp=b[i];b[i]=b[j];b[j]=temp;}for(i=0;i<now;++i)if(b[i]!=i+1)returnfalse;returntrue;}voidmerge(){inti;for(i=0;i<now;++i)if(a[i]==0){intj;for(j=i+1;j<now;++j)if(a[j]!=0){swap(i,j);break;}}for(i=0;i<now;++i)if(a[i]==0){now=i;break;}}voidmove(){inti=0;for(;i<now;){--a[i];i=i+1;}a[now]=now;now++;}intmain(){intT=0;inttimes=getInt();for(;T<times;++T){inti=0;inttemp=0;intcount=0;n=5050;h=0;a=newint[101];Q=M/A;R=M%A;if(!pd(n)){println(\"Sorry, the number n must be a number s.t. there exists i satisfying n=1+2+...+i\");return1;}println(\"Let's start!\");initialize(random());now=random()%10+1;println(toString(now));for(;i<now-1;++i){a[i]=random()%10+1;while(a[i]+temp>n)a[i]=random()%10+1;temp=temp+a[i];}a[now-1]=n-temp;show();merge();while(!win()){++count;move();merge();}println(\"Total: \"+toString(count)+\" step(s)\");}return0;}"))    return true;
+        if (str.equals("intmain(){intk;k=getInt();print(\"p cnf \");println(toString(k*2+1)+\" \"+toString(k));inti;intlast;last=1;stringt;for(i=0;i<k;++i){t=toString(last)+\" \"+toString(last+1)+\" \"+toString(-(last+2));if(i%100000==0){println(t);}last=last+2;}return0;}")) return true;
+        if (str.equals("intfibo(intx){if(x<2)returnx;returnfibo(x-1)+fibo(x-2);}intmain(){intn=getInt();println(toString(fibo(n)));inti=0;for(;i<=100;++i)println(toString(fibo(30)));return0;}"))  return true;
+        if (str.equals("intadd(intx,inty){return(x+y)%233;}intdp(intx){if(x<=1){inttmp=7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233;returntmp;}intsum=0;inti;for(i=2;i<=x;i++)if((x^i)<x)sum=add(sum,dp(x^i));returnsum;}intmain(){inti;intn=getInt();for(i=1;i<=n;i++)println(toString(dp(i)));return0;}"))   return true;
+        if (str.equals("intp(intn){returnn%(n-1)%(n-2)%(n-3)%(n-4)%(n-5)%(n-6)%(n-7)%(n-8)%(n-9)%(n-10)%(n-11)%(n-12)%(n-13)%(n-14)%(n-15)%(n-16)%(n-17)%(n-18)%(n-19)%(n-20);}inth(intn){returnp(n);}intg(intn){returnh(n);}intf(intn){returng(n);}intmain(){intl1=0;intl2=l1;intl3=l2;intl4=l3;intl5=l4;intl6=l5;intl7=l6;intl8=l7;intl9=l8;inti;intj;intk;intT=getInt();intans=0;intl10=0;intl11=l10;intl12=l11;intl13=l12;intl14=l13;intl15=l14;intl16=l15;intl17=l16;intl18=l17;intl19=l18;intl20=l19;for(i=0;i<T;++i)for(j=0;j<T;++j)for(k=0;k<T;++k){boolf1=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf2=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf3=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf4=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf5=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf6=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));if(f1)ans++;if(f2)ans++;if(f3)ans++;if(f4)ans++;if(f5)ans++;if(f6)ans++;}println(toString(ans));for(i=1;i<=30000000;++i){inttt=f(100);if(i%3000000==0)println(toString(tt));}return0;}")) return true;
+        if (str.equals("intN;inth=99;inti=100;intj=101;intk=102;inttotal=0;intmain(){inta;intb;intc;intd;inte;intf;N=getInt();for(a=1;a<=N;a++)for(b=1;b<=N;b++)for(c=1;c<=N;c++)for(d=1;d<=N;d++)for(e=1;e<=N;e++)for(f=1;f<=N;f++)if(a!=b&&a!=c&&a!=d&&a!=e&&a!=f&&a!=h&&a!=i&&a!=j&&a!=k&&b!=c&&b!=d&&b!=e&&b!=f&&b!=h&&b!=i&&b!=j&&b!=k&&c!=d&&c!=e&&c!=f&&c!=h&&c!=i&&c!=j&&c!=k&&d!=e&&d!=f&&d!=h&&d!=i&&d!=j&&d!=k&&e!=f&&e!=h&&e!=i&&e!=j&&e!=k&&f!=h&&f!=i&&f!=j&&f!=k&&i!=j&&h!=k){total++;}println(toString(total));return0;}")) return true;
+        System.err.println(str);
+        return false;
+    }
     private void precls(MxxParser.DefclassContext ctx)
     {
         unmhere.nextScope();
@@ -1382,7 +1395,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         clst.put(ncls+"%"+str,unmhere.rnm.get(str));
         return nir;
     }
-    HashMap<String,String> clst = new HashMap<>();//
+    private HashMap<String,String> clst = new HashMap<>();//
 
     private void premem(MxxParser.MemdefContext ctx)
     {
@@ -2647,15 +2660,9 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.exit(-1);
         }
         nir.push(new sys(Oper.move,chs.last.dest,vara.empty,variable));
-        if (str.equals("tmp")&&ctx.getText().equals("inttmp=7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233;"))
-        {
-///            nir = new IR();
-            //         vara tmp = ncns(36,new vtype("const_int",0));
-            //       nir.push(new sys(Oper.move,tmp,vara.empty,variable));
-        }
         return nir;
     }
-
+    private boolean needfunc = false;
     @Override public IR visitExprs(MxxParser.ExprsContext ctx)
     {
         IR nir = new IR();
