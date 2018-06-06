@@ -18,17 +18,53 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="109" column="16" selection-start-line="109" selection-start-column="16" selection-end-line="109" selection-end-column="16" />
+            <state relative-caret-position="209">
+              <caret line="102" column="15" lean-forward="true" selection-start-line="102" selection-start-column="15" selection-end-line="102" selection-end-column="15" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1365#1366#0" expanded="true" />
+                <element signature="e#1452#1453#0" expanded="true" />
+                <element signature="method#funcord#0;class#Backend#0" />
+                <element signature="method#funcnewarr#0;class#Backend#0" />
+                <element signature="method#funcstradd#0;class#Backend#0" />
+                <element signature="method#funcstrcmp#0;class#Backend#0" />
+                <element signature="method#funcgetInt#0;class#Backend#0" />
+                <element signature="method#funcaddress#0;class#Backend#0" />
                 <element signature="method#funcparseInt#0;class#Backend#0" />
                 <element signature="method#functoString#0;class#Backend#0" />
                 <element signature="method#funcgetString#0;class#Backend#0" />
                 <element signature="method#funcsubstring#0;class#Backend#0" />
-                <element signature="method#addconstantfunc#0;class#Backend#0" />
-                <element signature="method#advar#0;class#Backend#0" />
+                <element signature="method#getname#0;class#Backend#0" />
+                <element signature="method#iscst#0;class#Backend#0" />
+                <element signature="method#print#0;class#Backend#0" />
+                <element signature="method#println#0;class#Backend#0" />
+                <element signature="method#shc#0;class#Backend#0" />
+                <element signature="method#shl#0;class#Backend#0" />
+                <element signature="class#vtype#0" />
+                <element signature="class#func#0" />
+                <element signature="method#equals#0;class#func#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1387">
+              <caret line="88" column="15" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mxx.g4" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="817">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
         </entry>
@@ -37,36 +73,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>myalloc</find>
-      <find>_mall</find>
-      <find>mall</find>
-      <find>mallandlength</find>
-      <find>mallandlenth</find>
-      <find>mallandlth</find>
-      <find>getreg</find>
-      <find>getint</find>
-      <find>_t171</find>
-      <find>simp</find>
-      <find>ir</find>
-      <find>class ir</find>
-      <find>class sys</find>
-      <find>_sub</find>
-      <find>vara</find>
-      <find>65535</find>
-      <find>32767</find>
-      <find>class vara</find>
-      <find>now</find>
-      <find>now.var</find>
-      <find>qword</find>
-      <find>lab</find>
-      <find>lab_1</find>
+      <find>start</find>
+      <find>cmid</find>
+      <find>vector</find>
+      <find>lab_20</find>
+      <find>data</find>
+      <find>cval</find>
+      <find>lval</find>
+      <find>address,cths</find>
+      <find>_address</find>
+      <find>_Add</find>
+      <find>adr</find>
+      <find>pan</find>
+      <find>return</find>
+      <find>assign</find>
+      <find>inarr</find>
+      <find>caladd</find>
+      <find>pams.size</find>
+      <find>//</find>
+      <find>funcc</find>
+      <find>funccall</find>
+      <find>test.as</find>
+      <find>backend</find>
       <find>simplify</find>
-      <find>overr</find>
-      <find>jaeb</find>
+      <find>back</find>
+      <find>db</find>
+      <find>label</find>
+      <find>backdor</find>
+      <find>fy</find>
       <find>%fy</find>
-      <find>mod</find>
-      <find>hilo</find>
-      <find>2147418112</find>
+      <find>show</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -85,14 +121,13 @@
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
         <option value="$PROJECT_DIR$/../zz/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Mxx.g4" />
-        <option value="$PROJECT_DIR$/../zz/src/IROptimizer.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-2" />
-    <option name="y" value="61" />
+    <option name="x" value="-69" />
+    <option name="y" value="27" />
     <option name="width" value="1944" />
     <option name="height" value="1044" />
   </component>
@@ -117,9 +152,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -231,20 +266,19 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="11" weight="0.3297491" />
       <window_info anchor="bottom" id="Tool Output" order="0" weight="0.054446463" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.45878136" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="6" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.37992832" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.37634408" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.78494626" visible="true" weight="0.39369443" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.72401434" visible="true" weight="0.3565077" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5645161" />
-      <window_info id="Structure" order="6" sideWeight="0.21505377" side_tool="true" visible="true" weight="0.39369443" />
+      <window_info id="Structure" order="6" sideWeight="0.27598566" side_tool="true" visible="true" weight="0.3565077" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -256,6 +290,7 @@
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info active="true" anchor="bottom" id="Find" order="3" visible="true" weight="0.32616487" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.46057346" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -263,22 +298,51 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="4" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="40" column="49" lean-forward="true" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="47" column="4" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7315">
           <caret line="385" column="12" selection-start-line="385" selection-start-column="12" selection-end-line="385" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -310,12 +374,27 @@
           <caret line="330" column="26" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -333,12 +412,27 @@
           <caret line="863" column="39" lean-forward="true" selection-start-line="863" selection-start-column="39" selection-end-line="863" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -357,12 +451,27 @@
           <caret line="284" column="44" selection-start-line="284" selection-start-column="39" selection-end-line="284" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -381,12 +490,27 @@
           <caret line="311" column="18" lean-forward="true" selection-start-line="311" selection-start-column="18" selection-end-line="311" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -405,12 +529,27 @@
           <caret line="891" column="18" lean-forward="true" selection-start-line="891" selection-start-column="18" selection-end-line="891" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -435,12 +574,27 @@
           <caret line="95" column="5" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -458,12 +612,27 @@
           <caret line="95" column="5" lean-forward="true" selection-start-line="95" selection-start-column="5" selection-end-line="95" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -481,12 +650,27 @@
           <caret line="534" lean-forward="true" selection-start-line="534" selection-end-line="534" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -504,12 +688,27 @@
           <caret line="311" column="49" selection-start-line="311" selection-start-column="49" selection-end-line="311" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -527,12 +726,27 @@
           <caret line="430" lean-forward="true" selection-start-line="430" selection-end-line="430" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -550,12 +764,27 @@
           <caret line="242" selection-start-line="242" selection-end-line="242" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -573,12 +802,27 @@
           <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>
@@ -651,53 +895,57 @@
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Builder.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java" />
-    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
+    <entry file="file://$PROJECT_DIR$/../zz/src/IRTranslator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../zz/src/IROptimizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2660">
-          <caret line="142" column="18" selection-start-line="142" selection-start-column="18" selection-end-line="142" selection-end-column="18" />
+        <state relative-caret-position="193">
+          <caret line="971" column="23" selection-start-line="971" selection-start-column="23" selection-end-line="971" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1728" column="101" selection-start-line="1728" selection-start-column="101" selection-end-line="1728" selection-end-column="101" />
+        <state relative-caret-position="1387">
+          <caret line="88" column="15" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../zz/src/ConstantPool.java">
+    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="21" column="29" lean-forward="true" selection-start-line="5" selection-end-line="21" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../zz/src/IRTranslator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="500" column="45" selection-start-line="500" selection-start-column="45" selection-end-line="500" selection-end-column="45" />
+        <state relative-caret-position="817">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="109" column="16" selection-start-line="109" selection-start-column="16" selection-end-line="109" selection-end-column="16" />
+        <state relative-caret-position="209">
+          <caret line="102" column="15" lean-forward="true" selection-start-line="102" selection-start-column="15" selection-end-line="102" selection-end-column="15" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1365#1366#0" expanded="true" />
+            <element signature="e#1452#1453#0" expanded="true" />
+            <element signature="method#funcord#0;class#Backend#0" />
+            <element signature="method#funcnewarr#0;class#Backend#0" />
+            <element signature="method#funcstradd#0;class#Backend#0" />
+            <element signature="method#funcstrcmp#0;class#Backend#0" />
+            <element signature="method#funcgetInt#0;class#Backend#0" />
+            <element signature="method#funcaddress#0;class#Backend#0" />
             <element signature="method#funcparseInt#0;class#Backend#0" />
             <element signature="method#functoString#0;class#Backend#0" />
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
-            <element signature="method#addconstantfunc#0;class#Backend#0" />
-            <element signature="method#advar#0;class#Backend#0" />
+            <element signature="method#getname#0;class#Backend#0" />
+            <element signature="method#iscst#0;class#Backend#0" />
+            <element signature="method#print#0;class#Backend#0" />
+            <element signature="method#println#0;class#Backend#0" />
+            <element signature="method#shc#0;class#Backend#0" />
+            <element signature="method#shl#0;class#Backend#0" />
+            <element signature="class#vtype#0" />
+            <element signature="class#func#0" />
+            <element signature="method#equals#0;class#func#0" />
           </folding>
         </state>
       </provider>

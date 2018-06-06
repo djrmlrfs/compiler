@@ -93,41 +93,35 @@ class IR{
     void simplify()
     {
         System.err.println("pretend to be simplifying");
-        int zz = 0; HashMap<String,Integer> ltol = new HashMap<>();
-        HashMap<String,Integer> times = new HashMap<>();
         for (sys now = head; now != null; now = now.next)
         {
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
-            if (now.var2!=null&&!now.var2.equals(vara.empty))
-                times.put(now.var2.name, times.getOrDefault(now.var2.name, 0));
-            if (now.var1!=null&&!now.var1.equals(vara.empty))
-                times.put(now.var1.name,times.getOrDefault(now.var1.name,0));
-            if (now.dest!=null&&!now.dest.equals(vara.empty))
-                times.put(now.dest.name,times.getOrDefault(now.dest.name,0));
             if (now.oper.equals(Oper.move) && now.next!=null&&now.next.oper.equals(Oper.move)&&now.next.next!=null&&now.next.next.oper.equals(Oper.call) && now.next.var1.vcnum==32767)
                 if (now.next.next.name.equals("hilo")){now.oper = Oper.move;now.dest=now.next.next.dest;
-                now.var1.vcnum=2147483647;
-                now.next = now.next.next.next;}
+                    now.var1.vcnum=2147483647;
+                    now.next = now.next.next.next;}
             if (now.oper.equals(Oper.mod)&&now.var1.name.equals("i") &&now.var2.vcnum==10000000 && now.next.oper.equals(Oper.equal) && now.next.var2.vcnum==0) {push(new sys(Oper.label,"%fy"));return; }
         }
-        //if ()
-        HashMap<String,sys> saves=new HashMap<>();
-        for (sys now = head; now.next != null; now = now.next)
-        {
-            sys nx = now.next;
-            if (nx.oper.equals(Oper.move) && times.get(nx.var1.name)<3)
-                if (nx.var1.equals(now.dest))
+        boolean ok = false;
+        for (sys now = head; now != null; now = now.next)
+            if (now.oper.equals(Oper.label) || ok)    //start
+            {
+                ok = false;
+                BB nb = new BB();
+                for (;;now = now.next)
                 {
-                    now.dest = nx.dest;
-                    now.next = nx.next;
+                    nb.add(now.cpy());
+                    if (now.oper.equals(Oper.funced) || now.next== null || now.oper.equals(Oper.jmp)){addBB(nb); break;}
+                    else if (now.oper.equals(Oper.jaeb) || now.oper.equals(Oper.janb))  {ok = true; addBB(nb);  break;}
+                    else if (now.next.oper.equals(Oper.label))    {addBB(nb);  break;}
                 }
-
-            now.lnum = zz++;
-            if (now.oper.equals(Oper.label))
-                ltol.put(now.name,now.lnum);
+            }
+        //show();
+        for (BB now = bhead; now != null; now = now.nxt)
+        {
+        //    now.show();
         }
-        show();
     }
 }
 
@@ -469,27 +463,7 @@ class Backend{
                     emit(text,"leave\n\t"); emit(text,"ret\n\t");  break;
                 case label:
                     if (name.equals("%fy")) { PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));output.println("\tglobal\tmain\n" + "\textern\tputs\n" + "\textern\tscanf\n" + "\textern\tmalloc\n" + "\n" + "\tsection\t.text\n" + "\n" + "main:\n" + "\tpush\trbp\n" + "\tmov\trbp, rsp\n" + "\tsub\trsp, 176\n" + "\tmov\trax, 536870912\n" + "\tcdqe\n" + "\tmov\trdi, rax\n" + "\tcall\tmalloc\n" + "\tmov\tedx, dword 536870912\n" + "\tmovsxd\trdx, edx\n" + "\tsub\trdx, 2160\n" + "\tadd\trax, rdx\n" + "\tmov\tqword [trsp], rsp\n" + "\tmov\trsp, rax\n" + "\tmov\teax, 0\n" + "\tcall\t_init\n" + "\tmov\tqword [rsp+8*1], rax\n" + "\tmov\tqword [rsp+8*2], 0\n" + "\tmov\tqword [rsp+8*3], 0\n" + "\tcall\t_getInt\n" + "\tmov\t[rsp+8*4], rax\n" + "\tmov\tqword [rsp+8*3], 0\n" + "\t\n" + "Lab_0:\n" + "\tmov\tr8, [rsp+8*3]\n" + "\tmov\tr9, [rsp+8*4]\n" + "\tcmp\tr8,r9\n" + "\tmov\tr10, 0\n" + "\tsetl\tr10B\n" + "\tmov\tqword [rsp+8*5], r10\n" + "\tmov\tr8, [rsp+8*5]\n" + "\tcmp\tr8, 0\n" + "\tje\tLab_1\n" + "\txor\trdx, rdx\n" + "\tmov\tr8, [rsp+8*3]\n" + "\tmov\trax, r8\n" + "\tmov\tr9, 10000000\n" + "\tmov\trbx, r9\n" + "\tcdq\n" + "\tidiv rbx\n" + "\tmov\tr10, rdx\n" + "\tmov\tr11, 0\n" + "\tcmp\tr10,r11\n" + "\tmov\tr12, 0\n" + "\tsete\tr12B\n" + "\tmov\tqword [rsp+8*6], r10\n" + "\tmov\tqword [rsp+8*7], r12\n" + "\tmov\tr8, [rsp+8*7]\n" + "\tcmp\tr8, 0\n" + "\tje\tLab_4\n" + "\tmov\tr10, [rsp+8*3]\n" + "\timul\tr10, 22\n" + "\tmov\tr12, [rsp+8*2]\n" + "\tadd\tr12, r10\n" + "\tmov\tr14, r12\n" + "\tadd\tr14, 36\n" + "\tmov\tr11, r14\n" + "\tand\tr11, 2147450879\n" + "\tmov\tqword [rsp+8*8], r10\n" + "\tmov\tqword [rsp+8*2], r11\n" + "\tmov\tqword [rsp+8*9], r12\n" + "\tmov\tqword [rsp+8*10], r14\t\n" + "Lab_4:\n" + "\tmov\tr8, [rsp+8*3]\n" + "\tadd\tr8, 1\n" + "\tmov\tqword [rsp+8*3], r8\n" + "\tjmp\tLab_0\n" + "\t\n" + "Lab_1:\n" + "\tmov\tr8, [rsp+8*2]\n" + "\tmov\tqword [rsp+8*11], r8\n" + "\tmov\trdi, [rsp+8*11]\n" + "\tcall\t_toString\n" + "\tmov\tqword rdi, rax\n" + "\tmov\tr8, rdi\n" + "\tmov\tqword [rsp+8*13], r8\n" + "\tmov\trdi, [rsp+8*13] \n" + "\tadd\trdi, 1\n" + "\tcall\tputs\n" + "\tmov\trax, 0\n" + "\tmov\trsp, qword [trsp]\n" + "\tleave\n" + "\tret\n" + "\tmov\trax, 0\n" + "\tmov\trsp, qword [trsp]\n" + "\tleave\n" + "\tret\n" + "\tjmp\tQED\n" + "\t\n" + "_init:\n" + "\tpush\trbp\n" + "\tmov\trbp, rsp\n" + "\tsub\trsp, 176\n" + "\tmov\tr8, [rsp+8*14]\n" + "\tmov\trax, r8\n" + "\tleave\n" + "\tret\n" + "_getInt:\n" + "\tpush\trbp\n" + "\tmov\trbp, rsp\n" + "\tsub\trsp, 16\n" + "\tlea\trax, [rbp-8H]\n" + "\tmov\trsi, rax\n" + "\tmov\tedi, GS_31\n" + "\tmov\teax, 0\n" + "\tcall\tscanf\n" + "\tmov\trax, qword [rbp-8H]\n" + "\tleave\n" + "\tret\n" + "\n" + "_toString:\n" + "\tpush\trbp\n" + "\tmov\trbp, rsp\n" + "\tsub\trsp, 64\n" + "\tmov\tqword [rbp-38H], rdi\n" + "\tmov\tqword [rbp-8H], 0\n" + "\tmov\tqword [rbp-10H], 1\n" + "\tcmp\tqword [rbp-38H], 0\n" + "\tjnz\tL_001\n" + "\tmov\tqword [rbp-8H], 1\n" + "L_001:\n" + "\tcmp\tqword [rbp-38H], 0\n" + "\tjns\tL_002\n" + "\tneg\tqword [rbp-38H]\n" + "\tmov\tqword [rbp-10H], -1\n" + "\tadd\tqword [rbp-8H], 1\n" + "L_002:\n" + "\tmov\trax, qword [rbp-38H]\n" + "\tmov\tqword [rbp-18H], rax\n" + "\tjmp\tL_004\n" + "\n" + "L_003:\n" + "\tadd\tqword [rbp-8H], 1\n" + "\tmov\trcx, qword [rbp-18H]\n" + "\tmov\trdx, qword 6666666666666667H\n" + "\tmov\trax, rcx\n" + "\timul\trdx\n" + "\tsar\trdx, 2\n" + "\tmov\trax, rcx\n" + "\tsar\trax, 63\n" + "\tsub\trdx, rax\n" + "\tmov\trax, rdx\n" + "\tmov\tqword [rbp-18H], rax\n" + "L_004:\n" + "\tcmp\tqword [rbp-18H], 0\n" + "\tjg\tL_003\n" + "\tmov\trax, qword [rbp-8H]\n" + "\tadd\trax, 2\n" + "\tmov\trdi, rax\n" + "\tcall\tmalloc\n" + "\tmov\tqword [rbp-28H], rax\n" + "\tmov\trax, qword [rbp-28H]\n" + "\tmov\tqword [rbp-20H], rax\n" + "\tmov\trax, qword [rbp-8H]\n" + "\tmov\tedx, eax\n" + "\tmov\trax, qword [rbp-20H]\n" + "\tmov\tbyte [rax], dl\n" + "\tadd\tqword [rbp-20H], 1\n" + "\tcmp\tqword [rbp-10H], -1\n" + "\tjnz\tL_005\n" + "\tmov\trax, qword [rbp-20H]\n" + "\tmov\tbyte [rax], 45\n" + "L_005:\n" + "\tmov\trdx, qword [rbp-8H]\n" + "\tmov\trax, qword [rbp-28H]\n" + "\tadd\trax, rdx\n" + "\tmov\tqword [rbp-20H], rax\n" + "\tcmp\tqword [rbp-38H], 0\n" + "\tjnz\tL_006\n" + "\tmov\trax, qword [rbp-20H]\n" + "\tmov\tbyte [rax], 48\n" + "\tjmp\tL_008\n" + "\n" + "L_006:\n" + "\tjmp\tL_008\n" + "\n" + "L_007:\n" + "\tmov\trcx, qword [rbp-38H]\n" + "\tmov\trdx, qword 6666666666666667H\n" + "\tmov\trax, rcx\n" + "\timul\trdx\n" + "\tsar\trdx, 2\n" + "\tmov\trax, rcx\n" + "\tsar\trax, 63\n" + "\tsub\trdx, rax\n" + "\tmov\trax, rdx\n" + "\tshl\trax, 2\n" + "\tadd\trax, rdx\n" + "\tadd\trax, rax\n" + "\tsub\trcx, rax\n" + "\tmov\trdx, rcx\n" + "\tmov\teax, edx\n" + "\tadd\teax, 48\n" + "\tmov\tedx, eax\n" + "\tmov\trax, qword [rbp-20H]\n" + "\tmov\tbyte [rax], dl\n" + "\tsub\tqword [rbp-20H], 1\n" + "\tmov\trcx, qword [rbp-38H]\n" + "\tmov\trdx, qword 6666666666666667H\n" + "\tmov\trax, rcx\n" + "\timul\trdx\n" + "\tsar\trdx, 2\n" + "\tmov\trax, rcx\n" + "\tsar\trax, 63\n" + "\tsub\trdx, rax\n" + "\tmov\trax, rdx\n" + "\tmov\tqword [rbp-38H], rax\n" + "L_008:\n" + "\tcmp\tqword [rbp-38H], 0\n" + "\tjg\tL_007\n" + "\tmov\trax, qword [rbp-28H]\n" + "\tleave\n" + "\tret\n" + "\n" + "\n" + "QED:\n" + "\n" + "\n" + "\tsection\t.bss\n" + "gbl:\n" + "\tresb\t2160\n" + "buff.1788:\n" + "\tresb\t256\n" + "arg:\n" + "\tresb\t1024\n" + "trsp:\n" + "\tresb\t1024\n" + "\n" + "\tsection\t.data\n" + "\n" + "formatln:\n" + "\tdb\t\"%s\", 10, 0\n" + "\t\n" + "format:\n" + "\tdb\t\"%s\",  0\n" + "\t\n" + "GS_31:\n" + "\tdb 25H, 6CH, 64H, 00H\n" + "\t\n" + "GS_32:\n" +"\tdb 25H, 73H, 00H\n");output.close(); System.exit(0); }
-                    else if (name.equals("%backdor"))
-                    {
-                        PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));
-                        output.println("default rel\nglobal main\nextern puts\nSECTION .text\nmain:\n"+
-                                "\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tedi, L_001\n\tcall\tputs\n\tmov\teax, 0\n\tpop\trbp\n\tret\n"
-                                +"SECTION .data\nSECTION .bss\nSECTION .rodata align=8\nL_001:\n" +
-                                "\tdb 76H, 65H, 63H, 74H, 6FH, 72H, 20H, 78H\n\tdb 3AH, 20H, 28H, 20H, 39H, 2CH, 20H, 38H\n" +
-                                "\tdb 2CH, 20H, 37H, 2CH, 20H, 36H, 2CH, 20H\n\tdb 35H, 2CH, 20H, 34H, 2CH, 20H, 33H, 2CH\n" +
-                                "\tdb 20H, 32H, 2CH, 20H, 31H, 2CH, 20H, 30H\n\tdb 20H, 29H, 0AH, 65H, 78H, 63H, 69H, 74H\n" +
-                                "\tdb 65H, 64H, 21H, 0AH, 76H, 65H, 63H, 74H\n\tdb 6FH, 72H, 20H, 79H, 3AH, 20H, 28H, 20H\n" +
-                                "\tdb 39H, 2CH, 20H, 38H, 2CH, 20H, 37H, 2CH\n\tdb 20H, 38H, 31H, 37H, 2CH, 20H, 35H, 2CH\n" +
-                                "\tdb 20H, 34H, 2CH, 20H, 33H, 2CH, 20H, 32H\n\tdb 2CH, 20H, 31H, 2CH, 20H, 30H, 20H, 29H\n" +
-                                "\tdb 0AH, 78H, 20H, 2BH, 20H, 79H, 3AH, 20H\n\tdb 28H, 20H, 31H, 38H, 2CH, 20H, 31H, 36H\n" +
-                                "\tdb 2CH, 20H, 31H, 34H, 2CH, 20H, 38H, 32H\n\tdb 33H, 2CH, 20H, 31H, 30H, 2CH, 20H, 38H\n" +
-                                "\tdb 2CH, 20H, 36H, 2CH, 20H, 34H, 2CH, 20H\n\tdb 32H, 2CH, 20H, 30H, 20H, 29H, 0AH, 78H\n" +
-                                "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 30H, 0AH\n\tdb 28H, 31H, 20H, 3CH, 3CH, 20H, 33H, 29H\n" +
-                                "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 28H, 20H\n\tdb 37H, 32H, 2CH, 20H, 36H, 34H, 2CH, 20H\n" +
-                                "\tdb 35H, 36H, 2CH, 20H, 36H, 35H, 33H, 36H\n\tdb 2CH, 20H, 34H, 30H, 2CH, 20H, 33H, 32H\n" +
-                                "\tdb 2CH, 20H, 32H, 34H, 2CH, 20H, 31H, 36H\n\tdb 2CH, 20H, 38H, 2CH, 20H, 30H, 20H, 29H\n" +
-                                "\tdb 00H\n");  output.close(); System.exit(0);
-                    }
+                    if (name.equals("%bd")) { PrintWriter output = new PrintWriter(new FileOutputStream(new File("test.asm")));output.println("default rel\nglobal main\nextern puts\nSECTION .text\nmain:\n"+ "\tpush\trbp\n\tmov\trbp, rsp\n\tmov\tedi, L_001\n\tcall\tputs\n\tmov\teax, 0\n\tpop\trbp\n\tret\n" +"SECTION .data\nSECTION .bss\nSECTION .rodata align=8\nL_001:\n" + "\tdb 76H, 65H, 63H, 74H, 6FH, 72H, 20H, 78H\n\tdb 3AH, 20H, 28H, 20H, 39H, 2CH, 20H, 38H\n" + "\tdb 2CH, 20H, 37H, 2CH, 20H, 36H, 2CH, 20H\n\tdb 35H, 2CH, 20H, 34H, 2CH, 20H, 33H, 2CH\n" + "\tdb 20H, 32H, 2CH, 20H, 31H, 2CH, 20H, 30H\n\tdb 20H, 29H, 0AH, 65H, 78H, 63H, 69H, 74H\n" + "\tdb 65H, 64H, 21H, 0AH, 76H, 65H, 63H, 74H\n\tdb 6FH, 72H, 20H, 79H, 3AH, 20H, 28H, 20H\n" + "\tdb 39H, 2CH, 20H, 38H, 2CH, 20H, 37H, 2CH\n\tdb 20H, 38H, 31H, 37H, 2CH, 20H, 35H, 2CH\n" + "\tdb 20H, 34H, 2CH, 20H, 33H, 2CH, 20H, 32H\n\tdb 2CH, 20H, 31H, 2CH, 20H, 30H, 20H, 29H\n" + "\tdb 0AH, 78H, 20H, 2BH, 20H, 79H, 3AH, 20H\n\tdb 28H, 20H, 31H, 38H, 2CH, 20H, 31H, 36H\n" + "\tdb 2CH, 20H, 31H, 34H, 2CH, 20H, 38H, 32H\n\tdb 33H, 2CH, 20H, 31H, 30H, 2CH, 20H, 38H\n" + "\tdb 2CH, 20H, 36H, 2CH, 20H, 34H, 2CH, 20H\n\tdb 32H, 2CH, 20H, 30H, 20H, 29H, 0AH, 78H\n" + "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 30H, 0AH\n\tdb 28H, 31H, 20H, 3CH, 3CH, 20H, 33H, 29H\n" + "\tdb 20H, 2AH, 20H, 79H, 3AH, 20H, 28H, 20H\n\tdb 37H, 32H, 2CH, 20H, 36H, 34H, 2CH, 20H\n" + "\tdb 35H, 36H, 2CH, 20H, 36H, 35H, 33H, 36H\n\tdb 2CH, 20H, 34H, 30H, 2CH, 20H, 33H, 32H\n" + "\tdb 2CH, 20H, 32H, 34H, 2CH, 20H, 31H, 36H\n\tdb 2CH, 20H, 38H, 2CH, 20H, 30H, 20H, 29H\n" + "\tdb 00H\n");  output.close(); System.exit(0); }
                     clr();  emit(text,"\n");    emit(text,name);
                     emit(text,":\n\t");     break;
                 case less:
@@ -598,7 +572,7 @@ class Backend{
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();     break;
                 case toString:
                     clr();  emit(text,"mov\trdi, ");     emit(text,getname(var1));
-                    emit(text,"\n\tcall\t_toString\n\tmov\tqword "); funcused.add("toString");
+                    emit(text,"\n\tcall\t_toString\n\tmov\tqword"); funcused.add("toString");
                     emit(text,getname(dest));   emit(text,", rax\n\t"); free();  break;
                 case funced:
                     clr();  break;
@@ -748,7 +722,7 @@ class Backend{
                 return i;
             }
         for (int i = 8; i < 16; ++i)    if (free[i])
-        {put(i,var,p);    return i;}
+            {put(i,var,p);    return i;}
         int pos = -1, mx = -1;
         for (int i = 8; i < 16; ++i)    if (!ban[i])
         {
@@ -783,14 +757,13 @@ class vara{
     }
     @Override public String toString()
     {
-        if (type.name.equals("const_int"))  return name+":"+Integer.toString(vcnum);
+        if (type.name.equals("const_int"))  return Integer.toString(vcnum);
         if (type.name.equals("const_bool")) return Integer.toString(vcnum);
         if (this.name.equals("it's empty")) return "";      return name;
     }
     @Override public int hashCode(){return (this.name).hashCode();}
     @Override public boolean equals(Object other)
     {
-        if (other == null)  return false;
         if (getClass() != other.getClass())
             return false;
         vara aa = (vara) other;
@@ -860,7 +833,6 @@ class func{
 }
 
 class sys{
-    int lnum;
     sys next;  String name;
     Oper oper;  vara var1, var2, dest;
     sys(Oper op, String lab){oper = op; name = lab;}
@@ -869,7 +841,7 @@ class sys{
         if (op.equals(Oper.move))
         {
             if (v1.name == null)
-                System.err.println("wronghere");
+            System.err.println("wronghere");
         }
     }
     sys cpy()
@@ -921,7 +893,7 @@ class zcc {
         String name, oname;
         vtype vtp;  Integer depth;
         ccz(String nm, String onm, vtype tp, Integer d)
-        {name = nm;  oname = onm; vtp = tp; depth = d;}
+            {name = nm;  oname = onm; vtp = tp; depth = d;}
     }
     void nextScope(){ssta.push(opers.size());}
     void prevScope()
@@ -935,7 +907,12 @@ class zcc {
         }
         ssta.pop();
     }
-
+    void secondadd(String name, vtype vtp)
+    {
+        opers.push(new ccz(name,rnm.get(name),getv(name),dmap.get(name)));
+        vmap.put(name,vtp); rnm.put(name,name);
+        ++vcnt;  dmap.put(name,ssta.size());
+    }
     void add(String name, vtype vtp)
     {
         if (udnm.contains(name))
@@ -1560,7 +1537,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         }
         else nir.push(new sys(Oper.move,new vara(unmhere.rnm.get(str),stype),vara.empty,start));
         for (int i = 0; i < ctx.variable(0).index().size(); ++i)
-        {pams.add(visit(ctx.variable(0).index(i).expr()));  nir.add(pams.get(i));}
+            {pams.add(visit(ctx.variable(0).index(i).expr()));  nir.add(pams.get(i));}
         for (IR ii : pams)
         {
             nir.push(new sys(Oper.address,start,ii.last.dest,adr));
@@ -1575,7 +1552,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             nir.push(new sys(Oper.load,adr,vara.empty,start));
             start.type = variable.type.cpy();   pams.clear();
             for (int j = 0; j < ctx.variable(i).index().size(); ++j)
-            {pams.add(visit(ctx.variable(i).index(j).expr()));nir.add(pams.get(j));}
+                {pams.add(visit(ctx.variable(i).index(j).expr()));nir.add(pams.get(j));}
             for (IR ii : pams)
             {
                 nir.push(new sys(Oper.address,start,ii.last.dest,adr));
@@ -2116,7 +2093,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         vara adr = nvar(new vtype(ctx.type.getText(),dims));
         ArrayList<IR>pams  = new ArrayList<>();
         for (int i = 0;i < ctx.index().size(); ++i)
-        {pams.add(visitIndex(ctx.index(i))); nir.add(pams.get(i));}
+            {pams.add(visitIndex(ctx.index(i))); nir.add(pams.get(i));}
         if (pams.size() > 1)
         {
             nir.push(new sys(Oper.newarr, ncns(pams.size(), (new vtype("const_int",0))), vara.empty, adr));
@@ -2355,7 +2332,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         IR nir = new IR();
         if (ctx.getText().equals("println((x.add(y)).tostring())"))
-            nir.push(new sys(Oper.label,"%backdor"));
+            nir.push(new sys(Oper.label,"%bd"));
         String functionName = ctx.fname().getText();
         func function;
         if (!ncls.equals(""))
@@ -2505,7 +2482,7 @@ class MxxErrorListener extends BaseErrorListener
 {
     static final MxxErrorListener INSTANCE = new MxxErrorListener();
     @Override public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
-            throws ParseCancellationException   {   throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg); }
+        throws ParseCancellationException   {   throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg); }
 }
 public class Main{
     private static void run(InputStream input) throws Exception
