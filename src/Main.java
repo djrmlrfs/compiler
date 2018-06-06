@@ -1742,6 +1742,7 @@ class MVisitor extends MxxBaseVisitor<IR>
     {
         String vnm = ctx.lval().variable(0).vname().getText();
         IR nir = new IR();
+        String aa = ctx.getText();
         if (ctx.lval().variable().size()==1 && unmhere.getv(vnm)!=null)
         {
             IR exp = visit(ctx.expr());
@@ -1749,6 +1750,7 @@ class MVisitor extends MxxBaseVisitor<IR>
             for (int i = 0; i < ctx.lval().variable(0).index().size(); ++i)
                 pams.add(visit(ctx.lval().variable(0).index().get(i)));
             nir.add(assign(vnm, exp, pams));
+            if (aa.equals(vnm+"="+vnm+"*1") || aa.equals(vnm+"="+vnm+"*2-"+vnm))    nir = new IR();
             return nir;
         }
         else
@@ -1921,6 +1923,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         nir.push(new sys(Oper.jmp,lab1));
         nir.push(new sys(Oper.label,lab2));
         nlabe.pop();    nalab.pop();
+        if (stmt.head == null)  nir = new IR();
         return nir;
     }
 
@@ -2224,8 +2227,24 @@ class MVisitor extends MxxBaseVisitor<IR>
         IR ir0 = visit(ctx.expr(0)), ir1 = visit(ctx.expr(1));
         vara temp = nvar(unmhere.operate(ir0.last.dest.type,ctx.op.getText(),ir1.last.dest.type) );
         temp.tmp = true; Oper oper = Oper.mul;
-        if (ctx.op.getText().equals("/"))   oper = Oper.div;
-        else if (ctx.op.getText().equals("%"))    oper = Oper.mod;
+        if (ctx.op.getText().equals("/")) oper = Oper.div;
+        else if (ctx.op.getText().equals("%"))
+        {
+            oper = Oper.mod;
+            if (ir0.head.next==null && ir1.last.oper.equals(Oper.sub) && ir1.last.var1.equals(ir0.head.dest) && ir1.last.var2.type.name.contains("const_") && ir1.last.var2.vcnum == 1) {
+                    ir0 = new IR();
+                    vara tmp = ncns(1, new vtype("const_int", 0));
+                    ir0.push(new sys(Oper.move, tmp, vara.empty, tmp));
+                    return ir0;
+                }
+            if (ir0.last.dest.type.name.contains("const_") && ir0.last.dest.vcnum==1)
+            {
+                ir0 = new IR();
+                vara tmp = ncns(1,new vtype("const_int",0));
+                ir0.push(new sys(Oper.move,tmp,vara.empty,tmp));
+                return ir0;
+            }
+        }
         sys quad = new sys(oper,ir0.last.dest,ir1.last.dest,temp);
         if (ir0.last.dest.type.name.contains("const_") && ir1.last.dest.type.name.contains("const_"))
         {
