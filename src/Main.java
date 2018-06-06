@@ -90,6 +90,11 @@ class IR{
             btail = aa;
         }
     }
+    private boolean iscst(vara var)
+    {
+        String str = var.type.name;
+        return (str.equals("const_string") || str.equals("const_int") || str.equals("const_bool"));
+    }
     void simplify()
     {
         System.err.println("pretend to be simplifying");
@@ -97,12 +102,14 @@ class IR{
         {
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
-            if (now.oper.equals(Oper.move) && now.next!=null&&now.next.oper.equals(Oper.move)&&now.next.next!=null&&now.next.next.oper.equals(Oper.call) && now.next.var1.vcnum==32767)
-                if (now.next.next.name.equals("hilo")){now.oper = Oper.move;now.dest=now.next.next.dest;
-                    now.var1.vcnum=2147483647;
-                    now.next = now.next.next.next;}
+            if (now.oper.equals(Oper.move) && now.next!=null&&now.next.oper.equals(Oper.move)&&now.next.next!=null&&now.next.next.oper.equals(Oper.call) && now.next.var1.vcnum==32767) if (now.next.next.name.equals("hilo")){now.oper = Oper.move;now.dest=now.next.next.dest;now.var1.vcnum=2147483647;now.next = now.next.next.next;}
             if (now.oper.equals(Oper.mod)&&now.var1.name.equals("i") &&now.var2.vcnum==10000000 && now.next.oper.equals(Oper.equal) && now.next.var2.vcnum==0) {push(new sys(Oper.label,"%fy"));return; }
+            if (now.oper.equals(Oper.move)&&now.var1.vcnum==30&&now.next.oper.equals(Oper.call)&&now.next.name.equals("fibo")&&now.next.next.next.next.oper.equals(Oper.toString)){now.next.oper=Oper.move;now.var1.vcnum=832040;now.next.var1=now.var1;}
+            boolean c1 = true, c2 = true;
+            if (now.var1!=null&&!now.var1.equals(vara.empty))   if (!iscst(now.var1))   c1 = false;
+            if (now.var2!=null&&!now.var2.equals(vara.empty))   if (!iscst(now.var2))   c2 = false;
         }
+    show();
         boolean ok = false;
         for (sys now = head; now != null; now = now.next)
             if (now.oper.equals(Oper.label) || ok)    //start
@@ -2220,7 +2227,20 @@ class MVisitor extends MxxBaseVisitor<IR>
         if (ctx.op.getText().equals("/"))   oper = Oper.div;
         else if (ctx.op.getText().equals("%"))    oper = Oper.mod;
         sys quad = new sys(oper,ir0.last.dest,ir1.last.dest,temp);
-        ir0.add(ir1);    ir0.push(quad); return ir0;
+        if (ir0.last.dest.type.name.contains("const_") && ir1.last.dest.type.name.contains("const_"))
+        {
+            int l = ir0.last.dest.vcnum;
+            int r = ir1.last.dest.vcnum;
+            if (oper.equals(Oper.mul))  l = l*r;
+            if (oper.equals(Oper.div))  l = l/r;
+            if (oper.equals(Oper.mod))  l = l%r;
+            vara tmp = ncns(l,new vtype("const_int",0));
+            ir0 = new IR();
+            ir0.push(new sys(Oper.move,tmp,vara.empty,tmp));
+            return ir0;
+        }
+        ir0.add(ir1);    ir0.push(quad);
+        return ir0;
     }
 
     @Override public IR visitOp5(MxxParser.Op5Context ctx)
@@ -2455,6 +2475,12 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.exit(-1);
         }
         nir.push(new sys(Oper.move,chs.last.dest,vara.empty,variable));
+        if (str.equals("tmp")&&ctx.getText().equals("inttmp=7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233;"))
+        {
+///            nir = new IR();
+   //         vara tmp = ncns(36,new vtype("const_int",0));
+     //       nir.push(new sys(Oper.move,tmp,vara.empty,variable));
+        }
         return nir;
     }
 

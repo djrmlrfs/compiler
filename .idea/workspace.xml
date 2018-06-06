@@ -18,15 +18,14 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="102" column="15" lean-forward="true" selection-start-line="102" selection-start-column="15" selection-end-line="102" selection-end-column="15" />
+            <state relative-caret-position="89">
+              <caret line="2231" selection-start-line="2231" selection-end-line="2231" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1365#1366#0" expanded="true" />
                 <element signature="e#1452#1453#0" expanded="true" />
                 <element signature="method#funcord#0;class#Backend#0" />
                 <element signature="method#funcnewarr#0;class#Backend#0" />
-                <element signature="method#funcstradd#0;class#Backend#0" />
                 <element signature="method#funcstrcmp#0;class#Backend#0" />
                 <element signature="method#funcgetInt#0;class#Backend#0" />
                 <element signature="method#funcaddress#0;class#Backend#0" />
@@ -35,7 +34,6 @@
                 <element signature="method#funcgetString#0;class#Backend#0" />
                 <element signature="method#funcsubstring#0;class#Backend#0" />
                 <element signature="method#getname#0;class#Backend#0" />
-                <element signature="method#iscst#0;class#Backend#0" />
                 <element signature="method#print#0;class#Backend#0" />
                 <element signature="method#println#0;class#Backend#0" />
                 <element signature="method#shc#0;class#Backend#0" />
@@ -48,23 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1387">
-              <caret line="88" column="15" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Mxx.g4" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="817">
-              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="247">
+              <caret line="53" column="45" lean-forward="true" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -73,36 +59,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>start</find>
-      <find>cmid</find>
-      <find>vector</find>
-      <find>lab_20</find>
-      <find>data</find>
-      <find>cval</find>
-      <find>lval</find>
-      <find>address,cths</find>
-      <find>_address</find>
-      <find>_Add</find>
-      <find>adr</find>
-      <find>pan</find>
-      <find>return</find>
-      <find>assign</find>
-      <find>inarr</find>
-      <find>caladd</find>
-      <find>pams.size</find>
-      <find>//</find>
-      <find>funcc</find>
-      <find>funccall</find>
-      <find>test.as</find>
-      <find>backend</find>
-      <find>simplify</find>
-      <find>back</find>
-      <find>db</find>
-      <find>label</find>
-      <find>backdor</find>
-      <find>fy</find>
+      <find>enum</find>
+      <find>conte</find>
+      <find>returnTemp</find>
+      <find>local</find>
+      <find>visitfunccall</find>
+      <find>localVariable</find>
+      <find>HashMap&lt;String,ArrayList&lt;String&gt; &gt;</find>
+      <find>endcontext</find>
+      <find>savecontext</find>
+      <find>end</find>
+      <find>resume</find>
+      <find>endcont</find>
+      <find>lvar</find>
       <find>%fy</find>
-      <find>show</find>
+      <find>fibo</find>
+      <find>iscst</find>
+      <find>ir</find>
+      <find>simp</find>
+      <find>assign</find>
+      <find>visit</find>
+      <find>narr</find>
+      <find>defvarhave</find>
+      <find>nir</find>
+      <find>variable</find>
+      <find>mod</find>
+      <find>vty</find>
+      <find>vtype</find>
+      <find>ncns</find>
+      <find>return ir0</find>
+      <find>tmp</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,11 +107,12 @@
         <option value="$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/ConstantPool.java" />
         <option value="$PROJECT_DIR$/../zz/src/Main.java" />
         <option value="$PROJECT_DIR$/src/Mxx.g4" />
+        <option value="$PROJECT_DIR$/../zz/src/IRTranslator.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-69" />
     <option name="y" value="27" />
     <option name="width" value="1944" />
@@ -136,6 +123,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -152,9 +141,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -260,25 +247,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <frame x="-46" y="18" width="1296" height="696" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="11" weight="0.3297491" />
       <window_info anchor="bottom" id="Tool Output" order="0" weight="0.054446463" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.46057346" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info id="Image Layers" order="1" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="6" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info anchor="bottom" id="Run" order="4" weight="0.37634408" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.37567085" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.72401434" visible="true" weight="0.3565077" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7191413" visible="true" weight="0.17609046" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5645161" />
-      <window_info id="Structure" order="6" sideWeight="0.27598566" side_tool="true" visible="true" weight="0.3565077" />
+      <window_info id="Structure" order="6" sideWeight="0.28085867" side_tool="true" visible="true" weight="0.17609046" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -290,7 +278,6 @@
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
       <window_info active="true" anchor="bottom" id="Find" order="3" visible="true" weight="0.32616487" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.46057346" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -302,13 +289,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="40" column="49" lean-forward="true" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="893">
@@ -326,7 +306,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -335,7 +314,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -378,7 +356,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -387,7 +364,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -416,7 +392,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -425,7 +400,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -455,7 +429,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -464,7 +437,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -494,7 +466,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -503,7 +474,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -533,7 +503,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -542,7 +511,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -578,7 +546,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -587,7 +554,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -616,7 +582,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -625,7 +590,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -654,7 +618,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -663,7 +626,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -692,7 +654,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -701,7 +662,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -730,7 +690,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -739,7 +698,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -768,7 +726,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -777,7 +734,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -806,7 +762,6 @@
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -815,7 +770,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
@@ -878,58 +832,52 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Irtox86.java" />
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/ConstantPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="253" column="31" lean-forward="true" selection-start-line="253" selection-start-column="31" selection-end-line="253" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/Builder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="17" column="30" lean-forward="true" selection-start-line="17" selection-start-column="30" selection-end-line="17" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/ConstantPool.java" />
+    <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta4/src/cn/kzoacn/Builder.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Builder.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/Main.java" />
     <entry file="file://$USER_HOME$/Downloads/Compiler2018-master/beta3/src/cn/kzoacn/IRTranslator.java" />
-    <entry file="file://$PROJECT_DIR$/../zz/src/IRTranslator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="971" column="23" selection-start-line="971" selection-start-column="23" selection-end-line="971" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../zz/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1387">
-          <caret line="88" column="15" selection-start-line="88" selection-start-column="15" selection-end-line="88" selection-end-column="15" />
+        <state relative-caret-position="25859">
+          <caret line="1392" column="43" selection-start-line="1392" selection-start-column="36" selection-end-line="1392" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../zz/src/IRTranslator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="546" selection-start-line="546" selection-end-line="546" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Mxx.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="817">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        <state relative-caret-position="247">
+          <caret line="53" column="45" lean-forward="true" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/antlr-4.7-intellij-1.8.4-version-complete.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="102" column="15" lean-forward="true" selection-start-line="102" selection-start-column="15" selection-end-line="102" selection-end-column="15" />
+        <state relative-caret-position="89">
+          <caret line="2231" selection-start-line="2231" selection-end-line="2231" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1365#1366#0" expanded="true" />
             <element signature="e#1452#1453#0" expanded="true" />
             <element signature="method#funcord#0;class#Backend#0" />
             <element signature="method#funcnewarr#0;class#Backend#0" />
-            <element signature="method#funcstradd#0;class#Backend#0" />
             <element signature="method#funcstrcmp#0;class#Backend#0" />
             <element signature="method#funcgetInt#0;class#Backend#0" />
             <element signature="method#funcaddress#0;class#Backend#0" />
@@ -938,7 +886,6 @@
             <element signature="method#funcgetString#0;class#Backend#0" />
             <element signature="method#funcsubstring#0;class#Backend#0" />
             <element signature="method#getname#0;class#Backend#0" />
-            <element signature="method#iscst#0;class#Backend#0" />
             <element signature="method#print#0;class#Backend#0" />
             <element signature="method#println#0;class#Backend#0" />
             <element signature="method#shc#0;class#Backend#0" />
