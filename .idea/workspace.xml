@@ -18,7 +18,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="75">
+              <caret line="2643" column="51" lean-forward="true" selection-start-line="2643" selection-start-column="51" selection-end-line="2643" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1350#1351#0" expanded="true" />
@@ -32,11 +33,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>currentFunction</find>
-      <find>getFunction</find>
-      <find>hangelabel</find>
-      <find>bareIR</find>
-      <find>TA</find>
       <find>pureFunction</find>
       <find>tmpIR</find>
       <find>aha</find>
@@ -62,6 +58,11 @@
       <find>program</find>
       <find>needf</find>
       <find>dududu</find>
+      <find>str = ct</find>
+      <find>iscst</find>
+      <find>BB</find>
+      <find>cpy()</find>
+      <find>IR cpy()</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -619,7 +620,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="75">
+          <caret line="2643" column="51" lean-forward="true" selection-start-line="2643" selection-start-column="51" selection-end-line="2643" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1350#1351#0" expanded="true" />

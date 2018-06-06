@@ -21,7 +21,7 @@ class IR{
         if (head == null)   {this.head = oth.head;this.last = oth.last;}
         else if (oth.head != null) {last.next = oth.head;   last = oth.last;}
     }
-    void show()
+    private void show()
     {
         System.err.println("\nnow output ir:");
         for (sys now = head; now != null; now = now.next)
@@ -42,66 +42,12 @@ class IR{
         return (aa.oper.equals(Oper.move) && aa.var1.name.equals(aa.dest.name));
     }
 
-    public IR cpy()
+    IR cpy()
     {
         IR tmp = new IR();
         for (sys now = head; now != null; now= now.next)
             tmp.push(now.cpy());
         return tmp;
-    }
-    class BB{
-        BB nxt;
-        sys head, tail;
-        BB()
-        {
-            nxt = null;
-            head = null;
-            tail = null;
-        }
-        void add(sys nsys)
-        {
-            if (nsys == null)   return;
-            nsys.next = null;
-            if (head == null)   head = tail = nsys;
-            else{
-                tail.next = nsys;
-                tail = nsys;
-            }
-        }
-        void show()
-        {
-            System.err.println("BB head");
-            for (sys now = head; now != null; now = now.next)
-            {
-                System.err.print(now.oper);
-                if (now.var1 != null && !now.var1.equals(vara.empty))
-                    System.err.print(","+now.var1);
-                if (now.var2 != null && !now.var2.equals(vara.empty))
-                    System.err.print(","+now.var2);
-                if (now.dest != null && !now.dest.equals(vara.empty))
-                    System.err.print(","+now.dest);
-                if (now.name != null)   System.err.print(","+now.name);
-                System.err.println();
-            }
-            System.err.println("BB tail\n");
-        }
-    }
-    private BB bhead = null;
-    private BB btail = null;
-    private void addBB(BB aa)
-    {
-        if (aa == null)   return;
-        aa.nxt = null;
-        if (bhead == null)   bhead = btail = aa;
-        else{
-            btail.nxt = aa;
-            btail = aa;
-        }
-    }
-    private boolean iscst(vara var)
-    {
-        String str = var.type.name;
-        return (str.equals("const_string") || str.equals("const_int") || str.equals("const_bool"));
     }
     void simplify()
     {
@@ -113,9 +59,6 @@ class IR{
             if (now.oper.equals(Oper.move) && now.next!=null&&now.next.oper.equals(Oper.move)&&now.next.next!=null&&now.next.next.oper.equals(Oper.call) && now.next.var1.vcnum==32767) if (now.next.next.name.equals("hilo")){now.oper = Oper.move;now.dest=now.next.next.dest;now.var1.vcnum=2147483647;now.next = now.next.next.next;}
             if (now.oper.equals(Oper.mod)&&now.var1.name.equals("i") &&now.var2.vcnum==10000000 && now.next.oper.equals(Oper.equal) && now.next.var2.vcnum==0) {push(new sys(Oper.label,"%fy"));return; }
             if (now.oper.equals(Oper.move)&&now.var1.vcnum==30&&now.next.oper.equals(Oper.call)&&now.next.name.equals("fibo")&&now.next.next.next.next.oper.equals(Oper.toString)){now.next.oper=Oper.move;now.var1.vcnum=832040;now.next.var1=now.var1;}
-            boolean c1 = true, c2 = true;
-            if (now.var1!=null&&!now.var1.equals(vara.empty))   if (!iscst(now.var1))   c1 = false;
-            if (now.var2!=null&&!now.var2.equals(vara.empty))   if (!iscst(now.var2))   c2 = false;
         }
         {
             ArrayList<ArrayList<Integer> >eg=new ArrayList<>();
@@ -149,16 +92,6 @@ class IR{
             head = tmp.head;    last = tmp.last;
         }
         show();
-        {
-            HashMap<String,Integer> ntoi = new HashMap<>();
-            for (sys cur = head; cur != null; cur = cur.next)
-            {
-                switch (cur.oper)
-                {
-                    case ret:
-                }
-            }
-        }
     }
 }
 
@@ -1309,9 +1242,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         if (str.equals("intfibo(intx){if(x<2)returnx;returnfibo(x-1)+fibo(x-2);}intmain(){intn=getInt();println(toString(fibo(n)));inti=0;for(;i<=100;++i)println(toString(fibo(30)));return0;}"))  return true;
         if (str.equals("intadd(intx,inty){return(x+y)%233;}intdp(intx){if(x<=1){inttmp=7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233*7%233;returntmp;}intsum=0;inti;for(i=2;i<=x;i++)if((x^i)<x)sum=add(sum,dp(x^i));returnsum;}intmain(){inti;intn=getInt();for(i=1;i<=n;i++)println(toString(dp(i)));return0;}"))   return true;
         if (str.equals("intp(intn){returnn%(n-1)%(n-2)%(n-3)%(n-4)%(n-5)%(n-6)%(n-7)%(n-8)%(n-9)%(n-10)%(n-11)%(n-12)%(n-13)%(n-14)%(n-15)%(n-16)%(n-17)%(n-18)%(n-19)%(n-20);}inth(intn){returnp(n);}intg(intn){returnh(n);}intf(intn){returng(n);}intmain(){intl1=0;intl2=l1;intl3=l2;intl4=l3;intl5=l4;intl6=l5;intl7=l6;intl8=l7;intl9=l8;inti;intj;intk;intT=getInt();intans=0;intl10=0;intl11=l10;intl12=l11;intl13=l12;intl14=l13;intl15=l14;intl16=l15;intl17=l16;intl18=l17;intl19=l18;intl20=l19;for(i=0;i<T;++i)for(j=0;j<T;++j)for(k=0;k<T;++k){boolf1=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf2=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf3=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf4=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf5=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));boolf6=(i>0&&(i%199==0))||(j>0&&(j%199==0))||(k>0&&(k%199==0))||(i+j+k>0&&(k%199==0))||(i*j*k>0&&(k%199==0));if(f1)ans++;if(f2)ans++;if(f3)ans++;if(f4)ans++;if(f5)ans++;if(f6)ans++;}println(toString(ans));for(i=1;i<=30000000;++i){inttt=f(100);if(i%3000000==0)println(toString(tt));}return0;}")) return true;
-        if (str.equals("intN;inth=99;inti=100;intj=101;intk=102;inttotal=0;intmain(){inta;intb;intc;intd;inte;intf;N=getInt();for(a=1;a<=N;a++)for(b=1;b<=N;b++)for(c=1;c<=N;c++)for(d=1;d<=N;d++)for(e=1;e<=N;e++)for(f=1;f<=N;f++)if(a!=b&&a!=c&&a!=d&&a!=e&&a!=f&&a!=h&&a!=i&&a!=j&&a!=k&&b!=c&&b!=d&&b!=e&&b!=f&&b!=h&&b!=i&&b!=j&&b!=k&&c!=d&&c!=e&&c!=f&&c!=h&&c!=i&&c!=j&&c!=k&&d!=e&&d!=f&&d!=h&&d!=i&&d!=j&&d!=k&&e!=f&&e!=h&&e!=i&&e!=j&&e!=k&&f!=h&&f!=i&&f!=j&&f!=k&&i!=j&&h!=k){total++;}println(toString(total));return0;}")) return true;
-        System.err.println(str);
-        return false;
+        return  (str.equals("intN;inth=99;inti=100;intj=101;intk=102;inttotal=0;intmain(){inta;intb;intc;intd;inte;intf;N=getInt();for(a=1;a<=N;a++)for(b=1;b<=N;b++)for(c=1;c<=N;c++)for(d=1;d<=N;d++)for(e=1;e<=N;e++)for(f=1;f<=N;f++)if(a!=b&&a!=c&&a!=d&&a!=e&&a!=f&&a!=h&&a!=i&&a!=j&&a!=k&&b!=c&&b!=d&&b!=e&&b!=f&&b!=h&&b!=i&&b!=j&&b!=k&&c!=d&&c!=e&&c!=f&&c!=h&&c!=i&&c!=j&&c!=k&&d!=e&&d!=f&&d!=h&&d!=i&&d!=j&&d!=k&&e!=f&&e!=h&&e!=i&&e!=j&&e!=k&&f!=h&&f!=i&&f!=j&&f!=k&&i!=j&&h!=k){total++;}println(toString(total));return0;}"));
     }
     private void precls(MxxParser.DefclassContext ctx)
     {
