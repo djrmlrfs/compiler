@@ -1923,7 +1923,7 @@ class MVisitor extends MxxBaseVisitor<IR>
         nir.push(new sys(Oper.jmp,lab1));
         nir.push(new sys(Oper.label,lab2));
         nlabe.pop();    nalab.pop();
-        if (stmt.head == null)  nir = new IR();
+        if (stmt==null || stmt.head==null)  nir = new IR();
         return nir;
     }
 
