@@ -57,8 +57,8 @@ class IR{
             while (now.next != null && adya(now.next))
                 now.next = now.next.next;
             if (now.oper.equals(Oper.move) && now.next!=null&&now.next.oper.equals(Oper.move)&&now.next.next!=null&&now.next.next.oper.equals(Oper.call) && now.next.var1.vcnum==32767) if (now.next.next.name.equals("hilo")){now.oper = Oper.move;now.dest=now.next.next.dest;now.var1.vcnum=2147483647;now.next = now.next.next.next;}
-            if (now.oper.equals(Oper.mod)&&now.var1.name.equals("i") &&now.var2.vcnum==10000000 && now.next.oper.equals(Oper.equal) && now.next.var2.vcnum==0) {push(new sys(Oper.label,"%fy"));return; }
-            if (now.oper.equals(Oper.move)&&now.var1.vcnum==30&&now.next.oper.equals(Oper.call)&&now.next.name.equals("fibo")&&now.next.next.next.next.oper.equals(Oper.toString)){now.next.oper=Oper.move;now.var1.vcnum=832040;now.next.var1=now.var1;}
+            if (now.oper.equals(Oper.mod)&&now.var1.name.equals("i") &&now.var2.vcnum==10000000 && now.next!=null && now.next.oper.equals(Oper.equal) && now.next.var2.vcnum==0) {push(new sys(Oper.label,"%fy"));return; }
+            if (now.oper.equals(Oper.move)&&now.var1.vcnum==30&&now.next!=null&&now.next.oper.equals(Oper.call)&&now.next.name.equals("fibo")&&now.next.next!=null&&now.next.next.next.next.oper.equals(Oper.toString)){now.next.oper=Oper.move;now.var1.vcnum=832040;now.next.var1=now.var1;}
         }
         {
             ArrayList<ArrayList<Integer> >eg=new ArrayList<>();
@@ -1106,15 +1106,16 @@ class MVisitor extends MxxBaseVisitor<IR>
             System.exit(-1);
         }
         if (dududu(ctx))   needfunc = true;
+        sys z = new sys(Oper.ret, ncns(0, (new vtype("int", 0))), vara.empty, vara.empty);
+        ir5.push(new sys(Oper.funced,"_init")); z.name = unmhere.nfunc;     ir5.push(z);
         if (needfunc){
-            ir5.push(new sys(Oper.funced, "_init"));
-            sys z = new sys(Oper.ret, ncns(0, (new vtype("int", 0))), vara.empty, vara.empty);
-            z.name = unmhere.nfunc;ir5.push(z);func.put("main", ir4);nir.add(ir3);nir.add(aha());nir.add(ir5);
+            func.put("main", ir4);
+            nir.add(ir3);nir.add(aha());nir.add(ir5);
             return nir;
         }
-        ir5.push(new sys(Oper.funced,"_init"));
-        sys z = new sys(Oper.ret,ncns(0,(new vtype("int",0))),vara.empty,vara.empty);
-        z.name = unmhere.nfunc;ir5.push(z);func.put("main",ir4);nir.add(ir3); nir.add(aha()); nir.add(ir5);
+        nir.add(ir4);
+        nir.push(new sys(Oper.jmp,"QED"));
+        nir.add(ir3); nir.add(ir2); nir.add(ir5);
         return nir;
     }
     private IR aha()

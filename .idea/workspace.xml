@@ -18,8 +18,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="2643" column="51" lean-forward="true" selection-start-line="2643" selection-start-column="51" selection-end-line="2643" selection-end-column="51" />
+            <state relative-caret-position="57">
+              <caret line="61" selection-start-line="61" selection-end-line="61" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1350#1351#0" expanded="true" />
@@ -33,10 +33,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pureFunction</find>
-      <find>tmpIR</find>
-      <find>aha</find>
-      <find>flag</find>
       <find>memoryVariable</find>
       <find>memory</find>
       <find>falseLabel</find>
@@ -53,16 +49,20 @@
       <find>head</find>
       <find>continue</find>
       <find>prog</find>
-      <find>needfunc</find>
       <find>op5</find>
-      <find>program</find>
       <find>needf</find>
       <find>dududu</find>
-      <find>str = ct</find>
+      <find />
       <find>iscst</find>
       <find>BB</find>
       <find>cpy()</find>
-      <find>IR cpy()</find>
+      <find />
+      <find>???</find>
+      <find>needfunc</find>
+      <find>program</find>
+      <find>need</find>
+      <find>&quot;main</find>
+      <find>no</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -113,9 +113,9 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -238,10 +238,9 @@
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32849365" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70977014" visible="true" weight="0.18350849" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70689654" visible="true" weight="0.18674211" />
       <window_info anchor="bottom" id="ANTLR Preview" order="1" weight="0.5645161" />
-      <window_info id="Structure" order="6" sideWeight="0.2902299" side_tool="true" visible="true" weight="0.18350849" />
+      <window_info id="Structure" order="6" sideWeight="0.29310346" side_tool="true" visible="true" weight="0.18674211" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="right" id="Theme Preview" order="5" />
@@ -252,6 +251,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="2" />
       <window_info anchor="bottom" id="Cvs" order="6" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.32616487" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -620,8 +620,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="2643" column="51" lean-forward="true" selection-start-line="2643" selection-start-column="51" selection-end-line="2643" selection-end-column="51" />
+        <state relative-caret-position="57">
+          <caret line="61" selection-start-line="61" selection-end-line="61" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1350#1351#0" expanded="true" />
